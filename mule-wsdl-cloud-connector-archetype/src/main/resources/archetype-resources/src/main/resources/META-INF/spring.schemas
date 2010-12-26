@@ -1,0 +1,2 @@
+#set($cloudServiceLower = "${cloudService.toLowerCase()}")
+http\://www.mulesoft.org/schema/mule/${cloudServiceLower}/3.1/mule-${cloudServiceLower}.xsd=META-INF/mule-${cloudServiceLower}.xsd

@@ -1,0 +1,273 @@
+#set($D = '$')
+#set($ModuleName = "$artifactId")
+#set($ModuleNameLower = "${ModuleName.toLowerCase()}")
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>${groupId}</groupId>
+   <artifactId>${artifactId}</artifactId>
+   <packaging>jar</packaging>
+   <name>Mule ${cloudService} Cloud Connector</name>
+   <version>${version}</version>
+   <description>Mule Cloud connector to ${cloudService}</description>
+   <url>http://www.muleforge.org/projects/${artifactId}</url>
+
+   <properties>
+        <!-- the CXF version must be in line with the version Mule uses -->
+        <cxf.version>2.3.0</cxf.version>
+        <mule.version>${muleVersion}</mule.version>
+        <!-- Tools properties -->
+        <eclipsePluginVersion>2.8</eclipsePluginVersion>
+        <vmtype>org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType</vmtype>
+        <jdk5Name>J2SE-1.5</jdk5Name>
+        <jdk.version>1.5</jdk.version>
+    </properties>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav</artifactId>
+                <version>1.0-beta-2</version>
+            </extension>
+        </extensions>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <encoding>ISO-8859-1</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>${D}{eclipsePluginVersion}</version>
+                <configuration>
+                    <!-- by default download all sources when generating project files -->
+                    <downloadSources>true</downloadSources>
+                    <classpathContainers>
+                        <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER/${D}{vmtype}/${D}{jdk5Name}
+                        </classpathContainer>
+                    </classpathContainers>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-idea-plugin</artifactId>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <jdkName>${D}{jdk.version}</jdkName>
+                </configuration>
+            </plugin>
+            <!-- generate code from the WSDL file -->
+            <plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-codegen-plugin</artifactId>
+                <version>${D}{cxf.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>wsdl2java</goal>
+                        </goals>
+                        <configuration>
+                            <sourceRoot>${D}{project.build.directory}/generated-sources</sourceRoot>
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <!--
+                                        TODO if you invoked the archetype with a WSDL file, you may
+                                         want to copy that file to src/main/wsdl
+                                    -->
+                                    <wsdl>${wsdl}</wsdl>
+                                    <autoNameResolution>true</autoNameResolution>
+                                </wsdlOption>
+                            </wsdlOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- The release distribution for this project -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <finalName>${D}{artifactId}-${D}{version}</finalName>
+                    <descriptors>
+                        <descriptor>assembly.xml</descriptor>
+                    </descriptors>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- plugins for creating site reports -->
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.6</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <targetJdk>${D}{jdk.version}</targetJdk>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>taglist-maven-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <tags>
+                        <tag>TODO</tag>
+                        <tag>@todo</tag>
+                        <tag>FIXME</tag>
+                        <tag>@fixme</tag>
+                        <tag>@deprecated</tag>
+                    </tags>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <source>${D}{jdk.version}</source>
+                    <links>
+                        <link>http://java.sun.com/j2ee/1.4/docs/api</link>
+                        <link>http://java.sun.com/j2se/1.4.2/docs/api</link>
+                        <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+                    </links>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jdepend-maven-plugin</artifactId>
+                <version>2.0-beta-2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.3.1</version>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <!-- Mule Dependencies -->
+    <dependencies>
+        <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-spring-config</artifactId>
+            <version>${D}{mule.version}</version>
+        </dependency>
+
+        <!-- CXF dependencies -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>${D}{cxf.version}</version>
+            <!-- this artifact is part of the Mule distribution -->
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>${D}{cxf.version}</version>
+            <!-- this artifact is part of the Mule distribution -->
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- for testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Mule Forge Configuration -->
+    <issueManagement>
+        <system>Jira</system>
+        <url>http://www.mulesoft.org/jira/browse/${ModuleName.toUpperCase()}</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:svn:http://svn.muleforge.org/${ModuleNameLower}/</connection>
+        <developerConnection>scm:svn:https://svn.muleforge.org/${ModuleNameLower}/</developerConnection>
+        <tag>HEAD</tag>
+        <url>http://svn.${ModuleNameLower}.muleforge.org/</url>
+    </scm>
+
+    <ciManagement>
+        <system>Bamboo</system>
+        <url>http://bamboo.muleforge.org/browse/${ModuleName.toUpperCase()}-FORGE</url>
+        <notifiers/>
+    </ciManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>muleforge.webdav.releases</id>
+            <url>dav:https://dav.muleforge.org/repository/${ModuleNameLower}/</url>
+        </repository>
+        <snapshotRepository>
+            <id>muleforge.webdav.snapshots</id>
+            <url>dav:https://dav.muleforge.org/snapshots.repository/${ModuleNameLower}/</url>
+        </snapshotRepository>
+        <site>
+            <id>muleforge.webdav.sites</id>
+            <url>dav:https://dav.muleforge.org/${ModuleNameLower}/maven/${D}{version}/</url>
+        </site>
+    </distributionManagement>
+    <!-- End of MuleForge Configuration -->
+
+    <repositories>
+        <repository>
+            <id>muleforge-repo</id>
+            <name>MuleForge Repository</name>
+            <url>http://repository.muleforge.org</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>codehaus-repo</id>
+            <name>Codehaus Repository</name>
+            <url>http://dist.codehaus.org/mule/dependencies/maven2</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <!-- local repository for this forge project. Users can upload dependencies here when the artifact
+                 is not available on any other repository. Its the users' responsibility to make sure that no
+                 licenses are violated by uploading dependencies to this location
+            -->
+            <id>${ModuleNameLower}-deps</id>
+            <name>${ModuleName} Dependencies</name>
+            <url>http://dist.muleforge.org/${artifactId}/dependencies/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+</project>
