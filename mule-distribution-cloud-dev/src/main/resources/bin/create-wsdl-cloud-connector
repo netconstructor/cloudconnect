@@ -1,0 +1,41 @@
+#!/bin/sh
+
+DEFAULT_MAVEN_GID="org.mule.modules"
+echo -n "Maven group id of the new connector (default is ${DEFAULT_MAVEN_GID}): "
+read MAVEN_GID
+if [ "${MAVEN_GID}" = "" ]; then
+    MAVEN_GID=${DEFAULT_MAVEN_GID}
+fi
+
+echo
+echo "Maven artifact id of the new connector"
+echo -n "(should use naming convention mule-module-<yourname>): "
+read MAVEN_AID
+
+echo
+DEFAULT_MAVEN_VERSION="1.0-SNAPSHOT"
+echo -n "Maven version of the new connector (default is ${DEFAULT_MAVEN_VERSION}): "
+read MAVEN_VERSION
+if [ "${MAVEN_VERSION}" = "" ]; then
+    MAVEN_VERSION=${DEFAULT_MAVEN_VERSION}
+fi
+
+echo
+echo "Java package for the new connector"
+echo -n "(should use the naming convention org.mule.module.<yourname>): "
+read JAVA_PACKAGE
+
+echo
+echo -n "Name of the cloud service the new connector hosts: "
+read CLOUD_SERVICE
+
+echo
+echo -n "Location of the WSDL (can be a local file or a URL): "
+read WSDL
+
+mvn archetype:generate -B -DarchetypeGroupId=org.mule.tools \
+    -DarchetypeArtifactId=mule-wsdl-cloud-connector-archetype \
+    -DarchetypeVersion=1.0-SNAPSHOT \
+    -DgroupId=${MAVEN_GID} -DartifactId=${MAVEN_AID} -Dversion=${MAVEN_VERSION} \
+    -Dpackage=${JAVA_PACKAGE} -DcloudService=${CLOUD_SERVICE} \
+    -Dwsdl=${WSDL}
