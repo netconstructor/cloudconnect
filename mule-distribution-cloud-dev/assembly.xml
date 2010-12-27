@@ -11,4 +11,10 @@
             <outputDirectory></outputDirectory>
         </fileSet>
     </fileSets>
+
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>lib/opt</outputDirectory>
+        </dependencySet>
+    </dependencySets>
 </assembly>
