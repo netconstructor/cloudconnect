@@ -17,6 +17,8 @@ public class ${cloudService}NamespaceHandler extends AbstractPojoNamespaceHandle
 {
     public void init()
     {
-        // TODO add implementation
+        registerPojo("config", ${cloudService}CloudConnector.class);
+
+        // TODO add additional custom namespace mappings
     }
 }
