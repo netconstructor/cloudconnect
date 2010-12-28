@@ -207,6 +207,11 @@
             <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mule.tests</groupId>
+            <artifactId>mule-tests-functional</artifactId>
+            <version>${D}{mule.version}</version>
+        </dependency>
     </dependencies>
 
     <!-- Mule Forge Configuration -->

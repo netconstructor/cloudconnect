@@ -20,13 +20,13 @@
         <fileSet filtered="true">
             <directory>src/main/resources</directory>
         </fileSet>
-<!--        <fileSet filtered="true" packaged="true" encoding="UTF-8">
+        <fileSet filtered="true" packaged="true" encoding="UTF-8">
             <directory>src/test/java</directory>
             <includes>
                 <include>**/*.java</include>
             </includes>
-        </fileSet>-->
-        <fileSet>
+        </fileSet>
+        <fileSet filtered="true">
             <directory>src/test/resources</directory>
         </fileSet>
         <fileSet encoding="UTF-8">
