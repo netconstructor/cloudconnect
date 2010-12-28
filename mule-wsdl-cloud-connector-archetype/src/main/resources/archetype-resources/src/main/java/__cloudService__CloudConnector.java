@@ -9,7 +9,7 @@
  * LICENSE.txt file.
  */
 
-package ${package}
+package ${package};
 
 public class ${cloudService}CloudConnector
 {
