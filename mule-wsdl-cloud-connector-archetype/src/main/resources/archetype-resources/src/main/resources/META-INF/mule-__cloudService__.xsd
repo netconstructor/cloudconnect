@@ -6,7 +6,7 @@
             xmlns:mule="http://www.mulesoft.org/schema/mule/core"
             xmlns:schemadoc="http://www.mulesoft.org/schema/mule/schemadoc"
             xmlns:beans="http://www.springframework.org/schema/beans"
-            targetNamespace="http://www.mulesoft.org/schema/mule/salesforce"
+            targetNamespace="http://www.mulesoft.org/schema/mule/${cloudServiceLower}"
             elementFormDefault="qualified"
             attributeFormDefault="unqualified">
 
