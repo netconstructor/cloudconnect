@@ -12,6 +12,7 @@
 package ${package}.config;
 
 import org.mule.config.spring.handlers.AbstractPojoNamespaceHandler;
+import ${package}.${cloudService}CloudConnector;
 
 public class ${cloudService}NamespaceHandler extends AbstractPojoNamespaceHandler
 {
