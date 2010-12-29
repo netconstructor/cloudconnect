@@ -22,7 +22,7 @@ def askQuestions()
     question("Maven version of the new connector", "version", false)
     question("Java package for the new connector\n(should use the naming convention org.mule.module.<yourname>)",
         "package")
-    question("Name of the cloud service the new connector hosts", "cloudService")
+    question("Name of the cloud service the new connector uses", "cloudService")
     question("Location of the WSDL (can be a local file or a URL)", "wsdl")
 }
 
@@ -66,6 +66,7 @@ def generateArchetypeScriptFile(String filename)
     }
 
     def archetypeVersion = "1.0-SNAPSHOT"
+
     def outputFile = new File(filename)
     outputFile.withWriter
     {
@@ -82,6 +83,13 @@ def generateArchetypeScriptFile(String filename)
         writer.write(" -DcloudService=${archetypeProperties.cloudService}")
         writer.write(" -DcloudServiceLower=${archetypeProperties.cloudService.toLowerCase()}")
         writer.write(" -Dwsdl=${archetypeProperties.wsdl}")
+
+        // to run a snapshot version of the archetype we must declare repository to find it
+        if (archetypeVersion.endsWith("SNAPSHOT"))
+        {
+            writer.write(" -DarchetypeRepository=http://snapshots.repository.codehaus.org")
+        }
+
         writer.newLine()
     }
 }
