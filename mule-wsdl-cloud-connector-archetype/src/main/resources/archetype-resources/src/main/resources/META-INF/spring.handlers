@@ -1,2 +1,1 @@
-#set($cloudServiceLower = "${cloudService.toLowerCase()}")
 http\://www.mulesoft.org/schema/mule/${cloudServiceLower}=${package}.config.${cloudService}NamespaceHandler

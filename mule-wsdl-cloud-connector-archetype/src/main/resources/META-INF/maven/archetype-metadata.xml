@@ -7,6 +7,7 @@
 
     <requiredProperties>
         <requiredProperty key="cloudService"/>
+        <requiredProperty key="cloudServiceLower"/>
         <requiredProperty key="muleVersion">
             <defaultValue>3.1.0</defaultValue>
         </requiredProperty>

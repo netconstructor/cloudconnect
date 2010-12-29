@@ -18,7 +18,7 @@ public class ${cloudService}NamespaceHandlerTestCase extends FunctionalTestCase
     @Override
     protected String getConfigResources()
     {
-        return "${cloudService}-namespace-config.xml";
+        return "${cloudServiceLower}-namespace-config.xml";
     }
 
     public void testNamespace()
