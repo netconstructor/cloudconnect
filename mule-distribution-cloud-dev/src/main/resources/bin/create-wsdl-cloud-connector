@@ -1,41 +1,64 @@
 #!/bin/sh
 
-DEFAULT_MAVEN_GID="org.mule.modules"
-echo -n "Maven group id of the new connector (default is ${DEFAULT_MAVEN_GID}): "
-read MAVEN_GID
-if [ "${MAVEN_GID}" = "" ]; then
-    MAVEN_GID=${DEFAULT_MAVEN_GID}
-fi
+# Get the fully qualified path to the script
+case $0 in
+    /*)
+        SCRIPT="$0"
+        ;;
+    *)
+        PWD=`pwd`
+        SCRIPT="$PWD/$0"
+        ;;
+esac
 
-echo
-echo "Maven artifact id of the new connector"
-echo -n "(should use naming convention mule-module-<yourname>): "
-read MAVEN_AID
+# Resolve the true real path without any sym links.
+CHANGED=true
+while [ "X$CHANGED" != "X" ]
+do
+    # Change spaces to ":" so the tokens can be parsed.
+    SAFESCRIPT=`echo $SCRIPT | sed -e 's; ;:;g'`
+    # Get the real path to this script, resolving any symbolic links
+    TOKENS=`echo $SAFESCRIPT | sed -e 's;/; ;g'`
+    REALPATH=
+    for C in $TOKENS; do
+        # Change any ":" in the token back to a space.
+        C=`echo $C | sed -e 's;:; ;g'`
+        REALPATH="$REALPATH/$C"
+        # If REALPATH is a sym link, resolve it.  Loop for nested links.
+        while [ -h "$REALPATH" ] ; do
+            LS="`ls -ld "$REALPATH"`"
+            LINK="`expr "$LS" : '.*-> \(.*\)$'`"
+            if expr "$LINK" : '/.*' > /dev/null; then
+                # LINK is absolute.
+                REALPATH="$LINK"
+            else
+                # LINK is relative.
+                REALPATH="`dirname "$REALPATH"`""/$LINK"
+            fi
+        done
+    done
 
-echo
-DEFAULT_MAVEN_VERSION="1.0-SNAPSHOT"
-echo -n "Maven version of the new connector (default is ${DEFAULT_MAVEN_VERSION}): "
-read MAVEN_VERSION
-if [ "${MAVEN_VERSION}" = "" ]; then
-    MAVEN_VERSION=${DEFAULT_MAVEN_VERSION}
-fi
+    if [ "$REALPATH" = "$SCRIPT" ]
+    then
+        CHANGED=""
+    else
+        SCRIPT="$REALPATH"
+    fi
+done
 
-echo
-echo "Java package for the new connector"
-echo -n "(should use the naming convention org.mule.module.<yourname>): "
-read JAVA_PACKAGE
+# $REALPATH denotes the full path to the script now. Go two levels up to determine MULE_HOME
+MULE_HOME="`dirname ${REALPATH}`"
+MULE_HOME="`dirname ${MULE_HOME}`"
 
-echo
-echo -n "Name of the cloud service the new connector hosts: "
-read CLOUD_SERVICE
+GROOVY_JAR="`ls ${MULE_HOME}/lib/opt/groovy-all*`"
+ARCHETYPE_SCRIPT_FILE=/tmp/run-mule-wsdl-cloud-connector-archetype.$$
 
-echo
-echo -n "Location of the WSDL (can be a local file or a URL): "
-read WSDL
+# ask some questions and generate the scipt file that invokes the archetype
+java -cp "${GROOVY_JAR}" org.codehaus.groovy.tools.GroovyStarter \
+    --main groovy.ui.GroovyMain \
+    ${MULE_HOME}/bin/CreateWSDLArchetypeProperties.groovy ${ARCHETYPE_SCRIPT_FILE}
 
-mvn archetype:generate -B -DarchetypeGroupId=org.mule.tools \
-    -DarchetypeArtifactId=mule-wsdl-cloud-connector-archetype \
-    -DarchetypeVersion=1.0-SNAPSHOT \
-    -DgroupId=${MAVEN_GID} -DartifactId=${MAVEN_AID} -Dversion=${MAVEN_VERSION} \
-    -Dpackage=${JAVA_PACKAGE} -DcloudService=${CLOUD_SERVICE} \
-    -Dwsdl=${WSDL}
+# now run the archetype
+. ${ARCHETYPE_SCRIPT_FILE}
+
+rm ${ARCHETYPE_SCRIPT_FILE}
