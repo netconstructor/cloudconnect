@@ -59,22 +59,29 @@ def printQuestion(String text, String key)
 
 def generateArchetypeScriptFile(String filename)
 {
+    def mavenExecutable = "mvn"
+    if (System.getProperty("os.name").startsWith("Windows"))
+    {
+        mavenExecutable = "mvn.bat"
+    }
+
+    def archetypeVersion = "1.0-SNAPSHOT"
     def outputFile = new File(filename)
     outputFile.withWriter
     {
         writer ->
 
-        writer.write("""\
-mvn archetype:generate -B -DarchetypeGroupId=org.mule.tools \\
-    -DarchetypeArtifactId=mule-wsdl-cloud-connector-archetype \\
-    -DarchetypeVersion=1.0-SNAPSHOT \\
-    -DgroupId=${archetypeProperties.groupId} \\
-    -DartifactId=${archetypeProperties.artifactId} \\
-    -Dversion=${archetypeProperties.version} \\
-    -Dpackage=${archetypeProperties.package} \\
-    -DcloudService=${archetypeProperties.cloudService} \\
-    -DcloudServiceLower=${archetypeProperties.cloudService.toLowerCase()} \\
-    -Dwsdl=${archetypeProperties.wsdl}
-""")
+        writer.write("${mavenExecutable} archetype:generate -B")
+        writer.write(" -DarchetypeGroupId=org.mule.tools")
+        writer.write(" -DarchetypeArtifactId=mule-wsdl-cloud-connector-archetype")
+        writer.write(" -DarchetypeVersion=${archetypeVersion}")
+        writer.write(" -DgroupId=${archetypeProperties.groupId}")
+        writer.write(" -DartifactId=${archetypeProperties.artifactId}")
+        writer.write(" -Dversion=${archetypeProperties.version}")
+        writer.write(" -Dpackage=${archetypeProperties.package}")
+        writer.write(" -DcloudService=${archetypeProperties.cloudService}")
+        writer.write(" -DcloudServiceLower=${archetypeProperties.cloudService.toLowerCase()}")
+        writer.write(" -Dwsdl=${archetypeProperties.wsdl}")
+        writer.newLine()
     }
 }
