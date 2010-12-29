@@ -1,6 +1,6 @@
 #set($D = '$')
 /*
- * ${D}Id:${D}
+ * ${D}Id${D}
  * --------------------------------------------------------------------------------------
  * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
  *
