@@ -10,24 +10,22 @@
 
 package org.mule.tools.cc.generator;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
 import org.apache.commons.lang.StringUtils;
 
 public class SchemaGenerator
 {
     private String namespaceIdentifierSuffix;
-    private BufferedWriter writer;
     private String schemaVersion;
     private JavaClass javaClass;
+    private GeneratorWriter writer;
 
     public void generate(OutputStream output) throws IOException
     {
         checkAllRequiredFieldsSet();
-        createWriter(output);
+        writer = new GeneratorWriter(output);
 
         writeXmlPreamble();
         writeStartElement();
@@ -55,85 +53,57 @@ public class SchemaGenerator
         }
     }
 
-    private void createWriter(OutputStream outputStream)
-    {
-        OutputStreamWriter osw = new OutputStreamWriter(outputStream);
-        writer = new BufferedWriter(osw);
-    }
-
     private void writeXmlPreamble() throws IOException
     {
-        writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
-        writer.newLine();
+        writer.writeLine("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
     }
 
     private void writeStartElement() throws IOException
     {
-        writer.write("<xsd:schema xmlns=\"http://www.mulesoft.org/schema/mule/");
-        writer.write(namespaceIdentifierSuffix);
-        writer.write("\"");
-        writer.newLine();
-        writer.write("            xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"");
-        writer.newLine();
-        writer.write("            xmlns:mule=\"http://www.mulesoft.org/schema/mule/core\"");
-        writer.newLine();
-        writer.write("            xmlns:schemadoc=\"http://www.mulesoft.org/schema/mule/schemadoc\"");
-        writer.newLine();
-        writer.write("            xmlns:beans=\"http://www.springframework.org/schema/beans\"");
-        writer.newLine();
-        writer.write("            targetNamespace=\"http://www.mulesoft.org/schema/mule/");
-        writer.write(namespaceIdentifierSuffix);
-        writer.write("\"");
-        writer.newLine();
-        writer.write("            elementFormDefault=\"qualified\"");
-        writer.newLine();
-        writer.write("            attributeFormDefault=\"unqualified\">");
-        writer.newLine();
+        writer.writeLine("<xsd:schema xmlns=\"http://www.mulesoft.org/schema/mule/%1s\"",
+            namespaceIdentifierSuffix);
+
+        writer.writeLine("            xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"");
+        writer.writeLine("            xmlns:mule=\"http://www.mulesoft.org/schema/mule/core\"");
+        writer.writeLine("            xmlns:schemadoc=\"http://www.mulesoft.org/schema/mule/schemadoc\"");
+        writer.writeLine("            xmlns:beans=\"http://www.springframework.org/schema/beans\"");
+        writer.writeLine("            targetNamespace=\"http://www.mulesoft.org/schema/mule/%1s\"",
+            namespaceIdentifierSuffix);
+        writer.writeLine("            elementFormDefault=\"qualified\"");
+        writer.writeLine("            attributeFormDefault=\"unqualified\">");
     }
 
     private void writeImports() throws IOException
     {
         writer.newLine();
-        writer.write("    <xsd:import namespace=\"http://www.w3.org/XML/1998/namespace\"/>");
-        writer.newLine();
-        writer.write("    <xsd:import namespace=\"http://www.springframework.org/schema/beans\"");
-        writer.newLine();
-        writer.write("                schemaLocation=\"http://www.springframework.org/schema/beans/spring-beans-3.0.xsd\"/>");
-        writer.newLine();
-        writer.write("    <xsd:import namespace=\"http://www.mulesoft.org/schema/mule/core\"");
-        writer.newLine();
-        writer.write("                schemaLocation=\"http://www.mulesoft.org/schema/mule/core/");
-        writer.write(schemaVersion);
-        writer.write("/mule.xsd\"/>");
-        writer.newLine();
-        writer.write("    <xsd:import namespace=\"http://www.mulesoft.org/schema/mule/schemadoc\"");
-        writer.newLine();
-        writer.write("                schemaLocation=\"http://www.mulesoft.org/schema/mule/schemadoc/");
-        writer.write(schemaVersion);
-        writer.write("/mule-schemadoc.xsd\"/>");
-        writer.newLine();
+        writer.writeLine("    <xsd:import namespace=\"http://www.w3.org/XML/1998/namespace\"/>");
+
+        writer.writeLine("    <xsd:import namespace=\"http://www.springframework.org/schema/beans\"");
+        writer.writeLine("                schemaLocation=\"http://www.springframework.org/schema/beans/spring-beans-3.0.xsd\"/>");
+
+        writer.writeLine("    <xsd:import namespace=\"http://www.mulesoft.org/schema/mule/core\"");
+        writer.writeLine("                schemaLocation=\"http://www.mulesoft.org/schema/mule/core/%1s/mule.xsd\"/>",
+            schemaVersion);
+
+        writer.writeLine("    <xsd:import namespace=\"http://www.mulesoft.org/schema/mule/schemadoc\"");
+        writer.writeLine("                schemaLocation=\"http://www.mulesoft.org/schema/mule/schemadoc/%1s/mule-schemadoc.xsd\"/>",
+            schemaVersion);
     }
 
     private void writeAnnotation() throws IOException
     {
         writer.newLine();
-        writer.write("    <xsd:annotation>");
-        writer.newLine();
-        writer.write("        <xsd:documentation>");
-        writer.newLine();
-        writer.write("            This schema was auto-generated. Do not edit.");
-        writer.newLine();
-        writer.write("        </xsd:documentation>");
-        writer.newLine();
-        writer.write("    </xsd:annotation>");
-        writer.newLine();
+        writer.writeLine("    <xsd:annotation>");
+        writer.writeLine("        <xsd:documentation>");
+        writer.writeLine("            This schema was auto-generated. Do not edit.");
+        writer.writeLine("        </xsd:documentation>");
+        writer.writeLine("    </xsd:annotation>");
     }
 
     private void writeOperations() throws IOException
     {
         writer.newLine();
-        writer.write("    <!-- Operations -->");
-        writer.newLine();
+        writer.writeLine("    <!-- Operations -->");
 
         for (JavaMethod method : javaClass.getMethods())
         {
@@ -161,59 +131,44 @@ public class SchemaGenerator
             writeOperationDocumentation(method);
         }
 
-        writer.write("    </xsd:element>");
-        writer.newLine();
+        writer.writeLine("    </xsd:element>");
     }
 
     private void writeOperationDocumentation(JavaMethod method) throws IOException
     {
-        writer.write("        <xsd:annotation>");
-        writer.newLine();
-        writer.write("            <xsd:documentation>");
-        writer.newLine();
+        writer.writeLine("        <xsd:annotation>");
+        writer.writeLine("            <xsd:documentation>");
         writer.write("                ");
-        writer.write(method.getJavadoc());
-        writer.newLine();
-        writer.write("            </xsd:documentation>");
-        writer.newLine();
-        writer.write("        </xsd:annotation>");
-        writer.newLine();
+        writer.writeLine(method.getJavadoc());
+        writer.writeLine("            </xsd:documentation>");
+        writer.writeLine("        </xsd:annotation>");
     }
 
     private void writeOperationElementType(JavaMethod method) throws IOException
     {
-        writer.write("    <xsd:complexType name=\"operationType\">");
-        writer.newLine();
-        writer.write("        <xsd:complexContent>");
-        writer.newLine();
-        writer.write("            <xsd:extension base=\"mule:abstractInterceptingMessageProcessorType\">");
-        writer.newLine();
+        writer.writeLine("    <xsd:complexType name=\"operationType\">");
+        writer.writeLine("        <xsd:complexContent>");
+        writer.writeLine("            <xsd:extension base=\"mule:abstractInterceptingMessageProcessorType\">");
 
         for (JavaMethodParameter parameter : method.getParameters())
         {
             writeOperationParameterAttribute(parameter);
         }
 
-        writer.write("            </xsd:extension>");
-        writer.newLine();
-        writer.write("        </xsd:complexContent>");
-        writer.newLine();
-        writer.write("    </xsd:complexType>");
-        writer.newLine();
+        writer.writeLine("            </xsd:extension>");
+        writer.writeLine("        </xsd:complexContent>");
+        writer.writeLine("    </xsd:complexType>");
     }
 
     private void writeOperationParameterAttribute(JavaMethodParameter parameter) throws IOException
     {
-        writer.write("                <xsd:attribute name=\"");
-        writer.write(parameter.getName());
-        writer.write("\" type=\"xsd:string\"/>");
-        writer.newLine();
+        writer.writeLine("                <xsd:attribute name=\"%1s\" type=\"xsd:string\"/>",
+            parameter.getName());
     }
 
     private void writeClosingStartElement() throws IOException
     {
-        writer.write("</xsd:schema>");
-        writer.newLine();
+        writer.writeLine("</xsd:schema>");
     }
 
     public void setNamespaceIdentifierSuffix(String suffix)
