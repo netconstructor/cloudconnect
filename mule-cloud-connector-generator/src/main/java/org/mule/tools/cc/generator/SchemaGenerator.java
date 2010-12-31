@@ -15,12 +15,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+import org.apache.commons.lang.StringUtils;
+
 public class SchemaGenerator
 {
+    private String namespaceIdentifierSuffix;
     private BufferedWriter writer;
 
     public void generate(OutputStream output) throws IOException
     {
+        checkAllRequiredFieldsSet();
         createWriter(output);
 
         writeXmlPreamble();
@@ -30,6 +34,14 @@ public class SchemaGenerator
         writeClosingStartElement();
 
         writer.flush();
+    }
+
+    private void checkAllRequiredFieldsSet()
+    {
+        if (StringUtils.isEmpty(namespaceIdentifierSuffix))
+        {
+            throw new IllegalStateException("namespaceIdentifierSuffix is empty");
+        }
     }
 
     private void createWriter(OutputStream outputStream)
@@ -46,7 +58,9 @@ public class SchemaGenerator
 
     private void writeStartElement() throws IOException
     {
-        writer.write("<xsd:schema xmlns=\"http://www.mulesoft.org/schema/mule/test-schema\"");
+        writer.write("<xsd:schema xmlns=\"http://www.mulesoft.org/schema/mule/");
+        writer.write(namespaceIdentifierSuffix);
+        writer.write("\"");
         writer.newLine();
         writer.write("            xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"");
         writer.newLine();
@@ -56,7 +70,9 @@ public class SchemaGenerator
         writer.newLine();
         writer.write("            xmlns:beans=\"http://www.springframework.org/schema/beans\"");
         writer.newLine();
-        writer.write("            targetNamespace=\"http://www.mulesoft.org/schema/mule/test-schema\"");
+        writer.write("            targetNamespace=\"http://www.mulesoft.org/schema/mule/");
+        writer.write(namespaceIdentifierSuffix);
+        writer.write("\"");
         writer.newLine();
         writer.write("            elementFormDefault=\"qualified\"");
         writer.newLine();
@@ -102,5 +118,10 @@ public class SchemaGenerator
     {
         writer.write("</xsd:schema>");
         writer.newLine();
+    }
+
+    public void setNamespaceIdentifierSuffix(String suffix)
+    {
+        namespaceIdentifierSuffix = suffix;
     }
 }

@@ -22,11 +22,21 @@ import static org.junit.Assert.assertTrue;
 
 public class SchemaGeneratorTestCase
 {
+    @Test(expected = IllegalStateException.class)
+    public void missingNamespaceIdentifierSuffix() throws Exception
+    {
+        SchemaGenerator generator = new SchemaGenerator();
+        generator.generate(new ByteArrayOutputStream());
+    }
+
     @Test
     public void schemaSkeleton() throws Exception
     {
+        SchemaGenerator generator = new SchemaGenerator();
+        generator.setNamespaceIdentifierSuffix("test-schema");
+
         ByteArrayOutputStream output = new ByteArrayOutputStream(1500);
-        new SchemaGenerator().generate(output);
+        generator.generate(output);
 
         InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
         InputStream controlInput = getTestResource("schema-skeleton.xsd");

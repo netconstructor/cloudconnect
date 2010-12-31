@@ -41,6 +41,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.code.javaparser</groupId>
             <artifactId>javaparser</artifactId>
             <version>1.0.8</version>
