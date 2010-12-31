@@ -21,6 +21,7 @@ public class SchemaGenerator
 {
     private String namespaceIdentifierSuffix;
     private BufferedWriter writer;
+    private String schemaVersion;
 
     public void generate(OutputStream output) throws IOException
     {
@@ -41,6 +42,10 @@ public class SchemaGenerator
         if (StringUtils.isEmpty(namespaceIdentifierSuffix))
         {
             throw new IllegalStateException("namespaceIdentifierSuffix is empty");
+        }
+        if (StringUtils.isEmpty(schemaVersion))
+        {
+            throw new IllegalStateException("schemaVersion is empty");
         }
     }
 
@@ -91,11 +96,15 @@ public class SchemaGenerator
         writer.newLine();
         writer.write("    <xsd:import namespace=\"http://www.mulesoft.org/schema/mule/core\"");
         writer.newLine();
-        writer.write("                schemaLocation=\"http://www.mulesoft.org/schema/mule/core/3.1/mule.xsd\"/>");
+        writer.write("                schemaLocation=\"http://www.mulesoft.org/schema/mule/core/");
+        writer.write(schemaVersion);
+        writer.write("/mule.xsd\"/>");
         writer.newLine();
         writer.write("    <xsd:import namespace=\"http://www.mulesoft.org/schema/mule/schemadoc\"");
         writer.newLine();
-        writer.write("                schemaLocation=\"http://www.mulesoft.org/schema/mule/schemadoc/3.1/mule-schemadoc.xsd\"/>");
+        writer.write("                schemaLocation=\"http://www.mulesoft.org/schema/mule/schemadoc/");
+        writer.write(schemaVersion);
+        writer.write("/mule-schemadoc.xsd\"/>");
         writer.newLine();
     }
 
@@ -123,5 +132,10 @@ public class SchemaGenerator
     public void setNamespaceIdentifierSuffix(String suffix)
     {
         namespaceIdentifierSuffix = suffix;
+    }
+
+    public void setSchemaVersion(String version)
+    {
+        schemaVersion = version;
     }
 }

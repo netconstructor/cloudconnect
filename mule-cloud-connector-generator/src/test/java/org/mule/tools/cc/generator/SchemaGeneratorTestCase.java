@@ -15,6 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
@@ -22,19 +23,33 @@ import static org.junit.Assert.assertTrue;
 
 public class SchemaGeneratorTestCase
 {
+    private SchemaGenerator generator;
+
+    @Before
+    public void createSchemaGenerator()
+    {
+        generator = new SchemaGenerator();
+        generator.setNamespaceIdentifierSuffix("test-schema");
+        generator.setSchemaVersion("3.1");
+    }
+
     @Test(expected = IllegalStateException.class)
     public void missingNamespaceIdentifierSuffix() throws Exception
     {
-        SchemaGenerator generator = new SchemaGenerator();
+        generator.setNamespaceIdentifierSuffix(null);
+        generator.generate(new ByteArrayOutputStream());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void missingSchemaVersion() throws Exception
+    {
+        generator.setSchemaVersion(null);
         generator.generate(new ByteArrayOutputStream());
     }
 
     @Test
     public void schemaSkeleton() throws Exception
     {
-        SchemaGenerator generator = new SchemaGenerator();
-        generator.setNamespaceIdentifierSuffix("test-schema");
-
         ByteArrayOutputStream output = new ByteArrayOutputStream(1500);
         generator.generate(output);
 
