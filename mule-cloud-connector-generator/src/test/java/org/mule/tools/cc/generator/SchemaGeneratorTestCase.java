@@ -76,6 +76,20 @@ public class SchemaGeneratorTestCase
 
     @Ignore
     @Test
+    public void gettersAreIgnored()
+    {
+        fail("implement me");
+    }
+
+    @Ignore
+    @Test
+    public void onlyPublicMethodsAreGenerated()
+    {
+        fail("implement me");
+    }
+
+    @Ignore
+    @Test
     public void numericArgument()
     {
         fail("implement me");
