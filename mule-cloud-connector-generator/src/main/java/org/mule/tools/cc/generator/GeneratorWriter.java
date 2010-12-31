@@ -18,12 +18,14 @@ import java.io.OutputStreamWriter;
 public class GeneratorWriter
 {
     private BufferedWriter writer;
+    private int indentDepth;
 
     public GeneratorWriter(OutputStream output)
     {
         super();
         OutputStreamWriter osw = new OutputStreamWriter(output);
         writer = new BufferedWriter(osw);
+        resetIndentDepth();
     }
 
     public void writeLine(String format, Object... arguments) throws IOException
@@ -34,6 +36,10 @@ public class GeneratorWriter
 
     public void writeLine(String string) throws IOException
     {
+        for (int i = 0; i < indentDepth; i++)
+        {
+            writer.write(' ');
+        }
         writer.write(string);
         writer.newLine();
     }
@@ -51,5 +57,15 @@ public class GeneratorWriter
     public void flush() throws IOException
     {
         writer.flush();
+    }
+
+    public void indentDepth(int depth)
+    {
+        this.indentDepth = depth;
+    }
+
+    public void resetIndentDepth()
+    {
+        indentDepth = 0;
     }
 }
