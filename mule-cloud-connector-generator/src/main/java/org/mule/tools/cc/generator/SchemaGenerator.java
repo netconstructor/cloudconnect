@@ -22,6 +22,7 @@ public class SchemaGenerator
     private String namespaceIdentifierSuffix;
     private BufferedWriter writer;
     private String schemaVersion;
+    private JavaClass javaClass;
 
     public void generate(OutputStream output) throws IOException
     {
@@ -32,6 +33,7 @@ public class SchemaGenerator
         writeStartElement();
         writeImports();
         writeAnnotation();
+        writeOperations();
         writeClosingStartElement();
 
         writer.flush();
@@ -41,11 +43,15 @@ public class SchemaGenerator
     {
         if (StringUtils.isEmpty(namespaceIdentifierSuffix))
         {
-            throw new IllegalStateException("namespaceIdentifierSuffix is empty");
+            throw new IllegalStateException("namespaceIdentifierSuffix is not set");
         }
         if (StringUtils.isEmpty(schemaVersion))
         {
-            throw new IllegalStateException("schemaVersion is empty");
+            throw new IllegalStateException("schemaVersion is not set");
+        }
+        if (javaClass == null)
+        {
+            throw new IllegalStateException("javaClass is not set");
         }
     }
 
@@ -123,6 +129,87 @@ public class SchemaGenerator
         writer.newLine();
     }
 
+    private void writeOperations() throws IOException
+    {
+        writer.newLine();
+        writer.write("    <!-- Operations -->");
+        writer.newLine();
+
+        for (JavaMethod method : javaClass.getMethods())
+        {
+            writeOperation(method);
+        }
+    }
+
+    private void writeOperation(JavaMethod method) throws IOException
+    {
+        writeOperationElementDeclaration(method);
+        writeOperationElementType(method);
+    }
+
+    private void writeOperationElementDeclaration(JavaMethod method) throws IOException
+    {
+        writer.write("    <xsd:element name=\"");
+        writer.write(method.getName());
+        writer.write("\" type=\"");
+        writer.write(method.getName());
+        writer.write("Type\" substitutionGroup=\"mule:abstract-message-processor\">");
+        writer.newLine();
+
+        if (StringUtils.isNotEmpty(method.getJavadoc()))
+        {
+            writeOperationDocumentation(method);
+        }
+
+        writer.write("    </xsd:element>");
+        writer.newLine();
+    }
+
+    private void writeOperationDocumentation(JavaMethod method) throws IOException
+    {
+        writer.write("        <xsd:annotation>");
+        writer.newLine();
+        writer.write("            <xsd:documentation>");
+        writer.newLine();
+        writer.write("                ");
+        writer.write(method.getJavadoc());
+        writer.newLine();
+        writer.write("            </xsd:documentation>");
+        writer.newLine();
+        writer.write("        </xsd:annotation>");
+        writer.newLine();
+    }
+
+    private void writeOperationElementType(JavaMethod method) throws IOException
+    {
+        writer.write("    <xsd:complexType name=\"operationType\">");
+        writer.newLine();
+        writer.write("        <xsd:complexContent>");
+        writer.newLine();
+        writer.write("            <xsd:extension base=\"mule:abstractInterceptingMessageProcessorType\">");
+        writer.newLine();
+
+        for (JavaMethodParameter parameter : method.getParameters())
+        {
+            writeOperationParameterAttribute(parameter);
+        }
+
+        writer.write("            </xsd:extension>");
+        writer.newLine();
+        writer.write("        </xsd:complexContent>");
+        writer.newLine();
+        writer.write("    </xsd:complexType>");
+        writer.newLine();
+    }
+
+    private void writeOperationParameterAttribute(JavaMethodParameter parameter) throws IOException
+    {
+        writer.write("                <xsd:attribute name=\"");
+        writer.write(parameter.getName());
+        writer.write("\" type=\"xsd:string\"/>");
+        writer.newLine();
+    }
+
     private void writeClosingStartElement() throws IOException
     {
         writer.write("</xsd:schema>");
@@ -137,5 +224,10 @@ public class SchemaGenerator
     public void setSchemaVersion(String version)
     {
         schemaVersion = version;
+    }
+
+    public void setJavaClass(JavaClass klass)
+    {
+        javaClass = klass;
     }
 }

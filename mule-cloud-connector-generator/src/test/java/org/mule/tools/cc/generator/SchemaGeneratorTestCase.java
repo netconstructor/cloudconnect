@@ -16,10 +16,12 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class SchemaGeneratorTestCase
 {
@@ -47,15 +49,50 @@ public class SchemaGeneratorTestCase
         generator.generate(new ByteArrayOutputStream());
     }
 
-    @Test
-    public void schemaSkeleton() throws Exception
+    @Test(expected = IllegalStateException.class)
+    public void missingJavaClass() throws Exception
     {
+        generator.setJavaClass(null);
+        generator.generate(new ByteArrayOutputStream());
+    }
+
+    @Test
+    public void singleArgumentOperation() throws Exception
+    {
+        MockJavaMethodParameter parameter = new MockJavaMethodParameter("argument1", "String");
+        MockJavaMethod javaMethod = new MockJavaMethod("operation",
+            "This is the javadoc of the operation method", parameter);
+        MockJavaClass javaClass = new MockJavaClass(javaMethod);
+
+        generator.setJavaClass(javaClass);
+
         ByteArrayOutputStream output = new ByteArrayOutputStream(1500);
         generator.generate(output);
 
         InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
-        InputStream controlInput = getTestResource("schema-skeleton.xsd");
+        InputStream controlInput = getTestResource("single-argument-operation.xsd");
         assertTrue(IOUtils.contentEquals(sourceInput, controlInput));
+    }
+
+    @Ignore
+    @Test
+    public void numericArgument()
+    {
+        fail("implement me");
+    }
+
+    @Ignore
+    @Test
+    public void booleanArgument()
+    {
+        fail("implement me");
+    }
+
+    @Ignore
+    @Test
+    public void optionalArgument()
+    {
+        fail("implement me");
     }
 
     private InputStream getTestResource(String filename)
