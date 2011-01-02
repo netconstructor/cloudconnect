@@ -23,6 +23,8 @@ public interface JavaMethod
     List<JavaMethodParameter> getParameters();
 
     String getJavadoc();
+
+    boolean isPublic();
 }
 
 

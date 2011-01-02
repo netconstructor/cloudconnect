@@ -27,6 +27,7 @@ import static org.junit.Assert.fail;
 public class SchemaGeneratorTestCase
 {
     private SchemaGenerator generator;
+    private boolean printGeneratedSchema = false;
 
     @Before
     public void createSchemaGenerator()
@@ -78,11 +79,17 @@ public class SchemaGeneratorTestCase
         generateAndCompareTo("single-argument-operation.xsd");
     }
 
-    @Ignore
     @Test
-    public void onlyPublicMethodsAreGenerated()
+    public void onlyPublicMethodsAreGenerated() throws Exception
     {
-        fail("implement me");
+        printGeneratedSchema = true;
+
+        MockJavaMethod protectedMethod = new MockJavaMethod("protectedMethod", null, false);
+        MockJavaMethod operation = createOperationMethod();
+        MockJavaClass mockClass = new MockJavaClass(protectedMethod, operation);
+
+        generator.setJavaClass(mockClass);
+        generateAndCompareTo("single-argument-operation.xsd");
     }
 
     @Ignore
@@ -125,6 +132,11 @@ public class SchemaGeneratorTestCase
     {
         ByteArrayOutputStream output = new ByteArrayOutputStream(1500);
         generator.generate(output);
+
+        if (printGeneratedSchema)
+        {
+            System.out.println(output);
+        }
 
         InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
         InputStream controlInput = getTestResource("single-argument-operation.xsd");

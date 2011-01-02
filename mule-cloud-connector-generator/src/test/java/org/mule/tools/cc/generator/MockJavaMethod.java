@@ -18,17 +18,24 @@ public class MockJavaMethod implements JavaMethod
     private String name;
     private List<JavaMethodParameter> parameters;
     private String javadoc;
+    private boolean isPublic;
 
     public MockJavaMethod(String name)
     {
-        this(name, null);
+        this(name, null, true);
     }
 
     public MockJavaMethod(String name, String javadoc, JavaMethodParameter... parameters)
     {
+        this(name, javadoc, true, parameters);
+    }
+
+    public MockJavaMethod(String name, String javadoc, boolean isPublic, JavaMethodParameter... parameters)
+    {
         super();
         this.name = name;
         this.javadoc = javadoc;
+        this.isPublic = isPublic;
         this.parameters = Arrays.asList(parameters);
     }
 
@@ -45,5 +52,10 @@ public class MockJavaMethod implements JavaMethod
     public String getJavadoc()
     {
         return javadoc;
+    }
+
+    public boolean isPublic()
+    {
+        return isPublic;
     }
 }

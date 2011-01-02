@@ -128,15 +128,16 @@ public class SchemaGenerator
 
     /**
      * Ignore getters and setters, they are only needed for Spring to put configuration values
-     * into the instance.
+     * into the instance. Ignore non-public methods.
      */
     private boolean isValidMethod(JavaMethod method)
     {
+        boolean isNotPublic = !method.isPublic();
         boolean isGetMethod = method.getName().startsWith("get");
         boolean isSetMethod = method.getName().startsWith("set");
         boolean hasParameters = method.getParameters().size() > 0;
 
-        if ((isGetMethod && !hasParameters) || isSetMethod)
+        if (isNotPublic || isSetMethod || (isGetMethod && !hasParameters))
         {
             return false;
         }
@@ -174,10 +175,8 @@ public class SchemaGenerator
 
     private void writeOperationElementType(JavaMethod method) throws IOException
     {
-        writer.write("    <xsd:complexType name=\"");
-        writer.write(method.getName());
-        writer.writeLine("Type\">");
         writer.indentDepth(4);
+        writer.writeLine("<xsd:complexType name=\"%1sType\">", method.getName());
         writer.writeLine("    <xsd:complexContent>");
         writer.writeLine("        <xsd:extension base=\"mule:abstractInterceptingMessageProcessorType\">");
 
