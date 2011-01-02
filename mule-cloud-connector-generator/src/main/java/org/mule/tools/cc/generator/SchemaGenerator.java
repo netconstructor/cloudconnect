@@ -182,8 +182,9 @@ public class SchemaGenerator
 
         for (JavaMethodParameter parameter : method.getParameters())
         {
-            writer.writeLine("            <xsd:attribute name=\"%1s\" type=\"xsd:string\"/>",
-                parameter.getName());
+            String type = SchemaTypesMapping.schemaTypeForJavaTypeName(parameter.getType());
+            writer.writeLine("            <xsd:attribute name=\"%1s\" type=\"%2s\"/>",
+                parameter.getName(), type);
         }
 
         writer.writeLine("        </xsd:extension>");

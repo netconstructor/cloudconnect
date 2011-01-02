@@ -82,8 +82,6 @@ public class SchemaGeneratorTestCase
     @Test
     public void onlyPublicMethodsAreGenerated() throws Exception
     {
-        printGeneratedSchema = true;
-
         MockJavaMethod protectedMethod = new MockJavaMethod("protectedMethod", null, false);
         MockJavaMethod operation = createOperationMethod();
         MockJavaClass mockClass = new MockJavaClass(protectedMethod, operation);
@@ -92,18 +90,48 @@ public class SchemaGeneratorTestCase
         generateAndCompareTo("single-argument-operation.xsd");
     }
 
-    @Ignore
     @Test
-    public void numericArgument()
+    public void integerObjectArgument() throws Exception
     {
-        fail("implement me");
+        MockJavaMethodParameter parameter = new MockJavaMethodParameter("anInt", "Integer");
+        MockJavaMethod method = new MockJavaMethod("intConsumingMethod", null, parameter);
+        MockJavaClass mockClass = new MockJavaClass(method);
+
+        generator.setJavaClass(mockClass);
+        generateAndCompareTo("integer-argument.xsd");
     }
 
-    @Ignore
     @Test
-    public void booleanArgument()
+    public void integerNativeTypeArgument() throws Exception
     {
-        fail("implement me");
+        MockJavaMethodParameter parameter = new MockJavaMethodParameter("anInt", "int");
+        MockJavaMethod method = new MockJavaMethod("intConsumingMethod", null, parameter);
+        MockJavaClass mockClass = new MockJavaClass(method);
+
+        generator.setJavaClass(mockClass);
+        generateAndCompareTo("integer-argument.xsd");
+    }
+
+    @Test
+    public void booleanObjectArgument() throws Exception
+    {
+        MockJavaMethodParameter parameter = new MockJavaMethodParameter("aBool", "Boolean");
+        MockJavaMethod method = new MockJavaMethod("boolConsumingMethod", null, parameter);
+        MockJavaClass mockClass = new MockJavaClass(method);
+
+        generator.setJavaClass(mockClass);
+        generateAndCompareTo("boolean-argument.xsd");
+    }
+
+    @Test
+    public void booleanNativeTypeArgument() throws Exception
+    {
+        MockJavaMethodParameter parameter = new MockJavaMethodParameter("aBool", "boolean");
+        MockJavaMethod method = new MockJavaMethod("boolConsumingMethod", null, parameter);
+        MockJavaClass mockClass = new MockJavaClass(method);
+
+        generator.setJavaClass(mockClass);
+        generateAndCompareTo("boolean-argument.xsd");
     }
 
     @Ignore
@@ -139,7 +167,7 @@ public class SchemaGeneratorTestCase
         }
 
         InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
-        InputStream controlInput = getTestResource("single-argument-operation.xsd");
+        InputStream controlInput = getTestResource(filename);
         assertTrue(IOUtils.contentEquals(sourceInput, controlInput));
     }
 }
