@@ -19,6 +19,11 @@ public class MockJavaMethod implements JavaMethod
     private List<JavaMethodParameter> parameters;
     private String javadoc;
 
+    public MockJavaMethod(String name)
+    {
+        this(name, null);
+    }
+
     public MockJavaMethod(String name, String javadoc, JavaMethodParameter... parameters)
     {
         super();

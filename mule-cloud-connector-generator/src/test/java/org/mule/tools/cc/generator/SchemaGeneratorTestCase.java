@@ -12,6 +12,7 @@ package org.mule.tools.cc.generator;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
@@ -63,30 +64,18 @@ public class SchemaGeneratorTestCase
         MockJavaClass javaClass = new MockJavaClass(javaMethod);
 
         generator.setJavaClass(javaClass);
-
-        ByteArrayOutputStream output = new ByteArrayOutputStream(1500);
-        generator.generate(output);
-
-        InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
-        InputStream controlInput = getTestResource("single-argument-operation.xsd");
-        assertTrue(IOUtils.contentEquals(sourceInput, controlInput));
+        generateAndCompareTo("single-argument-operation.xsd");
     }
 
     @Test
     public void gettersAreIgnored() throws Exception
     {
-        MockJavaMethod getter = new MockJavaMethod("getFoo", null);
+        MockJavaMethod getter = new MockJavaMethod("getFoo");
         MockJavaMethod operation = createOperationMethod();
         MockJavaClass mockClass = new MockJavaClass(getter, operation);
 
         generator.setJavaClass(mockClass);
-
-        ByteArrayOutputStream output = new ByteArrayOutputStream(1500);
-        generator.generate(output);
-
-        InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
-        InputStream controlInput = getTestResource("single-argument-operation.xsd");
-        assertTrue(IOUtils.contentEquals(sourceInput, controlInput));
+        generateAndCompareTo("single-argument-operation.xsd");
     }
 
     @Ignore
@@ -130,5 +119,15 @@ public class SchemaGeneratorTestCase
         MockJavaMethod javaMethod = new MockJavaMethod("operation",
             "This is the javadoc of the operation method", parameter);
         return javaMethod;
+    }
+
+    private void generateAndCompareTo(String filename) throws IOException
+    {
+        ByteArrayOutputStream output = new ByteArrayOutputStream(1500);
+        generator.generate(output);
+
+        InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
+        InputStream controlInput = getTestResource("single-argument-operation.xsd");
+        assertTrue(IOUtils.contentEquals(sourceInput, controlInput));
     }
 }
