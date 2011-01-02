@@ -174,8 +174,10 @@ public class SchemaGenerator
 
     private void writeOperationElementType(JavaMethod method) throws IOException
     {
+        writer.write("    <xsd:complexType name=\"");
+        writer.write(method.getName());
+        writer.writeLine("Type\">");
         writer.indentDepth(4);
-        writer.writeLine("<xsd:complexType name=\"operationType\">");
         writer.writeLine("    <xsd:complexContent>");
         writer.writeLine("        <xsd:extension base=\"mule:abstractInterceptingMessageProcessorType\">");
 
