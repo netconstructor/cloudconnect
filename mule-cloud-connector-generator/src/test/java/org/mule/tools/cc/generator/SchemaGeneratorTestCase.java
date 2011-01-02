@@ -59,9 +59,7 @@ public class SchemaGeneratorTestCase
     @Test
     public void singleArgumentOperation() throws Exception
     {
-        MockJavaMethodParameter parameter = new MockJavaMethodParameter("argument1", "String");
-        MockJavaMethod javaMethod = new MockJavaMethod("operation",
-            "This is the javadoc of the operation method", parameter);
+        MockJavaMethod javaMethod = createOperationMethod();
         MockJavaClass javaClass = new MockJavaClass(javaMethod);
 
         generator.setJavaClass(javaClass);
@@ -74,11 +72,21 @@ public class SchemaGeneratorTestCase
         assertTrue(IOUtils.contentEquals(sourceInput, controlInput));
     }
 
-    @Ignore
     @Test
-    public void gettersAreIgnored()
+    public void gettersAreIgnored() throws Exception
     {
-        fail("implement me");
+        MockJavaMethod getter = new MockJavaMethod("getFoo", null);
+        MockJavaMethod operation = createOperationMethod();
+        MockJavaClass mockClass = new MockJavaClass(getter, operation);
+
+        generator.setJavaClass(mockClass);
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream(1500);
+        generator.generate(output);
+
+        InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
+        InputStream controlInput = getTestResource("single-argument-operation.xsd");
+        assertTrue(IOUtils.contentEquals(sourceInput, controlInput));
     }
 
     @Ignore
@@ -114,5 +122,13 @@ public class SchemaGeneratorTestCase
         InputStream input = getClass().getClassLoader().getResourceAsStream(filename);
         assertNotNull(input);
         return input;
+    }
+
+    private MockJavaMethod createOperationMethod()
+    {
+        MockJavaMethodParameter parameter = new MockJavaMethodParameter("argument1", "String");
+        MockJavaMethod javaMethod = new MockJavaMethod("operation",
+            "This is the javadoc of the operation method", parameter);
+        return javaMethod;
     }
 }

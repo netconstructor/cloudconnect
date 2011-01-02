@@ -16,6 +16,10 @@ public interface JavaMethod
 {
     String getName();
 
+    /**
+     * @return list of parameters for this method. If this method does not have
+     *         parameters return an empty list, not <code>null</code>.
+     */
     List<JavaMethodParameter> getParameters();
 
     String getJavadoc();

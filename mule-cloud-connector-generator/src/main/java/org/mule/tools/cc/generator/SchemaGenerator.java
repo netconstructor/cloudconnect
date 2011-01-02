@@ -119,8 +119,28 @@ public class SchemaGenerator
 
     private void writeOperation(JavaMethod method) throws IOException
     {
-        writeOperationElementDeclaration(method);
-        writeOperationElementType(method);
+        if (isValidMethod(method))
+        {
+            writeOperationElementDeclaration(method);
+            writeOperationElementType(method);
+        }
+    }
+
+    /**
+     * Ignore getters and setters, they are only needed for Spring to put configuration values
+     * into the instance.
+     */
+    private boolean isValidMethod(JavaMethod method)
+    {
+        boolean isGetMethod = method.getName().startsWith("get");
+        boolean isSetMethod = method.getName().startsWith("set");
+        boolean hasParameters = method.getParameters().size() > 0;
+
+        if ((isGetMethod && !hasParameters) || isSetMethod)
+        {
+            return false;
+        }
+        return true;
     }
 
     private void writeOperationElementDeclaration(JavaMethod method) throws IOException
