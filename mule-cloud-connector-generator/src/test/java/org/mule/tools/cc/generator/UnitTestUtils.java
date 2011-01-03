@@ -14,16 +14,16 @@ import java.io.InputStream;
 
 import static org.junit.Assert.assertNotNull;
 
-public class TestUtils
+public class UnitTestUtils
 {
     public static InputStream getTestResource(String filename)
     {
-        InputStream input = TestUtils.class.getClassLoader().getResourceAsStream(filename);
+        InputStream input = UnitTestUtils.class.getClassLoader().getResourceAsStream(filename);
         assertNotNull(input);
         return input;
     }
 
-    private TestUtils()
+    private UnitTestUtils()
     {
         // do not instantiate
     }

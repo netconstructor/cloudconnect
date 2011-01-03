@@ -159,7 +159,7 @@ public class SchemaGeneratorTestCase
         }
 
         InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
-        InputStream controlInput = TestUtils.getTestResource(filename);
+        InputStream controlInput = UnitTestUtils.getTestResource(filename);
         assertTrue(IOUtils.contentEquals(sourceInput, controlInput));
     }
 }

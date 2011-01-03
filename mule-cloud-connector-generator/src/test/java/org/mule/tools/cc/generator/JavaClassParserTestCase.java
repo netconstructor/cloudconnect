@@ -23,21 +23,21 @@ public class JavaClassParserTestCase
     @Test(expected = IllegalArgumentException.class)
     public void javaFileDoesNotContainClass() throws Exception
     {
-        InputStream input = TestUtils.getTestResource("package-info.java.txt");
+        InputStream input = UnitTestUtils.getTestResource("package-info.java.txt");
         new JavaClassParser().parse(input);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void javaFileContainsMoreThanOneClass() throws Exception
     {
-        InputStream input = TestUtils.getTestResource("MoreThanOneClass.java.txt");
+        InputStream input = UnitTestUtils.getTestResource("MoreThanOneClass.java.txt");
         new JavaClassParser().parse(input);
     }
 
     @Test
     public void parseMethodWithoutParameters() throws Exception
     {
-        InputStream input = TestUtils.getTestResource("MethodWithoutParameters.java.txt");
+        InputStream input = UnitTestUtils.getTestResource("MethodWithoutParameters.java.txt");
         JavaClass javaClass = new JavaClassParser().parse(input);
         assertNotNull(javaClass);
         assertEquals(1, javaClass.getMethods().size());
@@ -51,7 +51,7 @@ public class JavaClassParserTestCase
     @Test
     public void parseJavaFile() throws Exception
     {
-        InputStream input = TestUtils.getTestResource("SampleCloudConnector.java.txt");
+        InputStream input = UnitTestUtils.getTestResource("SampleCloudConnector.java.txt");
         JavaClass javaClass = new JavaClassParser().parse(input);
         assertNotNull(javaClass);
         assertEquals(1, javaClass.getMethods().size());
