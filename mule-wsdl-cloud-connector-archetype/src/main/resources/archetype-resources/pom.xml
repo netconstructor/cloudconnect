@@ -78,7 +78,6 @@
                             <goal>wsdl2java</goal>
                         </goals>
                         <configuration>
-                            <sourceRoot>${D}{project.build.directory}/generated-sources</sourceRoot>
                             <wsdlOptions>
                                 <wsdlOption>
                                     <!--
