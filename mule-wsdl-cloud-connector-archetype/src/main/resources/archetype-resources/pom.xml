@@ -1,6 +1,7 @@
 #set($D = '$')
 #set($ModuleName = "$artifactId")
 #set($ModuleNameLower = "${ModuleName.toLowerCase()}")
+#set($ArchetypeIsSnapshot = $version.endsWith("-SNAPSHOT"))
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -280,9 +281,10 @@
             <layout>default</layout>
         </repository>
         <repository>
-            <!-- local repository for this forge project. Users can upload dependencies here when the artifact
-                 is not available on any other repository. Its the users' responsibility to make sure that no
-                 licenses are violated by uploading dependencies to this location
+            <!--
+                local repository for this forge project. Users can upload dependencies here when the artifact
+                is not available on any other repository. Its the users' responsibility to make sure that no
+                licenses are violated by uploading dependencies to this location
             -->
             <id>${ModuleNameLower}-deps</id>
             <name>${ModuleName} Dependencies</name>
@@ -292,4 +294,20 @@
             </snapshots>
         </repository>
     </repositories>
+#if($ArchetypeIsSnapshot == true)
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>codehaus-plugin-snapshots</id>
+            <name>Codehaus Plugin Snapshot Repository</name>
+            <url>http://snapshots.repository.codehaus.org</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+#end
 </project>
