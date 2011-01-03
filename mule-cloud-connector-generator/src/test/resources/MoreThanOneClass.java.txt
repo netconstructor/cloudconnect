@@ -1,0 +1,9 @@
+package org.mule.module.sample;
+
+public class FirstClass
+{
+}
+
+public class SecondClass
+{
+}

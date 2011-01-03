@@ -20,7 +20,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -141,13 +140,6 @@ public class SchemaGeneratorTestCase
         fail("implement me");
     }
 
-    private InputStream getTestResource(String filename)
-    {
-        InputStream input = getClass().getClassLoader().getResourceAsStream(filename);
-        assertNotNull(input);
-        return input;
-    }
-
     private MockJavaMethod createOperationMethod()
     {
         MockJavaMethodParameter parameter = new MockJavaMethodParameter("argument1", "String");
@@ -167,7 +159,7 @@ public class SchemaGeneratorTestCase
         }
 
         InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
-        InputStream controlInput = getTestResource(filename);
+        InputStream controlInput = TestUtils.getTestResource(filename);
         assertTrue(IOUtils.contentEquals(sourceInput, controlInput));
     }
 }
