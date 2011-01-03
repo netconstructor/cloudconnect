@@ -65,6 +65,7 @@ def generateArchetypeScriptFile(String filename)
         mavenExecutable = "mvn.bat"
     }
 
+    def muleVersion = "3.1.0"
     def archetypeVersion = "1.0-SNAPSHOT"
 
     def outputFile = new File(filename)
@@ -80,6 +81,7 @@ def generateArchetypeScriptFile(String filename)
         writer.write(" -DartifactId=${archetypeProperties.artifactId}")
         writer.write(" -Dversion=${archetypeProperties.version}")
         writer.write(" -Dpackage=${archetypeProperties.package}")
+        writer.write(" -DmuleVersion=${muleVersion}")
         writer.write(" -DcloudService=${archetypeProperties.cloudService}")
         writer.write(" -DcloudServiceLower=${archetypeProperties.cloudService.toLowerCase()}")
         writer.write(" -Dwsdl=${archetypeProperties.wsdl}")
