@@ -73,4 +73,15 @@
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>javaparser</id>
+            <name>JavaParser Repository</name>
+            <url>http://javaparser.googlecode.com/svn/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>
