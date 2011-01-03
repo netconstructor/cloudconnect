@@ -23,7 +23,7 @@
     </xsd:annotation>
 
     <!-- Operations -->
-    <xsd:element name="boolConsumingMethod" type="boolConsumingMethodType" substitutionGroup="mule:abstract-message-processor">
+    <xsd:element name="bool-consuming-method" type="boolConsumingMethodType" substitutionGroup="mule:abstract-message-processor">
     </xsd:element>
     <xsd:complexType name="boolConsumingMethodType">
         <xsd:complexContent>

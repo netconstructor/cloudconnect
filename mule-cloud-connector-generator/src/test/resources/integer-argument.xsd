@@ -23,7 +23,7 @@
     </xsd:annotation>
 
     <!-- Operations -->
-    <xsd:element name="intConsumingMethod" type="intConsumingMethodType" substitutionGroup="mule:abstract-message-processor">
+    <xsd:element name="int-consuming-method" type="intConsumingMethodType" substitutionGroup="mule:abstract-message-processor">
     </xsd:element>
     <xsd:complexType name="intConsumingMethodType">
         <xsd:complexContent>

@@ -146,8 +146,10 @@ public class SchemaGenerator
 
     private void writeOperationElementDeclaration(JavaMethod method) throws IOException
     {
+        String elementName = splitCamelCase(method.getName());
+
         writer.write("    <xsd:element name=\"");
-        writer.write(method.getName());
+        writer.write(elementName);
         writer.write("\" type=\"");
         writer.write(method.getName());
         writer.write("Type\" substitutionGroup=\"mule:abstract-message-processor\">");
@@ -159,6 +161,13 @@ public class SchemaGenerator
         }
 
         writer.writeLine("    </xsd:element>");
+    }
+
+    protected String splitCamelCase(String string)
+    {
+        return string.replaceAll(
+            String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z][0-9])", "(?<=[^A-Z])(?=[A-Z])",
+                "(?<=[A-Za-z0-9])(?=[^A-Za-z0-9])"), "-").toLowerCase();
     }
 
     private void writeOperationDocumentation(JavaMethod method) throws IOException
