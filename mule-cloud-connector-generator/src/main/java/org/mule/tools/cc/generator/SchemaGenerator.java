@@ -123,6 +123,7 @@ public class SchemaGenerator
         {
             writeOperationElementDeclaration(method);
             writeOperationElementType(method);
+            writer.newLine();
         }
     }
 
