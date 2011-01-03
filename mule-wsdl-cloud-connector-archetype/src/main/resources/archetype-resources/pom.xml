@@ -92,6 +92,24 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.mule.tools</groupId>
+                <artifactId>mule-cloud-connector-generator-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <cloudConnector>${D}{project.basedir}/src/main/java/org/mule/module/stockquote/${cloudService}CloudConnector.java</cloudConnector>
+                            <schemaFilename>mule-${cloudServiceLower}.xsd</schemaFilename>
+                            <muleVersion>${D}{mule.version}</muleVersion>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
             <!-- The release distribution for this project -->
             <plugin>
