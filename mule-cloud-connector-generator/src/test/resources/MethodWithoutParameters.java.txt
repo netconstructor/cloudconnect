@@ -1,0 +1,7 @@
+public class MethodWithoutParameters
+{
+    public void voidMethodWithoutParameters()
+    {
+        // nothing to do
+    }
+}

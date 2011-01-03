@@ -35,6 +35,20 @@ public class JavaClassParserTestCase
     }
 
     @Test
+    public void parseMethodWithoutParameters() throws Exception
+    {
+        InputStream input = TestUtils.getTestResource("MethodWithoutParameters.java.txt");
+        JavaClass javaClass = new JavaClassParser().parse(input);
+        assertNotNull(javaClass);
+        assertEquals(1, javaClass.getMethods().size());
+
+        JavaMethod method = javaClass.getMethods().get(0);
+        assertEquals("voidMethodWithoutParameters", method.getName());
+        assertTrue(method.isPublic());
+        assertEquals(0, method.getParameters().size());
+    }
+
+    @Test
     public void parseJavaFile() throws Exception
     {
         InputStream input = TestUtils.getTestResource("SampleCloudConnector.java.txt");

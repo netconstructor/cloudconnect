@@ -10,6 +10,7 @@
 
 package org.mule.tools.cc.generator;
 
+import japa.parser.ast.body.JavadocComment;
 import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.body.ModifierSet;
 import japa.parser.ast.body.Parameter;
@@ -34,17 +35,29 @@ public class MethodDeclarationJavaMethod implements JavaMethod
 
     public List<JavaMethodParameter> getParameters()
     {
-        List<JavaMethodParameter> parameters = new ArrayList<JavaMethodParameter>();
-        for (Parameter parameter : methodDeclaration.getParameters())
+        List<JavaMethodParameter> retValue = new ArrayList<JavaMethodParameter>();
+
+        List<Parameter> parameters = methodDeclaration.getParameters();
+        if (parameters == null)
         {
-            parameters.add(new ParameterJavaMethodParameter(parameter));
+            return retValue;
         }
-        return parameters;
+
+        for (Parameter parameter : parameters)
+        {
+            retValue.add(new ParameterJavaMethodParameter(parameter));
+        }
+        return retValue;
     }
 
     public String getJavadoc()
     {
-        return methodDeclaration.getJavaDoc().getContent();
+        JavadocComment javadoc = methodDeclaration.getJavaDoc();
+        if (javadoc != null)
+        {
+            return javadoc.getContent();
+        }
+        return null;
     }
 
     public boolean isPublic()
