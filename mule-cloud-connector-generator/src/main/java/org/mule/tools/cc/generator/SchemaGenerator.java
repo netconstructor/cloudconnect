@@ -22,6 +22,13 @@ public class SchemaGenerator
     private JavaClass javaClass;
     private GeneratorWriter writer;
 
+    public static String splitCamelCase(String string)
+    {
+        return string.replaceAll(
+            String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z][0-9])", "(?<=[^A-Z])(?=[A-Z])",
+                "(?<=[A-Za-z0-9])(?=[^A-Za-z0-9])"), "-").toLowerCase();
+    }
+
     public void generate(OutputStream output) throws IOException
     {
         checkAllRequiredFieldsSet();
@@ -162,13 +169,6 @@ public class SchemaGenerator
         }
 
         writer.writeLine("    </xsd:element>");
-    }
-
-    protected String splitCamelCase(String string)
-    {
-        return string.replaceAll(
-            String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z][0-9])", "(?<=[^A-Z])(?=[A-Z])",
-                "(?<=[A-Za-z0-9])(?=[^A-Za-z0-9])"), "-").toLowerCase();
     }
 
     private void writeOperationDocumentation(JavaMethod method) throws IOException
