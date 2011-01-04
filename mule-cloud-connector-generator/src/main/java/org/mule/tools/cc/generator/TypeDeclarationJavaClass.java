@@ -19,12 +19,14 @@ import java.util.List;
 
 public class TypeDeclarationJavaClass implements JavaClass
 {
+    private String packageName;
     private TypeDeclaration typeDeclaration;
 
-    public TypeDeclarationJavaClass(TypeDeclaration typeDecl)
+    public TypeDeclarationJavaClass(TypeDeclaration typeDecl, String pkgName)
     {
         super();
         typeDeclaration = typeDecl;
+        packageName = pkgName;
     }
 
     public List<JavaMethod> getMethods()
@@ -32,6 +34,16 @@ public class TypeDeclarationJavaClass implements JavaClass
         MethodCollector collector = new MethodCollector();
         typeDeclaration.accept(collector, null);
         return collector.javaMethods();
+    }
+
+    public String getPackage()
+    {
+        return packageName;
+    }
+
+    public String getName()
+    {
+        return typeDeclaration.getName();
     }
 
     private static class MethodCollector extends VoidVisitorAdapter<Object>

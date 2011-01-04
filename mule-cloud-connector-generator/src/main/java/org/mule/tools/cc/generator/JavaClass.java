@@ -14,7 +14,9 @@ import java.util.List;
 
 public interface JavaClass
 {
+    String getPackage();
+
+    String getName();
+
     List<JavaMethod> getMethods();
 }
-
-

@@ -13,6 +13,7 @@ package org.mule.tools.cc.generator;
 import japa.parser.JavaParser;
 import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
+import japa.parser.ast.PackageDeclaration;
 import japa.parser.ast.body.TypeDeclaration;
 
 import java.io.InputStream;
@@ -27,7 +28,8 @@ public class JavaClassParser
         parseCompilationUnit(input);
 
         TypeDeclaration typeDecl = typeDeclarationFromCompilationUnit();
-        return new TypeDeclarationJavaClass(typeDecl);
+        String packageName = packageNameFromCompilationUnit();
+        return new TypeDeclarationJavaClass(typeDecl, packageName);
     }
 
     private void parseCompilationUnit(InputStream input)
@@ -56,5 +58,15 @@ public class JavaClassParser
         }
 
         return typeDeclarations.get(0);
+    }
+
+    private String packageNameFromCompilationUnit()
+    {
+        PackageDeclaration packageDeclaration = compilationUnit.getPackage();
+        if (packageDeclaration == null)
+        {
+            throw new IllegalArgumentException("Source file does not declare a package. Default package is unsupported.");
+        }
+        return packageDeclaration.getName().toString();
     }
 }

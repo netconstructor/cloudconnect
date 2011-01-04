@@ -17,10 +17,19 @@ import java.util.List;
 public class MockJavaClass implements JavaClass
 {
     private List<JavaMethod> methods = new ArrayList<JavaMethod>();
+    private String packageName;
+    private String className;
 
     public MockJavaClass(JavaMethod... javaMethods)
     {
+        this(null, null, javaMethods);
+    }
+
+    public MockJavaClass(String pkgName, String name, JavaMethod... javaMethods)
+    {
         super();
+        packageName = pkgName;
+        className = name;
         methods = Arrays.asList(javaMethods);
     }
 
@@ -32,5 +41,15 @@ public class MockJavaClass implements JavaClass
     public void addMethod(JavaMethod method)
     {
         methods.add(method);
+    }
+
+    public String getPackage()
+    {
+        return packageName;
+    }
+
+    public String getName()
+    {
+        return className;
     }
 }

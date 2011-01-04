@@ -1,0 +1,15 @@
+//
+// THIS FILE WAS AUTO-GENERATED. DO NOT MANUALLY EDIT!
+//
+
+package org.mule.module.foo.config;
+
+import org.mule.config.spring.handlers.AbstractPojoNamespaceHandler;
+import org.mule.module.foo.FooCloudConnector;
+
+public class FooNamespaceHandler extends AbstractPojoNamespaceHandler
+{
+    public void init()
+    {
+    }
+}
