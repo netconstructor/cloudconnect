@@ -16,13 +16,15 @@ def createDefaultProperties()
 
 def askQuestions()
 {
+    question("Name of the cloud service the new connector uses", "cloudService")
+    generateArtifactIdAndJavaPackage()
+
     question("Maven group id of the new connector", "groupId", false)
     question("Maven artifact id of the new connector\n(should use naming convention mule-module-<yourname>)",
-        "artifactId")
+        "artifactId", false)
     question("Maven version of the new connector", "version", false)
     question("Java package for the new connector\n(should use the naming convention org.mule.module.<yourname>)",
-        "package")
-    question("Name of the cloud service the new connector uses", "cloudService")
+        "package", false)
     question("Location of the WSDL (can be a local file or a URL)", "wsdl")
 }
 
@@ -55,6 +57,14 @@ def printQuestion(String text, String key)
     }
     println("[default: ${defaultValue}]")
     print("> ")
+}
+
+def generateArtifactIdAndJavaPackage()
+{
+    def cloudService = archetypeProperties.cloudService
+
+    archetypeProperties.setProperty("artifactId", "mule-module-${cloudService.toLowerCase()}")
+    archetypeProperties.setProperty("package", "org.mule.module.${cloudService.toLowerCase()}")
 }
 
 def generateArchetypeScriptFile(String filename)
