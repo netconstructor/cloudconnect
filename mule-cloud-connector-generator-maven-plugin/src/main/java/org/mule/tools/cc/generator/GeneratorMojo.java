@@ -55,6 +55,14 @@ public class GeneratorMojo extends AbstractMojo
     private String muleVersion;
 
     /**
+     * Absolute path to the generated namespace handler source file.
+     *
+     * @parameter
+     * @required
+     */
+    private File namespaceHandler;
+
+    /**
      * Directory containing the classes.
      *
      * @parameter expression="${project.build.directory}"
@@ -77,28 +85,42 @@ public class GeneratorMojo extends AbstractMojo
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         createAndAttachOutputDirectories();
-        runSchemaGenerator();
+
+        JavaClass javaClass = parseCloudConnectorClass();
+        runSchemaGenerator(javaClass);
+        runNamespaceHandlerGenerator(javaClass);
     }
 
     private void createAndAttachOutputDirectories() throws MojoExecutionException
+    {
+        createAndAttachGeneratedResourcesDirectory();
+        createAndAttachGeneratedSourcesDirectory();
+    }
+
+    private void createAndAttachGeneratedResourcesDirectory() throws MojoExecutionException
     {
         File resourceDirectory = generatedResourcesDirectory();
         createDirectory(resourceDirectory);
         projectHelper.addResource(project, resourceDirectory.getAbsolutePath(), null, null);
     }
 
-    private void runSchemaGenerator() throws MojoExecutionException
+    private void createAndAttachGeneratedSourcesDirectory() throws MojoExecutionException
+    {
+        File sourceDirectory = generatedSourcesDirectory();
+        createDirectory(sourceDirectory);
+        project.addCompileSourceRoot(sourceDirectory.getAbsolutePath());
+    }
+
+    private void runSchemaGenerator(JavaClass javaClass) throws MojoExecutionException
     {
         SchemaGenerator generator = new SchemaGenerator();
+        generator.setJavaClass(javaClass);
 
         String suffix = determineNamespaceIdentifierSuffixFromSchemaFilename();
         generator.setNamespaceIdentifierSuffix(suffix);
 
         String schemaVersion = determineSchemaVersionFromMuleVersion();
         generator.setSchemaVersion(schemaVersion);
-
-        JavaClass javaClass = parseCloudConnectorClass();
-        generator.setJavaClass(javaClass);
 
         runGenerator(generator);
     }
@@ -175,9 +197,94 @@ public class GeneratorMojo extends AbstractMojo
         return new FileOutputStream(schemaFile);
     }
 
+    private void runNamespaceHandlerGenerator(JavaClass javaClass) throws MojoExecutionException
+    {
+        NamespaceHandlerGenerator generator = new NamespaceHandlerGenerator();
+        generator.setJavaClass(javaClass);
+
+        String packageName = determinePackageNameFromNamespaceHandlerFile();
+        generator.setPackageName(packageName);
+
+        String className = determineClassNameFromNamespaceHandlerFile();
+        generator.setClassName(className);
+
+        runGenerator(generator);
+    }
+
+    private String determinePackageNameFromNamespaceHandlerFile()
+    {
+        String namespaceHandlerPath = namespaceHandler.getAbsolutePath();
+
+        // cut off the absolute path to the project
+        String basedir = project.getBasedir().getAbsolutePath();
+        String relativeNamespaceHandlerPath = namespaceHandlerPath.replace(basedir, "");
+
+        // cut off the leading '/'
+        relativeNamespaceHandlerPath = relativeNamespaceHandlerPath.substring(1);
+
+        String packageName = namespaceHandlerProjectRelativeFile().getParent();
+        packageName = packageName.replace('/', '.');
+
+        return packageName;
+    }
+
+    private File namespaceHandlerProjectRelativeFile()
+    {
+        String namespaceHandlerPath = namespaceHandler.getAbsolutePath();
+
+        // cut off the absolute path to the project
+        String basedir = project.getBasedir().getAbsolutePath();
+        String relativeNamespaceHandlerPath = namespaceHandlerPath.replace(basedir, "");
+
+        // cut off the leading '/'
+        relativeNamespaceHandlerPath = relativeNamespaceHandlerPath.substring(1);
+
+        return new File(relativeNamespaceHandlerPath);
+    }
+
+    private String determineClassNameFromNamespaceHandlerFile()
+    {
+        String className = namespaceHandler.getName();
+        return className.replace(".java", "");
+    }
+
+    private void runGenerator(NamespaceHandlerGenerator generator) throws MojoExecutionException
+    {
+        OutputStream output = null;
+        try
+        {
+            output = openNamespaceHandlerFileStream();
+            generator.generate(output);
+        }
+        catch (IOException iox)
+        {
+            throw new MojoExecutionException("Error while generating namespace handler", iox);
+        }
+        finally
+        {
+            IOUtil.close(output);
+        }
+    }
+
+    private OutputStream openNamespaceHandlerFileStream() throws IOException, MojoExecutionException
+    {
+        String packageDir = namespaceHandlerProjectRelativeFile().getParentFile().getPath();
+        File absolutePackageDir = new File(generatedSourcesDirectory(), packageDir);
+        createDirectory(absolutePackageDir);
+
+        File namespaceJavaFile = new File(generatedSourcesDirectory(),
+            namespaceHandlerProjectRelativeFile().getPath());
+        return new FileOutputStream(namespaceJavaFile);
+    }
+
     private File generatedResourcesDirectory()
     {
         return new File(targetDirectory, "generated-resources/mule");
+    }
+
+    private File generatedSourcesDirectory()
+    {
+        return new File(targetDirectory, "generated-sources/mule");
     }
 
     private void createDirectory(File directory) throws MojoExecutionException
