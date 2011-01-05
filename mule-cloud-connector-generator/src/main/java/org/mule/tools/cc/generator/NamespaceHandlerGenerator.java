@@ -95,7 +95,6 @@ public class NamespaceHandlerGenerator extends AbstractGenerator
         writer.writeLine("public void init()");
         writer.writeLine("{");
         writer.writeLine("    InvokerMessageProcessorDefinitionParser parser = null;");
-        writer.newLine();
 
         writer.indentDepth(8);
         for (JavaMethod method : javaClass.getMethods())
@@ -110,6 +109,7 @@ public class NamespaceHandlerGenerator extends AbstractGenerator
 
     private void generateParserForMethod(JavaMethod method) throws IOException
     {
+        writer.newLine();
         writer.writeLine("parser = new InvokerMessageProcessorDefinitionParser(\"messageProcessor\",");
         writer.write("            ");
         writer.write(javaClass.getName());

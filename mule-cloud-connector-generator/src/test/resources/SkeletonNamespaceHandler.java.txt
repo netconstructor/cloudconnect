@@ -13,6 +13,5 @@ public class FooNamespaceHandler extends AbstractPojoNamespaceHandler
     public void init()
     {
         InvokerMessageProcessorDefinitionParser parser = null;
-
     }
 }
