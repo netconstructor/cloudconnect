@@ -10,17 +10,13 @@
 
 package org.mule.tools.cc.generator;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class SchemaGeneratorTestCase
@@ -150,16 +146,6 @@ public class SchemaGeneratorTestCase
 
     private void generateAndCompareTo(String filename) throws IOException
     {
-        ByteArrayOutputStream output = new ByteArrayOutputStream(1500);
-        generator.generate(output);
-
-        if (printGeneratedSchema)
-        {
-            System.out.println(output);
-        }
-
-        InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
-        InputStream controlInput = UnitTestUtils.getTestResource(filename);
-        assertTrue(IOUtils.contentEquals(sourceInput, controlInput));
+        UnitTestUtils.runGeneratorAndCompareTo(generator, filename, printGeneratedSchema);
     }
 }

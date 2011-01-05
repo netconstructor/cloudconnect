@@ -10,19 +10,15 @@
 
 package org.mule.tools.cc.generator;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.IOException;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
 
 public class NamespaceHandlerGeneratorTestCase
 {
     private NamespaceHandlerGenerator generator;
+    private boolean printGeneratedNamespaceHandler = false;
 
     @Before
     public void createNamespaceHandlerGenerator()
@@ -56,15 +52,14 @@ public class NamespaceHandlerGeneratorTestCase
     @Test
     public void generateClassSkeleton() throws Exception
     {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-
         MockJavaClass javaClass = new MockJavaClass("org.mule.module.foo", "FooCloudConnector");
         generator.setJavaClass(javaClass);
 
-        generator.generate(output);
+        generateAndCompareTo("SkeletonNamespaceHandler.java.txt");
+    }
 
-        InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
-        InputStream controlInput = UnitTestUtils.getTestResource("SkeletonNamespaceHandler.java.txt");
-        assertTrue(IOUtils.contentEquals(sourceInput, controlInput));
+    private void generateAndCompareTo(String filename) throws IOException
+    {
+        UnitTestUtils.runGeneratorAndCompareTo(generator, filename, printGeneratedNamespaceHandler);
     }
 }

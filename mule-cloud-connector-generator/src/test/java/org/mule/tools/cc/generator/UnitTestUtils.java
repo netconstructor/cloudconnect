@@ -10,9 +10,15 @@
 
 package org.mule.tools.cc.generator;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
+
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class UnitTestUtils
 {
@@ -21,6 +27,22 @@ public class UnitTestUtils
         InputStream input = UnitTestUtils.class.getClassLoader().getResourceAsStream(filename);
         assertNotNull(input);
         return input;
+    }
+
+    public static void runGeneratorAndCompareTo(AbstractGenerator generator, String filename,
+        boolean printGeneratedOutput) throws IOException
+    {
+        ByteArrayOutputStream output = new ByteArrayOutputStream(1500);
+        generator.generate(output);
+
+        if (printGeneratedOutput)
+        {
+            System.out.println(output);
+        }
+
+        InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
+        InputStream controlInput = UnitTestUtils.getTestResource(filename);
+        assertTrue(IOUtils.contentEquals(sourceInput, controlInput));
     }
 
     private UnitTestUtils()
