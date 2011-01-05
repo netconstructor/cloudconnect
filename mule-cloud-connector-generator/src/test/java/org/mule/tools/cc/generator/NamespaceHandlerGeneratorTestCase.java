@@ -61,9 +61,12 @@ public class NamespaceHandlerGeneratorTestCase
     @Test
     public void generateWithoutConfigElement() throws Exception
     {
-        JavaMethodParameter parameter = new MockJavaMethodParameter("symbol", "String");
-        JavaMethod method = new MockJavaMethod("requestQuote", "Requests a quote", parameter);
-        MockJavaClass javaClass = new MockJavaClass("org.mule.module.stockquote", "StockQuoteCloudConnector", method);
+        JavaMethodParameter parameterOne = new MockJavaMethodParameter("symbol", "String");
+        JavaMethodParameter parameterTwo = new MockJavaMethodParameter("currency", "String");
+        JavaMethod method = new MockJavaMethod("requestQuote", "Requests a quote",
+            parameterOne, parameterTwo);
+        MockJavaClass javaClass = new MockJavaClass("org.mule.module.stockquote",
+            "StockQuoteCloudConnector", method);
         generator.setJavaClass(javaClass);
 
         generator.setPackageName("org.mule.module.stockquote.config");

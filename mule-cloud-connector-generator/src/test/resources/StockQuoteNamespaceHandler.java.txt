@@ -15,7 +15,7 @@ public class StockQuoteNamespaceHandler extends AbstractPojoNamespaceHandler
         InvokerMessageProcessorDefinitionParser parser = null;
 
         parser = new InvokerMessageProcessorDefinitionParser("messageProcessor",
-            StockQuoteCloudConnector.class, "requestQuote", new String[] { "symbol" });
+            StockQuoteCloudConnector.class, "requestQuote", new String[] { "symbol", "currency" });
         registerMuleBeanDefinitionParser("request-quote", parser);
     }
 }
