@@ -1,6 +1,7 @@
 #set($D = '$')
 #set($ModuleName = "$artifactId")
 #set($ModuleNameLower = "${ModuleName.toLowerCase()}")
+#set($PackagePath = "${package.replace('.', '/')}")
 #set($ArchetypeIsSnapshot = $version.endsWith("-SNAPSHOT"))
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -104,9 +105,10 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <cloudConnector>${D}{project.basedir}/src/main/java/org/mule/module/stockquote/${cloudService}CloudConnector.java</cloudConnector>
-                            <schemaFilename>mule-${cloudServiceLower}.xsd</schemaFilename>
                             <muleVersion>${D}{mule.version}</muleVersion>
+                            <cloudConnector>${D}{project.basedir}/src/main/java/${PackagePath}/${cloudService}CloudConnector.java</cloudConnector>
+                            <schemaFilename>mule-${cloudServiceLower}.xsd</schemaFilename>
+                            <namespaceHandler>${PackagePath}/config/${cloudService}NamespaceHandler.java</namespaceHandler>
                         </configuration>
                     </execution>
                 </executions>
