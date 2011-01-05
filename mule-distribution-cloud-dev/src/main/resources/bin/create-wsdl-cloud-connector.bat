@@ -8,21 +8,23 @@ setlocal enabledelayedexpansion
 set _REALPATH=%~dp0
 
 :: Use the path that was used to launch this script to determine the location
-:: of MULE_HOME. Since this script resides in the bin folder of the Mule 
+:: of DEVKIT_HOME. Since this script resides in the bin folder of the 
 :: distribution, we need to cut off the last 5 chars (\bin\) from the real
-:: path to determine the proper MULE_HOME
-set MULE_HOME=%_REALPATH:~0,-5%
+:: path to determine the proper DEVKIT_HOME
+set DEVKIT_HOME=%_REALPATH:~0,-5%
 
-:: dynamically evaluate the name of the groovy jar
-for /F %%v in ('dir /b %MULE_HOME%\lib\opt^| findstr groovy') do set GROOVY_JAR=%%v
-set GROOVY_JAR=%MULE_HOME%\lib\opt\%GROOVY_JAR%
+:: dynamically evaluate the contents of the classpath
+set CP=
+for /R %DEVKIT_HOME%\lib %%a in (*.jar) do (
+	set CP=!CP!;%%a
+)
 
 set ARCHETYPE_SCRIPT_FILE=run-mule-wsdl-cloud-connector-archetype-
 for /L %%v in (0,1,1) do set ARCHETYPE_SCRIPT_FILE=!ARCHETYPE_SCRIPT_FILE!!Random!
 set ARCHETYPE_SCRIPT_FILE=%TEMP%\%ARCHETYPE_SCRIPT_FILE%.bat
 
 :: ask some questions and generate the scipt file that invokes the archetype
-java -cp %GROOVY_JAR% org.codehaus.groovy.tools.GroovyStarter --main groovy.ui.GroovyMain %MULE_HOME%/bin/CreateWSDLArchetypeProperties.groovy %ARCHETYPE_SCRIPT_FILE%
+java -cp %CP% org.codehaus.groovy.tools.GroovyStarter --main groovy.ui.GroovyMain %DEVKIT_HOME%/bin/CreateWSDLArchetypeProperties.groovy %ARCHETYPE_SCRIPT_FILE%
 
 :: now run the archetype
 call %ARCHETYPE_SCRIPT_FILE%
