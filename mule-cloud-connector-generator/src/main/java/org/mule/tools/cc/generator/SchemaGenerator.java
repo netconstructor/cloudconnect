@@ -15,12 +15,10 @@ import java.io.OutputStream;
 
 import org.apache.commons.lang.StringUtils;
 
-public class SchemaGenerator
+public class SchemaGenerator extends AbstractGenerator
 {
     private String namespaceIdentifierSuffix;
     private String schemaVersion;
-    private JavaClass javaClass;
-    private GeneratorWriter writer;
 
     public static String splitCamelCase(String string)
     {
@@ -29,6 +27,7 @@ public class SchemaGenerator
                 "(?<=[A-Za-z0-9])(?=[^A-Za-z0-9])"), "-").toLowerCase();
     }
 
+    @Override
     public void generate(OutputStream output) throws IOException
     {
         checkAllRequiredFieldsSet();
@@ -44,8 +43,11 @@ public class SchemaGenerator
         writer.flush();
     }
 
-    private void checkAllRequiredFieldsSet()
+    @Override
+    protected void checkAllRequiredFieldsSet()
     {
+        super.checkAllRequiredFieldsSet();
+
         if (StringUtils.isEmpty(namespaceIdentifierSuffix))
         {
             throw new IllegalStateException("namespaceIdentifierSuffix is not set");
@@ -53,10 +55,6 @@ public class SchemaGenerator
         if (StringUtils.isEmpty(schemaVersion))
         {
             throw new IllegalStateException("schemaVersion is not set");
-        }
-        if (javaClass == null)
-        {
-            throw new IllegalStateException("javaClass is not set");
         }
     }
 
@@ -216,10 +214,5 @@ public class SchemaGenerator
     public void setSchemaVersion(String version)
     {
         schemaVersion = version;
-    }
-
-    public void setJavaClass(JavaClass klass)
-    {
-        javaClass = klass;
     }
 }

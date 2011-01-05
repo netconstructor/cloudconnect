@@ -15,13 +15,12 @@ import java.io.OutputStream;
 
 import org.apache.commons.lang.StringUtils;
 
-public class NamespaceHandlerGenerator
+public class NamespaceHandlerGenerator extends AbstractGenerator
 {
     private String packageName;
     private String className;
-    private JavaClass javaClass;
-    private GeneratorWriter writer;
 
+    @Override
     public void generate(OutputStream output) throws IOException
     {
         checkAllRequiredFieldsSet();
@@ -37,8 +36,11 @@ public class NamespaceHandlerGenerator
         writer.flush();
     }
 
-    private void checkAllRequiredFieldsSet()
+    @Override
+    protected void checkAllRequiredFieldsSet()
     {
+        super.checkAllRequiredFieldsSet();
+
         if (StringUtils.isEmpty(packageName))
         {
             throw new IllegalStateException("packageName is not set");
@@ -46,10 +48,6 @@ public class NamespaceHandlerGenerator
         if (StringUtils.isEmpty(className))
         {
             throw new IllegalStateException("className is not set");
-        }
-        if (javaClass == null)
-        {
-            throw new IllegalStateException("javaClass is not set");
         }
     }
 
@@ -111,10 +109,5 @@ public class NamespaceHandlerGenerator
     public void setClassName(String name)
     {
         className = name;
-    }
-
-    public void setJavaClass(JavaClass klass)
-    {
-        javaClass = klass;
     }
 }
