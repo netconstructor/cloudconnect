@@ -1,0 +1,22 @@
+//
+// THIS FILE WAS AUTO-GENERATED. DO NOT MANUALLY EDIT!
+//
+
+package org.mule.module.stockquote.config;
+
+import org.mule.config.spring.handlers.AbstractPojoNamespaceHandler;
+import org.mule.config.spring.parsers.specific.InvokerMessageProcessorDefinitionParser;
+import org.mule.module.stockquote.StockQuoteCloudConnector;
+
+public class StockQuoteNamespaceHandler extends AbstractPojoNamespaceHandler
+{
+    public void init()
+    {
+        InvokerMessageProcessorDefinitionParser parser = null;
+
+        parser = new InvokerMessageProcessorDefinitionParser("messageProcessor",
+            StockQuoteCloudConnector.class, "requestQuote", new String[] { "symbol" });
+        registerMuleBeanDefinitionParser("request-quote", parser);
+    }
+}
+

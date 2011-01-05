@@ -58,6 +58,19 @@ public class NamespaceHandlerGeneratorTestCase
         generateAndCompareTo("SkeletonNamespaceHandler.java.txt");
     }
 
+    @Test
+    public void generateWithoutConfigElement() throws Exception
+    {
+        JavaMethodParameter parameter = new MockJavaMethodParameter("symbol", "String");
+        JavaMethod method = new MockJavaMethod("requestQuote", "Requests a quote", parameter);
+        MockJavaClass javaClass = new MockJavaClass("org.mule.module.stockquote", "StockQuoteCloudConnector", method);
+        generator.setJavaClass(javaClass);
+
+        generator.setPackageName("org.mule.module.stockquote.config");
+        generator.setClassName("StockQuoteNamespaceHandler");
+        generateAndCompareTo("StockQuoteNamespaceHandler.java.txt");
+    }
+
     private void generateAndCompareTo(String filename) throws IOException
     {
         UnitTestUtils.runGeneratorAndCompareTo(generator, filename, printGeneratedNamespaceHandler);

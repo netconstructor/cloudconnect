@@ -5,11 +5,14 @@
 package org.mule.module.foo.config;
 
 import org.mule.config.spring.handlers.AbstractPojoNamespaceHandler;
+import org.mule.config.spring.parsers.specific.InvokerMessageProcessorDefinitionParser;
 import org.mule.module.foo.FooCloudConnector;
 
 public class FooNamespaceHandler extends AbstractPojoNamespaceHandler
 {
     public void init()
     {
+        InvokerMessageProcessorDefinitionParser parser = null;
+
     }
 }

@@ -15,10 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
-
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class UnitTestUtils
 {
@@ -42,7 +39,7 @@ public class UnitTestUtils
 
         InputStream sourceInput = new ByteArrayInputStream(output.toByteArray());
         InputStream controlInput = UnitTestUtils.getTestResource(filename);
-        assertTrue(IOUtils.contentEquals(sourceInput, controlInput));
+        new LineByLineComparator(sourceInput, controlInput).compare();
     }
 
     private UnitTestUtils()

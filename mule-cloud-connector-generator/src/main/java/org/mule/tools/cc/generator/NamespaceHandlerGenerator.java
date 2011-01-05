@@ -12,6 +12,7 @@ package org.mule.tools.cc.generator;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -70,6 +71,7 @@ public class NamespaceHandlerGenerator extends AbstractGenerator
     {
         writer.newLine();
         writer.writeLine("import org.mule.config.spring.handlers.AbstractPojoNamespaceHandler;");
+        writer.writeLine("import org.mule.config.spring.parsers.specific.InvokerMessageProcessorDefinitionParser;");
 
         writer.write("import ");
         writer.write(javaClass.getPackage());
@@ -92,8 +94,50 @@ public class NamespaceHandlerGenerator extends AbstractGenerator
         writer.indentDepth(4);
         writer.writeLine("public void init()");
         writer.writeLine("{");
+        writer.writeLine("    InvokerMessageProcessorDefinitionParser parser = null;");
+        writer.newLine();
+
+        writer.indentDepth(8);
+        for (JavaMethod method : javaClass.getMethods())
+        {
+            generateParserForMethod(method);
+        }
+        writer.indentDepth(4);
+
         writer.writeLine("}");
         writer.resetIndentDepth();
+    }
+
+    private void generateParserForMethod(JavaMethod method) throws IOException
+    {
+        writer.writeLine("parser = new InvokerMessageProcessorDefinitionParser(\"messageProcessor\",");
+        writer.write("            ");
+        writer.write(javaClass.getName());
+        writer.write(".class, \"");
+        writer.write(method.getName());
+        writer.write("\", new String[] { ");
+
+        Iterator<JavaMethodParameter> parameterIter = method.getParameters().iterator();
+        while (parameterIter.hasNext())
+        {
+            JavaMethodParameter parameter = parameterIter.next();
+
+            writer.write("\"");
+            writer.write(parameter.getName());
+            writer.write("\"");
+
+            if (parameterIter.hasNext())
+            {
+                writer.write(", ");
+            }
+        }
+
+        writer.write(" }");
+        writer.write(");");
+        writer.newLine();
+
+        String elementName = SchemaGenerator.splitCamelCase(method.getName());
+        writer.writeLine("registerMuleBeanDefinitionParser(\"%1s\", parser);", elementName);
     }
 
     private void generateClassFooter() throws IOException
