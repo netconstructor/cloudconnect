@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.mule.distributions</groupId>
-    <artifactId>mule-distribution-cloud-dev</artifactId>
+    <artifactId>cloud-connector-dev-kit</artifactId>
     <!-- keep the version in sync with the Mule version -->
-    <version>3.1.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Mule Cloud Connect Developer Kit Distribution</name>
     <description>Includes dependencies and scripts required to develop cloud connectors.</description>
@@ -23,7 +23,7 @@
                             <goal>single</goal>
                         </goals>
                         <configuration>
-                            <finalName>mule-cloud-devkit-${version}</finalName>
+                            <finalName>cloud-connector-dev-kit-${version}</finalName>
                             <descriptors>
                                 <descriptor>assembly.xml</descriptor>
                             </descriptors>
@@ -38,17 +38,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-client</artifactId>
-            <!-- the Jersey version must be in sync with the version Mule uses -->
-            <version>1.3</version>
-            <exclusions>
-                <!-- jersey-core is already in the standalone Mule distro -->
-                <exclusion>
-                    <groupId>com.sun.jersey</groupId>
-                    <artifactId>jersey-core</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        <!-- this is actually required to run groovy -->
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>1.2</version>
         </dependency>
     </dependencies>
 

@@ -46,17 +46,21 @@ do
     fi
 done
 
-# $REALPATH denotes the full path to the script now. Go two levels up to determine MULE_HOME
-MULE_HOME="`dirname ${REALPATH}`"
-MULE_HOME="`dirname ${MULE_HOME}`"
+# $REALPATH denotes the full path to the script now. Go two levels up to determine DEVKIT_HOME
+DEVKIT_HOME="`dirname ${REALPATH}`"
+DEVKIT_HOME="`dirname ${DEVKIT_HOME}`"
 
-GROOVY_JAR="`ls ${MULE_HOME}/lib/opt/groovy-all*`"
+CP=""
+for JAR in ${DEVKIT_HOME}/lib/*.jar
+do
+    CP="${CP}:${JAR}"
+done
 ARCHETYPE_SCRIPT_FILE=/tmp/run-mule-wsdl-cloud-connector-archetype.$$
 
 # ask some questions and generate the scipt file that invokes the archetype
-java -cp "${GROOVY_JAR}" org.codehaus.groovy.tools.GroovyStarter \
+java -cp "${CP}" org.codehaus.groovy.tools.GroovyStarter \
     --main groovy.ui.GroovyMain \
-    ${MULE_HOME}/bin/CreateWSDLArchetypeProperties.groovy ${ARCHETYPE_SCRIPT_FILE}
+    ${DEVKIT_HOME}/bin/CreateWSDLArchetypeProperties.groovy ${ARCHETYPE_SCRIPT_FILE}
 
 # now run the archetype
 . ${ARCHETYPE_SCRIPT_FILE}
