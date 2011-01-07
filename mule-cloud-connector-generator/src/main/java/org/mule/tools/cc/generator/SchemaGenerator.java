@@ -160,25 +160,8 @@ public class SchemaGenerator extends AbstractGenerator
         writer.write(method.getName());
         writer.write("Type\" substitutionGroup=\"mule:abstract-message-processor\">");
         writer.newLine();
-
-        if (StringUtils.isNotEmpty(method.getJavadoc()))
-        {
-            writeOperationDocumentation(method);
-        }
-
+        new JavadocToSchemadocTransformer(method.getJavadoc()).generate(writer);
         writer.writeLine("    </xsd:element>");
-    }
-
-    private void writeOperationDocumentation(JavaMethod method) throws IOException
-    {
-        writer.indentDepth(8);
-        writer.writeLine("<xsd:annotation>");
-        writer.writeLine("    <xsd:documentation>");
-        writer.write("        ");
-        writer.writeLine(method.getJavadoc());
-        writer.writeLine("    </xsd:documentation>");
-        writer.writeLine("</xsd:annotation>");
-        writer.resetIndentDepth();
     }
 
     private void writeOperationElementType(JavaMethod method) throws IOException
