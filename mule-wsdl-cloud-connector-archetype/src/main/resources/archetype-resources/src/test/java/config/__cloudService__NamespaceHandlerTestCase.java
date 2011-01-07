@@ -1,7 +1,6 @@
 #set($D = '$')
 package ${package}.config;
 
-import org.mule.api.MuleEvent;
 import org.mule.construct.SimpleFlowConstruct;
 import org.mule.tck.FunctionalTestCase;
 
