@@ -13,6 +13,7 @@ package org.mule.tools.cc.generator;
 import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.text.StrTokenizer;
 
 public class JavadocToSchemadocTransformer
 {
@@ -38,6 +39,7 @@ public class JavadocToSchemadocTransformer
             generateClosingAnnotationAndDocumentationElement();
 
             writer.resetIndentDepth();
+            writer.flush();
         }
     }
 
@@ -49,8 +51,34 @@ public class JavadocToSchemadocTransformer
 
     private void translateJavadocText() throws IOException
     {
-        writer.write("        ");
-        writer.writeLine(javadocText);
+        writer.write("               ");
+
+        StrTokenizer tokenizer = new StrTokenizer(javadocText);
+        String token = tokenizer.nextToken();
+        while (token != null)
+        {
+            String outputToken = trimAndStripJavadocPrefix(token);
+            if (StringUtils.isNotBlank(outputToken))
+            {
+                writer.write(" ");
+                writer.write(outputToken);
+            }
+
+            token = tokenizer.nextToken();
+        }
+
+        writer.newLine();
+    }
+
+    private String trimAndStripJavadocPrefix(String token)
+    {
+        String processedToken = token.trim();
+        if (processedToken.startsWith("*"))
+        {
+            processedToken = processedToken.substring(1);
+            processedToken = processedToken.trim();
+        }
+        return processedToken;
     }
 
     private void generateClosingAnnotationAndDocumentationElement() throws IOException
