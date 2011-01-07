@@ -46,9 +46,8 @@ do
     fi
 done
 
-# $REALPATH denotes the full path to the script now. Go two levels up to determine DEVKIT_HOME
+# $REALPATH denotes the full path to the script now. Go one level up to determine DEVKIT_HOME
 DEVKIT_HOME="`dirname ${REALPATH}`"
-DEVKIT_HOME="`dirname ${DEVKIT_HOME}`"
 
 CP=""
 for JAR in ${DEVKIT_HOME}/lib/*.jar
