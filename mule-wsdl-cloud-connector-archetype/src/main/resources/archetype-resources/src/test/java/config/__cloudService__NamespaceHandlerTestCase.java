@@ -13,25 +13,25 @@ public class ${cloudService}NamespaceHandlerTestCase extends FunctionalTestCase
         return "${cloudServiceLower}-namespace-config.xml";
     }
 
-    /*
-        To test your flow directly (i.e. without any inbound endpoints, declare a flow in this
-        test's config and put the element from your cloud connector's namespace that you want
-        to test into it. A proper example was put into ${cloudServiceLower}-namespace-config.xml
+    public void testSendMessageToFlow() throws Exception
+    {
+        /*
+
+        To test your flow directly (i.e. without any inbound endpoints, declare a flow in
+        ${cloudServiceLower}-namespace-config.xml and put the element from your
+        cloud connector's namespace that you want to test into it.
+        A proper example was put into ${cloudServiceLower}-namespace-config.xml
 
         Now you can send data to your test flow from the unit test:
 
-    public void testSendMessageToFlow() throws Exception
-    {
         String payload = <your input to the flow here>;
-
         SimpleFlowConstruct flow = lookupFlowConstruct("theFlow");
         MuleEvent event = getTestEvent(payload);
         MuleEvent responseEvent = flowConstruct.process(event);
-
         assertEquals(<expected test output>, responseEvent.getMessage().getPayloadAsString());
-    }
 
-    */
+        */
+    }
 
     private SimpleFlowConstruct lookupFlowConstruct(String name)
     {
