@@ -235,40 +235,10 @@
         </dependency>
     </dependencies>
 
-    <!-- Mule Forge Configuration -->
     <issueManagement>
         <system>Jira</system>
         <url>http://www.mulesoft.org/jira/browse/${ModuleName.toUpperCase()}</url>
     </issueManagement>
-
-    <scm>
-        <connection>scm:svn:http://svn.muleforge.org/${ModuleNameLower}/</connection>
-        <developerConnection>scm:svn:https://svn.muleforge.org/${ModuleNameLower}/</developerConnection>
-        <tag>HEAD</tag>
-        <url>http://svn.${ModuleNameLower}.muleforge.org/</url>
-    </scm>
-
-    <ciManagement>
-        <system>Bamboo</system>
-        <url>http://bamboo.muleforge.org/browse/${ModuleName.toUpperCase()}-FORGE</url>
-        <notifiers/>
-    </ciManagement>
-
-    <distributionManagement>
-        <repository>
-            <id>muleforge.webdav.releases</id>
-            <url>dav:https://dav.muleforge.org/repository/${ModuleNameLower}/</url>
-        </repository>
-        <snapshotRepository>
-            <id>muleforge.webdav.snapshots</id>
-            <url>dav:https://dav.muleforge.org/snapshots.repository/${ModuleNameLower}/</url>
-        </snapshotRepository>
-        <site>
-            <id>muleforge.webdav.sites</id>
-            <url>dav:https://dav.muleforge.org/${ModuleNameLower}/maven/${D}{version}/</url>
-        </site>
-    </distributionManagement>
-    <!-- End of MuleForge Configuration -->
 
     <repositories>
         <repository>
@@ -282,19 +252,6 @@
             <name>Codehaus Repository</name>
             <url>http://dist.codehaus.org/mule/dependencies/maven2</url>
             <layout>default</layout>
-        </repository>
-        <repository>
-            <!--
-                local repository for this forge project. Users can upload dependencies here when the artifact
-                is not available on any other repository. Its the users' responsibility to make sure that no
-                licenses are violated by uploading dependencies to this location
-            -->
-            <id>${ModuleNameLower}-deps</id>
-            <name>${ModuleName} Dependencies</name>
-            <url>http://dist.muleforge.org/${artifactId}/dependencies/maven2</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
         </repository>
     </repositories>
 #if($ArchetypeIsSnapshot == true)
