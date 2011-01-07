@@ -10,6 +10,14 @@
         http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/${MuleMajorMinorVersion}/mule.xsd
         http://www.mulesoft.org/schema/mule/${cloudServiceLower} http://www.mulesoft.org/schema/mule/${cloudServiceLower}/${MuleMajorMinorVersion}/mule-${cloudServiceLower}.xsd">
 
-    <!-- TODO add namespace elements for your cloud connector -->
+    <!--
+        Declare one flow like this one per element you add in your schema.
 
+        See the comment in ${cloudService}NamespaceHandlerTestCase for an example how to send
+        Mule events directly to this flow.
+
+    <flow name="theFlow">
+        <${cloudServiceLower}:operation parameter="#[payload]"/>
+    </flow>
+     -->
 </mule>
