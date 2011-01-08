@@ -8,6 +8,7 @@
     <requiredProperties>
         <requiredProperty key="cloudService"/>
         <requiredProperty key="cloudServiceLower"/>
+        <requiredProperty key="cloudServiceType"/>
         <requiredProperty key="muleVersion"/>
         <requiredProperty key="wsdl"/>
     </requiredProperties>

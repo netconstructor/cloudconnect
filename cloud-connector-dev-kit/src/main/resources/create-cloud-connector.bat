@@ -19,7 +19,7 @@ for /R %DEVKIT_HOME%\lib %%a in (*.jar) do (
 	set CP=!CP!;%%a
 )
 
-set ARCHETYPE_SCRIPT_FILE=run-mule-wsdl-cloud-connector-archetype-
+set ARCHETYPE_SCRIPT_FILE=run-mule-cloud-connector-archetype-
 for /L %%v in (0,1,1) do set ARCHETYPE_SCRIPT_FILE=!ARCHETYPE_SCRIPT_FILE!!Random!
 set ARCHETYPE_SCRIPT_FILE=%TEMP%\%ARCHETYPE_SCRIPT_FILE%.bat
 

@@ -25,7 +25,25 @@ def askQuestions()
     question("Maven version of the new connector", "version", false)
     question("Java package for the new connector\n(should use the naming convention org.mule.module.<yourname>)",
         "package", false)
-    question("Location of the WSDL (can be a local file or a URL)", "wsdl")
+
+    while (cloudServiceTypeIsInvalid())
+    {
+        question("Type of project\nCan be either a HTTP based service or a WSDL\nOptions: [h] or [w]",
+            "cloudServiceType", true)
+    }
+    if (isHttpService())
+    {
+        archetypeProperties.cloudServiceType = "HTTP"
+
+        // the archetype wants a value for the WSDL property but it will not be used
+        archetypeProperties.wsdl = "xxx-invalid-xxx"
+    }
+    else if (isWsdlService())
+    {
+        archetypeProperties.cloudServiceType = "WSDL"
+
+        question("Location of the WSDL (can be a local file or a URL)", "wsdl")
+    }
 }
 
 def question(String text, String key, boolean required=true)
@@ -57,6 +75,38 @@ def printQuestion(String text, String key)
     }
     println("[default: ${defaultValue}]")
     print("> ")
+}
+
+def cloudServiceTypeIsInvalid()
+{
+    def cloudServiceType = archetypeProperties.cloudServiceType
+    if (cloudServiceType == null)
+    {
+        return true
+    }
+    else
+    {
+        if (!(cloudServiceType[0] =~ /[hwHW]/))
+        {
+            // reset the value in archetypeProperties as it gets print as default
+            archetypeProperties.remove("cloudServiceType")
+            return true
+        }
+        else
+        {
+            return false
+        }
+    }
+}
+
+def isHttpService()
+{
+    return archetypeProperties.cloudServiceType.equalsIgnoreCase("h")
+}
+
+def isWsdlService()
+{
+    return archetypeProperties.cloudServiceType.equalsIgnoreCase("w")
 }
 
 def generateArtifactIdAndJavaPackage()
@@ -94,6 +144,7 @@ def generateArchetypeScriptFile(String filename)
         writer.write(" -DmuleVersion=${muleVersion}")
         writer.write(" -DcloudService=${archetypeProperties.cloudService}")
         writer.write(" -DcloudServiceLower=${archetypeProperties.cloudService.toLowerCase()}")
+        writer.write(" -DcloudServiceType=${archetypeProperties.cloudServiceType}");
         writer.write(" -Dwsdl=${archetypeProperties.wsdl}")
 
         // to run a snapshot version of the archetype we must declare repository to find it

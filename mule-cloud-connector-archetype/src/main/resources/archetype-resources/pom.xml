@@ -17,9 +17,11 @@
    <url>http://www.muleforge.org/projects/${artifactId}</url>
 
    <properties>
+#if($cloudServiceType == "WSDL")
         <!-- the CXF version must be in line with the version Mule uses -->
         <cxf.version>2.3.0</cxf.version>
         <mule.version>${muleVersion}</mule.version>
+#end
         <!-- Tools properties -->
         <eclipsePluginVersion>2.8</eclipsePluginVersion>
         <vmtype>org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType</vmtype>
@@ -68,6 +70,7 @@
                     <jdkName>${D}{jdk.version}</jdkName>
                 </configuration>
             </plugin>
+#if($cloudServiceType == "WSDL")
             <!-- generate code from the WSDL file -->
             <plugin>
                 <groupId>org.apache.cxf</groupId>
@@ -95,6 +98,7 @@
                     </execution>
                 </executions>
             </plugin>
+#end
             <plugin>
                 <groupId>org.mule.tools</groupId>
                 <artifactId>mule-cloud-connector-generator-maven-plugin</artifactId>
@@ -206,6 +210,7 @@
             <scope>provided</scope>
         </dependency>
 
+#if($cloudServiceType == "WSDL")
         <!-- CXF dependencies -->
         <dependency>
             <groupId>org.apache.cxf</groupId>
@@ -222,6 +227,7 @@
             <scope>provided</scope>
         </dependency>
 
+#end
         <!-- for testing -->
         <dependency>
             <groupId>junit</groupId>
