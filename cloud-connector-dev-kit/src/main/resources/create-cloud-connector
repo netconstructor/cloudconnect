@@ -59,7 +59,7 @@ ARCHETYPE_SCRIPT_FILE=/tmp/run-mule-wsdl-cloud-connector-archetype.$$
 # ask some questions and generate the scipt file that invokes the archetype
 java -cp "${CP}" org.codehaus.groovy.tools.GroovyStarter \
     --main groovy.ui.GroovyMain \
-    ${DEVKIT_HOME}/bin/CreateWSDLArchetypeProperties.groovy ${ARCHETYPE_SCRIPT_FILE}
+    ${DEVKIT_HOME}/bin/CreateArchetypeProperties.groovy ${ARCHETYPE_SCRIPT_FILE}
 
 # now run the archetype
 . ${ARCHETYPE_SCRIPT_FILE}

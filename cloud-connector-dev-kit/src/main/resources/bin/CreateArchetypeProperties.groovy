@@ -85,7 +85,7 @@ def generateArchetypeScriptFile(String filename)
 
         writer.write("${mavenExecutable} archetype:generate -B")
         writer.write(" -DarchetypeGroupId=org.mule.tools")
-        writer.write(" -DarchetypeArtifactId=mule-wsdl-cloud-connector-archetype")
+        writer.write(" -DarchetypeArtifactId=mule-cloud-connector-archetype")
         writer.write(" -DarchetypeVersion=${archetypeVersion}")
         writer.write(" -DgroupId=${archetypeProperties.groupId}")
         writer.write(" -DartifactId=${archetypeProperties.artifactId}")

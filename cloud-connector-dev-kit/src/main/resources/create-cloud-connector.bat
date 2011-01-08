@@ -24,7 +24,7 @@ for /L %%v in (0,1,1) do set ARCHETYPE_SCRIPT_FILE=!ARCHETYPE_SCRIPT_FILE!!Rando
 set ARCHETYPE_SCRIPT_FILE=%TEMP%\%ARCHETYPE_SCRIPT_FILE%.bat
 
 :: ask some questions and generate the scipt file that invokes the archetype
-java -cp %CP% org.codehaus.groovy.tools.GroovyStarter --main groovy.ui.GroovyMain %DEVKIT_HOME%\bin\CreateWSDLArchetypeProperties.groovy %ARCHETYPE_SCRIPT_FILE%
+java -cp %CP% org.codehaus.groovy.tools.GroovyStarter --main groovy.ui.GroovyMain %DEVKIT_HOME%\bin\CreateArchetypeProperties.groovy %ARCHETYPE_SCRIPT_FILE%
 
 :: now run the archetype
 call %ARCHETYPE_SCRIPT_FILE%
