@@ -3,11 +3,11 @@
     xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.mule.tools</groupId>
-    <artifactId>mule-wsdl-cloud-connector-archetype</artifactId>
+    <artifactId>mule-cloud-connector-archetype</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>maven-archetype</packaging>
-    <name>Mule WSDL Cloud Connector Archetype</name>
-    <description>Creates a new cloud connector project based on a WSDL file.</description>
+    <name>Mule Cloud Connector Archetype</name>
+    <description>Creates a new cloud connector project.</description>
 
     <build>
         <extensions>
