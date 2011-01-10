@@ -20,13 +20,19 @@
 #if($cloudServiceType == "WSDL")
         <!-- the CXF version must be in line with the version Mule uses -->
         <cxf.version>2.3.0</cxf.version>
-        <mule.version>${muleVersion}</mule.version>
 #end
+        <mule.version>${muleVersion}</mule.version>
         <!-- Tools properties -->
         <eclipsePluginVersion>2.8</eclipsePluginVersion>
         <vmtype>org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType</vmtype>
-        <jdk5Name>J2SE-1.5</jdk5Name>
+#if($cloudServiceType == "HTTP")
+        <!-- Jersey client is JDK6 only -->
+        <jdk.name>JavaSE-1.6</jdk.name>
+        <jdk.version>1.6</jdk.version>
+#else
+        <jdk.name>J2SE-1.5</jdk.name>
         <jdk.version>1.5</jdk.version>
+#end
     </properties>
 
     <build>
@@ -43,8 +49,13 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
+#if($cloudServiceType == "HTTP")
+                    <source>1.6</source>
+                    <target>1.6</target>
+#else
                     <source>1.5</source>
                     <target>1.5</target>
+#end
                     <encoding>ISO-8859-1</encoding>
                 </configuration>
             </plugin>
@@ -56,7 +67,7 @@
                     <!-- by default download all sources when generating project files -->
                     <downloadSources>true</downloadSources>
                     <classpathContainers>
-                        <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER/${D}{vmtype}/${D}{jdk5Name}
+                        <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER/${D}{vmtype}/${D}{jdk.name}
                         </classpathContainer>
                     </classpathContainers>
                 </configuration>
@@ -201,15 +212,14 @@
         </plugins>
     </reporting>
 
-    <!-- Mule Dependencies -->
     <dependencies>
+        <!-- Mule Dependencies -->
         <dependency>
             <groupId>org.mule.modules</groupId>
             <artifactId>mule-module-spring-config</artifactId>
             <version>${D}{mule.version}</version>
             <scope>provided</scope>
         </dependency>
-
 #if($cloudServiceType == "WSDL")
         <!-- CXF dependencies -->
         <dependency>
@@ -228,6 +238,14 @@
         </dependency>
 
 #end
+#if($cloudServiceType == "HTTP")
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.3</version>
+        </dependency>
+
+#end
         <!-- for testing -->
         <dependency>
             <groupId>junit</groupId>
@@ -241,11 +259,6 @@
             <version>${D}{mule.version}</version>
         </dependency>
     </dependencies>
-
-    <issueManagement>
-        <system>Jira</system>
-        <url>http://www.mulesoft.org/jira/browse/${ModuleName.toUpperCase()}</url>
-    </issueManagement>
 
     <repositories>
         <repository>
