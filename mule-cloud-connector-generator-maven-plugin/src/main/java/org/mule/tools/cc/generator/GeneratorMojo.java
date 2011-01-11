@@ -223,7 +223,8 @@ public class GeneratorMojo extends AbstractMojo
         relativeNamespaceHandlerPath = relativeNamespaceHandlerPath.substring(1);
 
         String packageName = namespaceHandlerProjectRelativeFile().getParent();
-        packageName = packageName.replace('/', '.');
+        packageName = packageName.replace('/', '.');    // unix paths
+        packageName = packageName.replace('\\', '.');   // windows paths
 
         return packageName;
     }
