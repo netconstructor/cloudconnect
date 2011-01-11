@@ -26,7 +26,7 @@ public class ${cloudService}NamespaceHandlerTestCase extends FunctionalTestCase
         String payload = <your input to the flow here>;
         SimpleFlowConstruct flow = lookupFlowConstruct("theFlow");
         MuleEvent event = getTestEvent(payload);
-        MuleEvent responseEvent = flowConstruct.process(event);
+        MuleEvent responseEvent = flow.process(event);
         assertEquals(<expected test output>, responseEvent.getMessage().getPayloadAsString());
 
         */
