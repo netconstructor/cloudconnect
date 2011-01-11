@@ -273,6 +273,13 @@
             <url>http://dist.codehaus.org/mule/dependencies/maven2</url>
             <layout>default</layout>
         </repository>
+#if($cloudServiceType == "HTTP")
+        <repository>
+            <id>dev.java.net</id>
+            <name>Java.net Repository for Maven</name>
+            <url>http://download.java.net/maven/2/</url>
+        </repository>
+#end
     </repositories>
 #if($ArchetypeIsSnapshot == true)
 
