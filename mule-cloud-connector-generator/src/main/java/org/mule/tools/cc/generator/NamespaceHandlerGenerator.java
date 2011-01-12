@@ -13,6 +13,7 @@ package org.mule.tools.cc.generator;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -94,12 +95,18 @@ public class NamespaceHandlerGenerator extends AbstractGenerator
         writer.indentDepth(4);
         writer.writeLine("public void init()");
         writer.writeLine("{");
-        writer.writeLine("    InvokerMessageProcessorDefinitionParser parser = null;");
 
+        generateConfigPojoRegistrationIfNecessary();
+
+        writer.writeLine("    InvokerMessageProcessorDefinitionParser parser = null;");
+        
         writer.indentDepth(8);
         for (JavaMethod method : javaClass.getMethods())
         {
-            generateParserForMethod(method);
+            if (JavaClassUtils.isSetterMethod(method) == false)
+            {
+                generateParserForMethod(method);
+            }
         }
         writer.indentDepth(4);
 
@@ -107,8 +114,18 @@ public class NamespaceHandlerGenerator extends AbstractGenerator
         writer.resetIndentDepth();
     }
 
-    private void generateParserForMethod(JavaMethod method) throws IOException
+    private void generateConfigPojoRegistrationIfNecessary() throws IOException
     {
+        List<JavaMethod> setterMethods = JavaClassUtils.collectSetters(javaClass);
+        if (setterMethods.size() > 0)
+        {
+            writer.writeLine("    registerPojo(\"config\", %1s.class);", javaClass.getName());
+            writer.newLine();
+        }
+    }
+
+    private void generateParserForMethod(JavaMethod method) throws IOException
+    {        
         writer.newLine();
         writer.writeLine("parser = new InvokerMessageProcessorDefinitionParser(\"messageProcessor\",");
         writer.write("            ");

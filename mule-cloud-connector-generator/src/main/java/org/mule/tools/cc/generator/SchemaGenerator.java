@@ -12,7 +12,6 @@ package org.mule.tools.cc.generator;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -116,7 +115,7 @@ public class SchemaGenerator extends AbstractGenerator
 
     private void writeConfigElement() throws IOException
     {
-        List<JavaMethod> setterMethods = collectSetters();
+        List<JavaMethod> setterMethods = JavaClassUtils.collectSetters(javaClass);
         if (setterMethods.size() > 0)
         {
             writer.newLine();
@@ -124,25 +123,6 @@ public class SchemaGenerator extends AbstractGenerator
             writeConfigXmlElement();
             writeConfigElementType(setterMethods);
         }
-    }
-
-    private List<JavaMethod> collectSetters()
-    {
-        List<JavaMethod> collectedMethods = new ArrayList<JavaMethod>();
-
-        for (JavaMethod method : javaClass.getMethods())
-        {
-            String methodName = method.getName();
-            if (methodName.startsWith("set"))
-            {
-                if (method.getParameters().size() == 1)
-                {
-                    collectedMethods.add(method);
-                }
-            }
-        }
-        
-        return collectedMethods;
     }
 
     private void writeConfigXmlElement() throws IOException
@@ -217,7 +197,7 @@ public class SchemaGenerator extends AbstractGenerator
     {
         boolean isNotPublic = !method.isPublic();
         boolean isGetMethod = method.getName().startsWith("get");
-        boolean isSetMethod = method.getName().startsWith("set");
+        boolean isSetMethod = JavaClassUtils.isSetterMethod(method);
         boolean hasParameters = method.getParameters().size() > 0;
 
         if (isNotPublic || isSetMethod || (isGetMethod && !hasParameters))

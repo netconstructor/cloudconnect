@@ -85,7 +85,7 @@ public class SchemaGeneratorTestCase
         MockJavaClass mockClass = new MockJavaClass(setter, operation);
         
         generator.setJavaClass(mockClass);
-        generateAndCompareTo("single-argument-operation.xsd");
+        generateAndCompareTo("invalid-setter.xsd");
     }
 
     @Test

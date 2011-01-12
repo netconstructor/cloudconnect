@@ -1,0 +1,19 @@
+//
+// THIS FILE WAS AUTO-GENERATED. DO NOT MANUALLY EDIT!
+//
+
+package org.mule.module.mock.config;
+
+import org.mule.config.spring.handlers.AbstractPojoNamespaceHandler;
+import org.mule.config.spring.parsers.specific.InvokerMessageProcessorDefinitionParser;
+import org.mule.module.mock.ConfigElementCloudConnector;
+
+public class ConfigElementNamespaceHandler extends AbstractPojoNamespaceHandler
+{
+    public void init()
+    {
+        registerPojo("config", ConfigElementCloudConnector.class);
+
+        InvokerMessageProcessorDefinitionParser parser = null;
+    }
+}
