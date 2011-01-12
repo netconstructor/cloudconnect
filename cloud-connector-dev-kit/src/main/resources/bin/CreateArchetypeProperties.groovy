@@ -28,10 +28,17 @@ def askQuestions()
 
     while (cloudServiceTypeIsInvalid())
     {
-        question("Type of project\nCan be either a HTTP based service or a WSDL\nOptions: [h] or [w]",
+        question("Type of project\nCan be either be\n * based on existing Java code\n * a HTTP based service\n * a WSDL\nOptions: [j], [h] or [w]",
             "cloudServiceType", true)
     }
-    if (isHttpService())
+    if (isJavaService())
+    {
+        archetypeProperties.cloudServiceType = "Java"
+
+        // the archetype wants a value for the WSDL property but it will not be used
+        archetypeProperties.wsdl = "xxx-invalid-xxx"
+    }
+    else if (isHttpService())
     {
         archetypeProperties.cloudServiceType = "HTTP"
 
@@ -86,7 +93,7 @@ def cloudServiceTypeIsInvalid()
     }
     else
     {
-        if (!(cloudServiceType[0] =~ /[hwHW]/))
+        if (!(cloudServiceType[0] =~ /[jhwJHW]/))
         {
             // reset the value in archetypeProperties as it gets print as default
             archetypeProperties.remove("cloudServiceType")
@@ -97,6 +104,11 @@ def cloudServiceTypeIsInvalid()
             return false
         }
     }
+}
+
+def isJavaService()
+{
+	return archetypeProperties.cloudServiceType.equalsIgnoreCase("j")
 }
 
 def isHttpService()
