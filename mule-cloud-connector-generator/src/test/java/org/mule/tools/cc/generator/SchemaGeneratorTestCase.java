@@ -64,12 +64,26 @@ public class SchemaGeneratorTestCase
     }
 
     @Test
-    public void gettersAreIgnored() throws Exception
+    public void settersBecomeConfigElement() throws Exception
     {
-        MockJavaMethod getter = new MockJavaMethod("getFoo");
+        MockJavaMethodParameter parameter = new MockJavaMethodParameter("value", "String");
+        MockJavaMethod setter = new MockJavaMethod("setApiKey", "This key is required to use the API.", parameter);
         MockJavaMethod operation = createOperationMethod();
-        MockJavaClass mockClass = new MockJavaClass(getter, operation);
-
+        MockJavaClass mockClass = new MockJavaClass(setter, operation);
+        
+        generator.setJavaClass(mockClass);
+        generateAndCompareTo("generated-config-element.xsd");
+    }
+    
+    @Test
+    public void settersWithMoreThanOneArgumentAreIgnoredForConfigElement() throws Exception
+    {
+        MockJavaMethodParameter param1 = new MockJavaMethodParameter("valueOne", "String");
+        MockJavaMethodParameter param2 = new MockJavaMethodParameter("valueTwo", "String");
+        MockJavaMethod setter = new MockJavaMethod("setMustBeIgnored", null, param1, param2);
+        MockJavaMethod operation = createOperationMethod();
+        MockJavaClass mockClass = new MockJavaClass(setter, operation);
+        
         generator.setJavaClass(mockClass);
         generateAndCompareTo("single-argument-operation.xsd");
     }

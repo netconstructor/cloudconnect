@@ -12,6 +12,8 @@ package org.mule.tools.cc.generator;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -37,6 +39,7 @@ public class SchemaGenerator extends AbstractGenerator
         writeStartElement();
         writeImports();
         writeAnnotation();
+        writeConfigElement();
         writeOperations();
         writeClosingStartElement();
 
@@ -111,6 +114,80 @@ public class SchemaGenerator extends AbstractGenerator
         writer.resetIndentDepth();
     }
 
+    private void writeConfigElement() throws IOException
+    {
+        List<JavaMethod> setterMethods = collectSetters();
+        if (setterMethods.size() > 0)
+        {
+            writer.newLine();
+            writer.writeLine("    <!-- Configration -->");
+            writeConfigXmlElement();
+            writeConfigElementType(setterMethods);
+        }
+    }
+
+    private List<JavaMethod> collectSetters()
+    {
+        List<JavaMethod> collectedMethods = new ArrayList<JavaMethod>();
+
+        for (JavaMethod method : javaClass.getMethods())
+        {
+            String methodName = method.getName();
+            if (methodName.startsWith("set"))
+            {
+                if (method.getParameters().size() == 1)
+                {
+                    collectedMethods.add(method);
+                }
+            }
+        }
+        
+        return collectedMethods;
+    }
+
+    private void writeConfigXmlElement() throws IOException
+    {
+        writer.write("    ");
+        writer.writeLine("<xsd:element name=\"config\" type=\"configType\" substitutionGroup=\"mule:abstract-extension\"/>");
+    }
+
+    private void writeConfigElementType(List<JavaMethod> gettersAndSetters) throws IOException
+    {        
+        writer.indentDepth(4);
+        writer.writeLine("<xsd:complexType name=\"configType\">");
+        writer.writeLine("    <xsd:complexContent>");
+        writer.writeLine("        <xsd:extension base=\"mule:abstractExtensionType\">");
+        
+        for (JavaMethod method : gettersAndSetters)
+        {
+            // strip 'set' from the method name
+            String methodName = method.getName().substring(3);
+            methodName = StringUtils.uncapitalize(methodName);
+            
+            writer.write("                <xsd:attribute name=\"");
+            writer.write(methodName);
+            writer.write("\" type=\"");
+            
+            String type = method.getParameters().get(0).getType();
+            writer.write(SchemaTypesMapping.schemaTypeForJavaTypeName(type));
+            writer.write("\">");
+            writer.newLine();
+            
+            if (StringUtils.isNotBlank(method.getJavadoc()))
+            {
+                writer.indentDepth(20);
+                new JavadocToSchemadocTransformer(method.getJavadoc()).generate(writer);
+                writer.indentDepth(4);
+            }
+            
+            writer.writeLine("            </xsd:attribute>");
+        }
+        writer.writeLine("        </xsd:extension>");
+        writer.writeLine("    </xsd:complexContent>");
+        writer.writeLine("</xsd:complexType>");
+        writer.resetIndentDepth();
+    }
+
     private void writeOperations() throws IOException
     {
         writer.newLine();
@@ -160,7 +237,11 @@ public class SchemaGenerator extends AbstractGenerator
         writer.write(method.getName());
         writer.write("Type\" substitutionGroup=\"mule:abstract-message-processor\">");
         writer.newLine();
+        
+        writer.indentDepth(8);
         new JavadocToSchemadocTransformer(method.getJavadoc()).generate(writer);
+        writer.resetIndentDepth();
+        
         writer.writeLine("    </xsd:element>");
     }
 

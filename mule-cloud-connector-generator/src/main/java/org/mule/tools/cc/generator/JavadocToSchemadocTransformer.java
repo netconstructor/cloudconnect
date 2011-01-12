@@ -32,13 +32,10 @@ public class JavadocToSchemadocTransformer
 
         if (StringUtils.isNotEmpty(javadocText))
         {
-            writer.indentDepth(8);
-
             generateOpeningAnnotationAndDocumentationElement();
             translateJavadocText();
             generateClosingAnnotationAndDocumentationElement();
 
-            writer.resetIndentDepth();
             writer.flush();
         }
     }
@@ -51,8 +48,9 @@ public class JavadocToSchemadocTransformer
 
     private void translateJavadocText() throws IOException
     {
-        writer.write("               ");
-
+        writer.indent();
+        writer.write("       ");
+        
         StrTokenizer tokenizer = new StrTokenizer(javadocText);
         String token = tokenizer.nextToken();
         while (token != null)

@@ -63,9 +63,17 @@ public class GeneratorWriter
     {
         this.indentDepth = depth;
     }
-
+    
     public void resetIndentDepth()
     {
         indentDepth = 0;
+    }
+
+    public void indent() throws IOException
+    {
+        for (int i = 0; i < indentDepth; i++)
+        {
+            writer.write(' ');
+        }
     }
 }

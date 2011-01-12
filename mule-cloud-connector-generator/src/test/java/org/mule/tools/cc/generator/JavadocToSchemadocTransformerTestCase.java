@@ -58,13 +58,13 @@ public class JavadocToSchemadocTransformerTestCase
     private String annotationContaining(String string)
     {
         StringBuilder buf = new StringBuilder(512);
-        buf.append("        <xsd:annotation>\n");
-        buf.append("            <xsd:documentation>\n");
-        buf.append("                ");
+        buf.append("<xsd:annotation>\n");
+        buf.append("    <xsd:documentation>\n");
+        buf.append("        ");
         buf.append(string);
         buf.append("\n");
-        buf.append("            </xsd:documentation>\n");
-        buf.append("        </xsd:annotation>\n");
+        buf.append("    </xsd:documentation>\n");
+        buf.append("</xsd:annotation>\n");
 
         return buf.toString();
     }
