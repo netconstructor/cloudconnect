@@ -132,34 +132,34 @@ public class SchemaGenerator extends AbstractGenerator
     }
 
     private void writeConfigElementType(List<JavaMethod> gettersAndSetters) throws IOException
-    {        
+    {
         writer.indentDepth(4);
         writer.writeLine("<xsd:complexType name=\"configType\">");
         writer.writeLine("    <xsd:complexContent>");
         writer.writeLine("        <xsd:extension base=\"mule:abstractExtensionType\">");
-        
+
         for (JavaMethod method : gettersAndSetters)
         {
             // strip 'set' from the method name
             String methodName = method.getName().substring(3);
             methodName = StringUtils.uncapitalize(methodName);
-            
+
             writer.write("                <xsd:attribute name=\"");
             writer.write(methodName);
             writer.write("\" type=\"");
-            
+
             String type = method.getParameters().get(0).getType();
             writer.write(SchemaTypesMapping.schemaTypeForJavaTypeName(type));
             writer.write("\">");
             writer.newLine();
-            
+
             if (StringUtils.isNotBlank(method.getJavadoc()))
             {
                 writer.indentDepth(20);
                 new JavadocToSchemadocTransformer(method.getJavadoc()).generate(writer);
                 writer.indentDepth(4);
             }
-            
+
             writer.writeLine("            </xsd:attribute>");
         }
         writer.writeLine("        </xsd:extension>");
@@ -217,11 +217,11 @@ public class SchemaGenerator extends AbstractGenerator
         writer.write(method.getName());
         writer.write("Type\" substitutionGroup=\"mule:abstract-message-processor\">");
         writer.newLine();
-        
+
         writer.indentDepth(8);
         new JavadocToSchemadocTransformer(method.getJavadoc()).generate(writer);
         writer.resetIndentDepth();
-        
+
         writer.writeLine("    </xsd:element>");
     }
 
@@ -234,7 +234,7 @@ public class SchemaGenerator extends AbstractGenerator
 
         for (JavaMethodParameter parameter : method.getParameters())
         {
-            String type = SchemaTypesMapping.schemaTypeForJavaTypeName(parameter.getType());
+            String type = schemaTypeForParameter(parameter, method);
             writer.writeLine("            <xsd:attribute name=\"%1s\" type=\"%2s\"/>",
                 parameter.getName(), type);
         }
@@ -243,6 +243,20 @@ public class SchemaGenerator extends AbstractGenerator
         writer.writeLine("    </xsd:complexContent>");
         writer.writeLine("</xsd:complexType>");
         writer.resetIndentDepth();
+    }
+
+    private String schemaTypeForParameter(JavaMethodParameter parameter, JavaMethod method)
+    {
+        try
+        {
+            return SchemaTypesMapping.schemaTypeForJavaTypeName(parameter.getType());
+        }
+        catch (IllegalStateException ise)
+        {
+            String message = String.format("Don't know how to map the type of parameter %1s (method: %2s). Parameter type is %3s",
+                parameter.getName(), method.getName(), parameter.getType());
+            throw new IllegalStateException(message);
+        }
     }
 
     private void writeClosingStartElement() throws IOException
