@@ -164,6 +164,11 @@ public class GeneratorMojo extends AbstractMojo
             throw new MojoExecutionException(
                 "Error while parsing " + cloudConnector.getAbsolutePath(), iox);
         }
+        catch (IllegalArgumentException iax)
+        {
+            throw new MojoExecutionException(
+                "Error while parsing " + cloudConnector.getAbsolutePath(), iax);
+        }
         finally
         {
             IOUtil.close(input);
