@@ -113,7 +113,7 @@
             <plugin>
                 <groupId>org.mule.tools</groupId>
                 <artifactId>mule-cloud-connector-generator-maven-plugin</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>
@@ -218,7 +218,7 @@
             <groupId>org.mule.modules</groupId>
             <artifactId>mule-module-spring-config</artifactId>
             <version>${D}{mule.version}</version>
-            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 #if($cloudServiceType == "WSDL")
         <!-- CXF dependencies -->
