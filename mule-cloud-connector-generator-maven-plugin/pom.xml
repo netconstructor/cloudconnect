@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.mule.tools</groupId>
     <artifactId>mule-cloud-connector-generator-maven-plugin</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     <name>Maven Plugin for Cloud Connector Generator</name>
     <description>Integrate generating schema and Spring bean definition parser from a cloud connector class into the Maven build.</description>
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>org.mule.tools</groupId>
             <artifactId>mule-cloud-connector-generator</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
