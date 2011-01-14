@@ -9,8 +9,17 @@ generateArchetypeScriptFile(outputFilename)
 def createDefaultProperties()
 {
     Properties defaultProperties = new Properties()
-    defaultProperties.setProperty("groupId", "org.mule.modules")
-    defaultProperties.setProperty("version", "1.0-SNAPSHOT")
+
+    // version of the mule-cloud-connector-archetype to use
+    defaultProperties.archetypeVersion = "1.0-SNAPSHOT"
+
+    // which Mule version should be used?
+    defaultProperties.muleVersion = "3.1.0"
+
+    // these are the default values for the newly created project
+    defaultProperties.groupId = "org.mule.modules"
+    defaultProperties.version = "1.0-SNAPSHOT"
+
     return defaultProperties
 }
 
@@ -137,9 +146,6 @@ def generateArchetypeScriptFile(String filename)
         mavenExecutable = "mvn.bat"
     }
 
-    def muleVersion = "3.1.0"
-    def archetypeVersion = "1.0-SNAPSHOT"
-
     def outputFile = new File(filename)
     outputFile.withWriter
     {
@@ -148,19 +154,19 @@ def generateArchetypeScriptFile(String filename)
         writer.write("${mavenExecutable} archetype:generate -B")
         writer.write(" -DarchetypeGroupId=org.mule.tools")
         writer.write(" -DarchetypeArtifactId=mule-cloud-connector-archetype")
-        writer.write(" -DarchetypeVersion=${archetypeVersion}")
+        writer.write(" -DarchetypeVersion=${archetypeProperties.archetypeVersion}")
         writer.write(" -DgroupId=${archetypeProperties.groupId}")
         writer.write(" -DartifactId=${archetypeProperties.artifactId}")
         writer.write(" -Dversion=${archetypeProperties.version}")
         writer.write(" -Dpackage=${archetypeProperties.package}")
-        writer.write(" -DmuleVersion=${muleVersion}")
+        writer.write(" -DmuleVersion=${archetypeProperties.muleVersion}")
         writer.write(" -DcloudService=${archetypeProperties.cloudService}")
         writer.write(" -DcloudServiceLower=${archetypeProperties.cloudService.toLowerCase()}")
         writer.write(" -DcloudServiceType=${archetypeProperties.cloudServiceType}");
         writer.write(" -Dwsdl=${archetypeProperties.wsdl}")
 
         // to run a snapshot version of the archetype we must declare repository to find it
-        if (archetypeVersion.endsWith("SNAPSHOT"))
+        if (archetypeProperties.archetypeVersion.endsWith("SNAPSHOT"))
         {
             writer.write(" -DarchetypeRepository=http://snapshots.repository.codehaus.org")
         }
