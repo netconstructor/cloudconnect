@@ -10,63 +10,31 @@
 
 package org.mule.tools.cc.generator;
 
-import japa.parser.JavaParser;
-import japa.parser.ParseException;
-import japa.parser.ast.CompilationUnit;
-import japa.parser.ast.PackageDeclaration;
-import japa.parser.ast.body.TypeDeclaration;
+import com.thoughtworks.qdox.JavaDocBuilder;
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.parser.ParseException;
 
 import java.io.InputStream;
-import java.util.List;
+import java.io.InputStreamReader;
 
-public class JavaClassParser
-{
-    private CompilationUnit compilationUnit;
+public class JavaClassParser {
+    public JavaClass parse(InputStream input) {
+        try {
+            JavaDocBuilder builder = new JavaDocBuilder();
+            builder.addSource(new InputStreamReader(input));
 
-    public JavaClass parse(InputStream input)
-    {
-        parseCompilationUnit(input);
+            JavaClass[] typeDeclarations = builder.getClasses();
+            if (typeDeclarations == null) {
+                throw new IllegalArgumentException("Source file does not contain a Java class");
+            }
 
-        TypeDeclaration typeDecl = typeDeclarationFromCompilationUnit();
-        String packageName = packageNameFromCompilationUnit();
-        return new TypeDeclarationJavaClass(typeDecl, packageName);
-    }
+            if (typeDeclarations.length > 1) {
+                throw new IllegalArgumentException("Source file contains more than one Java class");
+            }
 
-    private void parseCompilationUnit(InputStream input)
-    {
-        try
-        {
-            compilationUnit = JavaParser.parse(input, "UTF-8");
-        }
-        catch (ParseException pe)
-        {
+            return typeDeclarations[0];
+        } catch (ParseException pe) {
             throw new IllegalArgumentException(pe);
         }
-    }
-
-    private TypeDeclaration typeDeclarationFromCompilationUnit()
-    {
-        List<TypeDeclaration> typeDeclarations = compilationUnit.getTypes();
-        if (typeDeclarations == null)
-        {
-            throw new IllegalArgumentException("Source file does not contain a Java class");
-        }
-
-        if (typeDeclarations.size() > 1)
-        {
-            throw new IllegalArgumentException("Source file contains more than one Java class");
-        }
-
-        return typeDeclarations.get(0);
-    }
-
-    private String packageNameFromCompilationUnit()
-    {
-        PackageDeclaration packageDeclaration = compilationUnit.getPackage();
-        if (packageDeclaration == null)
-        {
-            throw new IllegalArgumentException("Source file does not declare a package. Default package is unsupported.");
-        }
-        return packageDeclaration.getName().toString();
     }
 }

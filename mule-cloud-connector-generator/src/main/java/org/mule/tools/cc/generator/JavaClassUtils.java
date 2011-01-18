@@ -10,6 +10,9 @@
 
 package org.mule.tools.cc.generator;
 
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaMethod;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +21,13 @@ public class JavaClassUtils
     public static List<JavaMethod> collectSetters(JavaClass javaClass)
     {
         List<JavaMethod> collectedMethods = new ArrayList<JavaMethod>();
+        JavaMethod[] methods = javaClass.getMethods();
 
-        for (JavaMethod method : javaClass.getMethods())
+        for( int i = 0; i < methods.length; i++ )
         {
-            if (isSetterMethod(method))
+            if (isSetterMethod(methods[i]))
             {
-                collectedMethods.add(method);
+                collectedMethods.add(methods[i]);
             }
         }
         
@@ -32,7 +36,7 @@ public class JavaClassUtils
 
     public static boolean isSetterMethod(JavaMethod method)
     {
-        if (method.getName().startsWith("set") && (method.getParameters().size() == 1))
+        if (method.getName().startsWith("set") && (method.getParameters().length == 1))
         {
             return true;
         }

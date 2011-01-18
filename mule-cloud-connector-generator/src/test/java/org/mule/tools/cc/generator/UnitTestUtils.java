@@ -10,11 +10,18 @@
 
 package org.mule.tools.cc.generator;
 
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaMethod;
+import com.thoughtworks.qdox.model.JavaParameter;
+import com.thoughtworks.qdox.model.Type;
+import org.easymock.EasyMock;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertNotNull;
 
 public class UnitTestUtils
@@ -41,6 +48,8 @@ public class UnitTestUtils
         InputStream controlInput = UnitTestUtils.getTestResource(filename);
         new LineByLineComparator(sourceInput, controlInput).compare();
     }
+
+
 
     private UnitTestUtils()
     {

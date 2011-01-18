@@ -10,6 +10,8 @@
 
 package org.mule.tools.cc.generator;
 
+import com.thoughtworks.qdox.model.JavaClass;
+
 import java.io.IOException;
 import java.io.OutputStream;
 

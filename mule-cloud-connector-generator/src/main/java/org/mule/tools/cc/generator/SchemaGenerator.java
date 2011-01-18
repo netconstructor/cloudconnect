@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import com.thoughtworks.qdox.model.JavaMethod;
+import com.thoughtworks.qdox.model.JavaParameter;
 import org.apache.commons.lang.StringUtils;
 
 public class SchemaGenerator extends AbstractGenerator
@@ -148,15 +150,15 @@ public class SchemaGenerator extends AbstractGenerator
             writer.write(methodName);
             writer.write("\" type=\"");
 
-            String type = method.getParameters().get(0).getType();
+            String type = method.getParameters()[0].getType().getValue();
             writer.write(SchemaTypesMapping.schemaTypeForJavaTypeName(type));
             writer.write("\">");
             writer.newLine();
 
-            if (StringUtils.isNotBlank(method.getJavadoc()))
+            if (StringUtils.isNotBlank(method.getComment()))
             {
                 writer.indentDepth(20);
-                new JavadocToSchemadocTransformer(method.getJavadoc()).generate(writer);
+                new JavadocToSchemadocTransformer(method.getComment()).generate(writer);
                 writer.indentDepth(4);
             }
 
@@ -198,7 +200,7 @@ public class SchemaGenerator extends AbstractGenerator
         boolean isNotPublic = !method.isPublic();
         boolean isGetMethod = method.getName().startsWith("get");
         boolean isSetMethod = JavaClassUtils.isSetterMethod(method);
-        boolean hasParameters = method.getParameters().size() > 0;
+        boolean hasParameters = method.getParameters().length > 0;
 
         if (isNotPublic || isSetMethod || (isGetMethod && !hasParameters))
         {
@@ -219,7 +221,7 @@ public class SchemaGenerator extends AbstractGenerator
         writer.newLine();
 
         writer.indentDepth(8);
-        new JavadocToSchemadocTransformer(method.getJavadoc()).generate(writer);
+        new JavadocToSchemadocTransformer(method.getComment()).generate(writer);
         writer.resetIndentDepth();
 
         writer.writeLine("    </xsd:element>");
@@ -232,7 +234,7 @@ public class SchemaGenerator extends AbstractGenerator
         writer.writeLine("    <xsd:complexContent>");
         writer.writeLine("        <xsd:extension base=\"mule:abstractInterceptingMessageProcessorType\">");
 
-        for (JavaMethodParameter parameter : method.getParameters())
+        for (JavaParameter parameter : method.getParameters())
         {
             String type = schemaTypeForParameter(parameter, method);
             writer.writeLine("            <xsd:attribute name=\"%1s\" type=\"%2s\"/>",
@@ -245,11 +247,11 @@ public class SchemaGenerator extends AbstractGenerator
         writer.resetIndentDepth();
     }
 
-    private String schemaTypeForParameter(JavaMethodParameter parameter, JavaMethod method)
+    private String schemaTypeForParameter(JavaParameter parameter, JavaMethod method)
     {
         try
         {
-            return SchemaTypesMapping.schemaTypeForJavaTypeName(parameter.getType());
+            return SchemaTypesMapping.schemaTypeForJavaTypeName(parameter.getType().getValue());
         }
         catch (IllegalStateException ise)
         {

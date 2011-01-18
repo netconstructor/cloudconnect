@@ -15,6 +15,8 @@ import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
 
+import com.thoughtworks.qdox.model.JavaMethod;
+import com.thoughtworks.qdox.model.JavaParameter;
 import org.apache.commons.lang.StringUtils;
 
 public class NamespaceHandlerGenerator extends AbstractGenerator
@@ -134,16 +136,16 @@ public class NamespaceHandlerGenerator extends AbstractGenerator
         writer.write(method.getName());
         writer.write("\", new String[] { ");
 
-        Iterator<JavaMethodParameter> parameterIter = method.getParameters().iterator();
-        while (parameterIter.hasNext())
+        JavaParameter[] parameters = method.getParameters();
+        for( int i = 0; i < parameters.length; i++ )
         {
-            JavaMethodParameter parameter = parameterIter.next();
+            JavaParameter parameter = parameters[i];
 
             writer.write("\"");
             writer.write(parameter.getName());
             writer.write("\"");
 
-            if (parameterIter.hasNext())
+            if (i != parameters.length -1 )
             {
                 writer.write(", ");
             }
