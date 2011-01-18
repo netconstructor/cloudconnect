@@ -256,7 +256,7 @@ public class SchemaGenerator extends AbstractGenerator
         catch (IllegalStateException ise)
         {
             String message = String.format("Don't know how to map the type of parameter %1s (method: %2s). Parameter type is %3s",
-                parameter.getName(), method.getName(), parameter.getType());
+                parameter.getName(), method.getName(), parameter.getType().getValue());
             throw new IllegalStateException(message);
         }
     }

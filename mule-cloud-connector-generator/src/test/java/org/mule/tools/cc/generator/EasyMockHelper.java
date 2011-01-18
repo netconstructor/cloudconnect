@@ -76,17 +76,22 @@ public class EasyMockHelper
     }
 
     public JavaMethod createMockMethod(String name, String comment, JavaParameter[] parameters) {
+        return createMockMethod(name, comment, parameters, true);
+    }
+
+    public JavaMethod createMockMethod(String name, String comment, JavaParameter[] parameters, boolean pub) {
         JavaMethod method = concreteControl.createMock(JavaMethod.class);
         expect(method.getName()).andReturn(name).anyTimes();
         expect(method.getComment()).andReturn(comment).anyTimes();
         expect(method.getParameters()).andReturn(parameters).anyTimes();
+        expect(method.isPublic()).andReturn(pub).anyTimes();
         return method;
     }
 
     public JavaParameter createMockParameter(String symbol, String typeName) {
         JavaParameter parameter = concreteControl.createMock(JavaParameter.class);
         expect(parameter.getName()).andReturn(symbol).anyTimes();
-        Type type = EasyMock.createMock(Type.class);
+        Type type = concreteControl.createMock(Type.class);
         expect(type.getValue()).andReturn(typeName).anyTimes();
         expect(parameter.getType()).andReturn(type).anyTimes();
         return parameter;

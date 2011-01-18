@@ -112,7 +112,7 @@ public class SchemaGeneratorTestCase
     @Test
     public void onlyPublicMethodsAreGenerated() throws Exception
     {
-        JavaMethod protectedMethod = easyMockHelper.createMockMethod("protectedMethod", "", new JavaParameter[] {}); // this used to be false FIX THIS
+        JavaMethod protectedMethod = easyMockHelper.createMockMethod("protectedMethod", "", new JavaParameter[] {}, false);
         JavaMethod operation = createOperationMethod();
         JavaClass mockClass = easyMockHelper.createMockClass( new JavaMethod[]{ protectedMethod, operation });
 
@@ -154,7 +154,7 @@ public class SchemaGeneratorTestCase
 
         generateAndCompareTo("integer-argument.xsd");
 
-        easyMockHelper.replay();
+        easyMockHelper.verify();
     }
 
     @Test
