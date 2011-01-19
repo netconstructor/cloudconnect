@@ -22,10 +22,10 @@ public class SchemaTypesMapping
     {
         Map<String, String> mapping = new HashMap<String, String>();
         mapping.put("boolean", "xsd:boolean");
-        mapping.put("Boolean", "xsd:boolean");
+        mapping.put(Boolean.class.getName(), "xsd:boolean");
         mapping.put("int", "xsd:integer");
-        mapping.put("Integer", "xsd:integer");
-        mapping.put("String", "xsd:string");
+        mapping.put(Integer.class.getName(), "xsd:integer");
+        mapping.put(String.class.getName(), "xsd:string");
 
         TYPES_MAP = Collections.unmodifiableMap(mapping);
     }

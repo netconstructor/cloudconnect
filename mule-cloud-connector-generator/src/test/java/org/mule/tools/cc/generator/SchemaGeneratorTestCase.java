@@ -77,7 +77,7 @@ public class SchemaGeneratorTestCase
     @Test
     public void settersBecomeConfigElement() throws Exception
     {
-        JavaParameter parameter = easyMockHelper.createMockParameter("value", "String");
+        JavaParameter parameter = easyMockHelper.createMockParameter("value", "java.lang.String");
         JavaMethod setter = easyMockHelper.createMockMethod("setApiKey", "This key is required to use the API.", new JavaParameter[] { parameter });
         JavaMethod operation = createOperationMethod();
         JavaClass mockClass = easyMockHelper.createMockClass("pkg", "class", new JavaMethod[] { setter, operation});
@@ -94,8 +94,8 @@ public class SchemaGeneratorTestCase
     @Test
     public void settersWithMoreThanOneArgumentAreIgnoredForConfigElement() throws Exception
     {
-        JavaParameter param1 = easyMockHelper.createMockParameter("valueOne", "String");
-        JavaParameter param2 = easyMockHelper.createMockParameter("valueTwo", "String");
+        JavaParameter param1 = easyMockHelper.createMockParameter("valueOne", "java.lang.String");
+        JavaParameter param2 = easyMockHelper.createMockParameter("valueTwo", "java.lang.String");
         JavaMethod setter = easyMockHelper.createMockMethod("setMustBeIgnored", null, new JavaParameter[]{ param1, param2 });
         JavaMethod operation = createOperationMethod();
         JavaClass mockClass = easyMockHelper.createMockClass(new JavaMethod[]{ setter, operation });
@@ -128,7 +128,7 @@ public class SchemaGeneratorTestCase
     @Test
     public void integerObjectArgument() throws Exception
     {
-        JavaParameter parameter = easyMockHelper.createMockParameter("anInt", "Integer");
+        JavaParameter parameter = easyMockHelper.createMockParameter("anInt", "java.lang.Integer");
         JavaMethod method = easyMockHelper.createMockMethod("intConsumingMethod", null, parameter);
         JavaClass mockClass = easyMockHelper.createMockClass(method);
 
@@ -160,7 +160,7 @@ public class SchemaGeneratorTestCase
     @Test
     public void booleanObjectArgument() throws Exception
     {
-        JavaParameter parameter = easyMockHelper.createMockParameter("aBool", "Boolean");
+        JavaParameter parameter = easyMockHelper.createMockParameter("aBool", "java.lang.Boolean");
         JavaMethod method = easyMockHelper.createMockMethod("boolConsumingMethod", null, parameter);
         JavaClass mockClass = easyMockHelper.createMockClass(method);
 
@@ -198,7 +198,7 @@ public class SchemaGeneratorTestCase
 
     private JavaMethod createOperationMethod()
     {
-        JavaParameter parameter = easyMockHelper.createMockParameter("argument1", "String");
+        JavaParameter parameter = easyMockHelper.createMockParameter("argument1", "java.lang.String");
         JavaMethod javaMethod = easyMockHelper.createMockMethod("operation",
             "This is the javadoc of the operation method", new JavaParameter[]{ parameter });
         return javaMethod;
