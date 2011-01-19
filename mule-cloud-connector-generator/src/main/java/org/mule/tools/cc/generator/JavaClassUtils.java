@@ -34,6 +34,22 @@ public class JavaClassUtils
         return collectedMethods;
     }
 
+    public static List<JavaMethod> collectNonSettersAndGetters(JavaClass javaClass)
+    {
+        List<JavaMethod> collectedMethods = new ArrayList<JavaMethod>();
+        JavaMethod[] methods = javaClass.getMethods();
+
+        for( int i = 0; i < methods.length; i++ )
+        {
+            if (!isSetterMethod(methods[i]) && !isGetterMethod(methods[i]))
+            {
+                collectedMethods.add(methods[i]);
+            }
+        }
+
+        return collectedMethods;
+    }
+
     public static boolean isSetterMethod(JavaMethod method)
     {
         if (method.getName().startsWith("set") && (method.getParameters().length == 1))
@@ -42,7 +58,16 @@ public class JavaClassUtils
         }
         return false;
     }
-    
+
+    public static boolean isGetterMethod(JavaMethod method)
+    {
+        if (method.getName().startsWith("get") && (method.getParameters().length == 0))
+        {
+            return true;
+        }
+        return false;
+    }
+
     private JavaClassUtils()
     {
         // do not create instances of this class;

@@ -205,7 +205,7 @@ public class GeneratorMojo extends AbstractMojo
 
     private void runNamespaceHandlerGenerator(JavaClass javaClass) throws MojoExecutionException
     {
-        NamespaceHandlerGenerator generator = new NamespaceHandlerGenerator();
+        FreeMarkerNamespaceHandlerGenerator generator = new FreeMarkerNamespaceHandlerGenerator();
         generator.setJavaClass(javaClass);
 
         String packageName = determinePackageNameFromNamespaceHandlerFile();
@@ -255,7 +255,7 @@ public class GeneratorMojo extends AbstractMojo
         return className.replace(".java", "");
     }
 
-    private void runGenerator(NamespaceHandlerGenerator generator) throws MojoExecutionException
+    private void runGenerator(FreeMarkerNamespaceHandlerGenerator generator) throws MojoExecutionException
     {
         OutputStream output = null;
         try
