@@ -17,7 +17,6 @@ import java.io.OutputStream;
 
 public abstract class AbstractGenerator
 {
-    protected GeneratorWriter writer;
     protected JavaClass javaClass;
 
     public abstract void generate(OutputStream output) throws IOException;
