@@ -28,33 +28,6 @@ public class JavadocToSchemadocTransformerTestCase
         writer = new GeneratorWriter(bytesOut);
     }
 
-    @Test
-    public void nullInput() throws Exception
-    {
-        new JavadocToSchemadocTransformer(null).generate(writer);
-        assertEquals("", bytesOut.toString());
-    }
-
-    @Test
-    public void emptyStringInput() throws Exception
-    {
-        new JavadocToSchemadocTransformer("").generate(writer);
-        assertEquals("", bytesOut.toString());
-    }
-
-    @Test
-    public void emptyJavadocCommentInput() throws Exception
-    {
-        String input = "                \n"
-            + "     * Looks up the city\n"
-            + "     \n";
-
-        new JavadocToSchemadocTransformer(input).generate(writer);
-        String expected = annotationContaining("Looks up the city");
-        String actual = bytesOut.toString();
-        assertEquals(expected, actual);
-    }
-
     private String annotationContaining(String string)
     {
         StringBuilder buf = new StringBuilder(512);

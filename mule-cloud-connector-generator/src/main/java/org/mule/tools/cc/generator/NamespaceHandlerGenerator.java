@@ -1,176 +1,77 @@
-/*
- * $Id$
- * --------------------------------------------------------------------------------------
- * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
- *
- * The software in this package is published under the terms of the CPAL v1.0
- * license, a copy of which has been included with this distribution in the
- * LICENSE.txt file.
- */
-
 package org.mule.tools.cc.generator;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Iterator;
-import java.util.List;
+import freemarker.ext.beans.BeansWrapper;
+import freemarker.template.*;
 
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaParameter;
-import org.apache.commons.lang.StringUtils;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class NamespaceHandlerGenerator extends AbstractGenerator
-{
+public class NamespaceHandlerGenerator extends AbstractGenerator {
+
+    private static final String TEMPLATES_DIRECTORY = "/org/mule/tools/cc/generator/templates";
+    private static final String NAMESPACE_HANDLER_TEMPLATE = "namespacehandler.ftl";
+
     private String packageName;
     private String className;
 
     @Override
-    public void generate(OutputStream output) throws IOException
-    {
-        checkAllRequiredFieldsSet();
-        writer = new GeneratorWriter(output);
+    public void generate(OutputStream output) throws IOException {
+        Configuration cfg = createConfiguration();
+        Template temp = cfg.getTemplate(NAMESPACE_HANDLER_TEMPLATE);
+        Map model = createModel();
 
-        generateFileHeader();
-        generatePackageDeclaration();
-        generateImports();
-        generateClassDeclaration();
-        generateInitMethod();
-        generateClassFooter();
-
-        writer.flush();
+        write(output, temp, model);
     }
 
-    @Override
-    protected void checkAllRequiredFieldsSet()
-    {
-        super.checkAllRequiredFieldsSet();
-
-        if (StringUtils.isEmpty(packageName))
-        {
-            throw new IllegalStateException("packageName is not set");
+    private void write(OutputStream output, Template temp, Map model) throws IOException {
+        Writer out = new OutputStreamWriter(output);
+        try {
+            temp.process(model, out);
+        } catch (TemplateException e) {
+            throw new RuntimeException("Unable to generate namespace handler template", e);
         }
-        if (StringUtils.isEmpty(className))
-        {
-            throw new IllegalStateException("className is not set");
-        }
+        out.flush();
     }
 
-    private void generateFileHeader() throws IOException
-    {
-        writer.writeLine("//");
-        writer.writeLine("// THIS FILE WAS AUTO-GENERATED. DO NOT MANUALLY EDIT!");
-        writer.writeLine("//");
+    private Map createModel() {
+        Map root = new HashMap();
+        root.put("packageName", packageName);
+        root.put("className", className);
+        root.put("javaClass", javaClass);
+        root.put("hasSetters", JavaClassUtils.collectSetters(javaClass).size() > 0);
+        root.put("operations", JavaClassUtils.collectOperations(javaClass));
+        return root;
     }
 
-    private void generatePackageDeclaration() throws IOException
-    {
-        writer.newLine();
-        writer.write("package ");
-        writer.write(packageName);
-        writer.writeLine(";");
+    private Configuration createConfiguration() throws IOException {
+        Configuration cfg = new Configuration();
+        cfg.setClassForTemplateLoading(getClass(), TEMPLATES_DIRECTORY);
+        cfg.setSharedVariable("splitCamelCase", new SplitCamelCaseDirective());
+        cfg.setSharedVariable("uncapitalize", new UncapitalizeDirective());
+        cfg.setSharedVariable("typeMap", new TypeMapDirective());
+
+        cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
+        BeansWrapper bw = (BeansWrapper) cfg.getObjectWrapper();
+        bw.setSimpleMapWrapper(true);
+        bw.setExposureLevel(BeansWrapper.EXPOSE_ALL);
+        cfg.setObjectWrapper(bw);
+        return cfg;
     }
 
-    private void generateImports() throws IOException
-    {
-        writer.newLine();
-        writer.writeLine("import org.mule.config.spring.handlers.AbstractPojoNamespaceHandler;");
-        writer.writeLine("import org.mule.config.spring.parsers.specific.InvokerMessageProcessorDefinitionParser;");
-
-        writer.write("import ");
-        writer.write(javaClass.getPackage());
-        writer.write(".");
-        writer.write(javaClass.getName());
-        writer.writeLine(";");
+    public String getPackageName() {
+        return packageName;
     }
 
-    private void generateClassDeclaration() throws IOException
-    {
-        writer.newLine();
-        writer.write("public class ");
-        writer.write(className);
-        writer.writeLine(" extends AbstractPojoNamespaceHandler");
-        writer.writeLine("{");
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
-    private void generateInitMethod() throws IOException
-    {
-        writer.indentDepth(4);
-        writer.writeLine("public void init()");
-        writer.writeLine("{");
-
-        generateConfigPojoRegistrationIfNecessary();
-
-        writer.writeLine("    InvokerMessageProcessorDefinitionParser parser = null;");
-        
-        writer.indentDepth(8);
-        for (JavaMethod method : javaClass.getMethods())
-        {
-            if (JavaClassUtils.isSetterMethod(method) == false)
-            {
-                generateParserForMethod(method);
-            }
-        }
-        writer.indentDepth(4);
-
-        writer.writeLine("}");
-        writer.resetIndentDepth();
+    public String getClassName() {
+        return className;
     }
 
-    private void generateConfigPojoRegistrationIfNecessary() throws IOException
-    {
-        List<JavaMethod> setterMethods = JavaClassUtils.collectSetters(javaClass);
-        if (setterMethods.size() > 0)
-        {
-            writer.writeLine("    registerPojo(\"config\", %1s.class);", javaClass.getName());
-            writer.newLine();
-        }
-    }
-
-    private void generateParserForMethod(JavaMethod method) throws IOException
-    {        
-        writer.newLine();
-        writer.writeLine("parser = new InvokerMessageProcessorDefinitionParser(\"messageProcessor\",");
-        writer.write("            ");
-        writer.write(javaClass.getName());
-        writer.write(".class, \"");
-        writer.write(method.getName());
-        writer.write("\", new String[] { ");
-
-        JavaParameter[] parameters = method.getParameters();
-        for( int i = 0; i < parameters.length; i++ )
-        {
-            JavaParameter parameter = parameters[i];
-
-            writer.write("\"");
-            writer.write(parameter.getName());
-            writer.write("\"");
-
-            if (i != parameters.length -1 )
-            {
-                writer.write(", ");
-            }
-        }
-
-        writer.write(" }");
-        writer.write(");");
-        writer.newLine();
-
-        String elementName = SchemaGenerator.splitCamelCase(method.getName());
-        writer.writeLine("registerMuleBeanDefinitionParser(\"%1s\", parser);", elementName);
-    }
-
-    private void generateClassFooter() throws IOException
-    {
-        writer.writeLine("}");
-    }
-
-    public void setPackageName(String name)
-    {
-        packageName = name;
-    }
-
-    public void setClassName(String name)
-    {
-        className = name;
+    public void setClassName(String className) {
+        this.className = className;
     }
 }

@@ -66,11 +66,13 @@
                         <#if operation.getComment()?has_content>
                         <xsd:annotation>
                             <xsd:documentation>
+                                <#if operation.getTagsByName("param")?has_content>
                                 <#list operation.getTagsByName("param") as doclet>
                                 <#if doclet.getParameters()[0] == parameter.getName()>
                                 ${doclet.getValue().substring(doclet.getValue().indexOf(' '))}
                                 </#if>
                                 </#list>
+                                </#if>
                             </xsd:documentation>
                         </xsd:annotation>
                         </#if>
