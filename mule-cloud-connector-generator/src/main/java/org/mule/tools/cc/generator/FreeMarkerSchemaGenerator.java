@@ -7,13 +7,13 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FreeMarkerNamespaceHandlerGenerator extends AbstractGenerator {
+public class FreeMarkerSchemaGenerator extends AbstractGenerator {
 
     private static final String TEMPLATES_DIRECTORY = "/org/mule/tools/cc/generator/templates";
-    private static final String NAMESPACE_HANDLER_TEMPLATE = "namespacehandler.ftl";
+    private static final String NAMESPACE_HANDLER_TEMPLATE = "schema.ftl";
 
-    private String packageName;
-    private String className;
+    private String namespaceIdentifierSuffix;
+    private String schemaVersion;
 
     @Override
     public void generate(OutputStream output) throws IOException {
@@ -29,17 +29,17 @@ public class FreeMarkerNamespaceHandlerGenerator extends AbstractGenerator {
         try {
             temp.process(model, out);
         } catch (TemplateException e) {
-            throw new RuntimeException("Unable to generate namespace handler template", e);
+            throw new RuntimeException("Unable to generate xml schema", e);
         }
         out.flush();
     }
 
     private Map createModel() {
         Map root = new HashMap();
-        root.put("packageName", packageName);
-        root.put("className", className);
-        root.put("javaClass", javaClass);
+        root.put("namespaceIdentifierSuffix", namespaceIdentifierSuffix);
+        root.put("schemaVersion", schemaVersion);
         root.put("hasSetters", JavaClassUtils.collectSetters(javaClass).size() > 0);
+        root.put("setters", JavaClassUtils.collectSetters(javaClass));
         root.put("operations", JavaClassUtils.collectOperations(javaClass));
         return root;
     }
@@ -59,19 +59,19 @@ public class FreeMarkerNamespaceHandlerGenerator extends AbstractGenerator {
         return cfg;
     }
 
-    public String getPackageName() {
-        return packageName;
+    public String getNamespaceIdentifierSuffix() {
+        return namespaceIdentifierSuffix;
     }
 
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
+    public void setNamespaceIdentifierSuffix(String namespaceIdentifierSuffix) {
+        this.namespaceIdentifierSuffix = namespaceIdentifierSuffix;
     }
 
-    public String getClassName() {
-        return className;
+    public String getSchemaVersion() {
+        return schemaVersion;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setSchemaVersion(String schemaVersion) {
+        this.schemaVersion = schemaVersion;
     }
 }

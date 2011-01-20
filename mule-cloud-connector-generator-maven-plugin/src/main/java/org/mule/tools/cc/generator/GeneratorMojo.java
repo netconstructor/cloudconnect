@@ -114,7 +114,7 @@ public class GeneratorMojo extends AbstractMojo
 
     private void runSchemaGenerator(JavaClass javaClass) throws MojoExecutionException
     {
-        SchemaGenerator generator = new SchemaGenerator();
+        FreeMarkerSchemaGenerator generator = new FreeMarkerSchemaGenerator();
         generator.setJavaClass(javaClass);
 
         String suffix = determineNamespaceIdentifierSuffixFromSchemaFilename();
@@ -176,7 +176,7 @@ public class GeneratorMojo extends AbstractMojo
         }
     }
 
-    private void runGenerator(SchemaGenerator generator) throws MojoExecutionException
+    private void runGenerator(FreeMarkerSchemaGenerator generator) throws MojoExecutionException
     {
         OutputStream output = null;
         try
