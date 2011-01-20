@@ -2,13 +2,29 @@ package org.mule.tools.cc.generator;
 
 import freemarker.core.Environment;
 import freemarker.template.*;
-import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TypeMapDirective implements TemplateDirectiveModel {
+    private static final Map<String, String> TYPES_MAP;
+
+    static
+    {
+        Map<String, String> mapping = new HashMap<String, String>();
+        mapping.put("boolean", "xsd:boolean");
+        mapping.put(Boolean.class.getName(), "xsd:boolean");
+        mapping.put("int", "xsd:integer");
+        mapping.put(Integer.class.getName(), "xsd:integer");
+        mapping.put(String.class.getName(), "xsd:string");
+
+        TYPES_MAP = Collections.unmodifiableMap(mapping);
+    }
+
+
     public void execute(Environment environment, Map params, TemplateModel[] templateModels, TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
         if (!params.isEmpty()) {
             throw new TemplateModelException("This directive doesn't allow any parameter");
@@ -37,7 +53,13 @@ public class TypeMapDirective implements TemplateDirectiveModel {
                 throws IOException {
             String str = new String(cbuf, off, len);
 
-            out.write(SchemaTypesMapping.schemaTypeForJavaTypeName(str));
+            String schemaType = TYPES_MAP.get(str);
+            if (schemaType == null)
+            {
+                String message = String.format("Don't know how to map from Java type '%1s' to schema type", str);
+                throw new IllegalStateException(message);
+            }
+            out.write(schemaType);
         }
 
         public void flush() throws IOException {
