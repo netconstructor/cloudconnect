@@ -33,7 +33,8 @@
     <xsd:complexType name="operationType">
         <xsd:complexContent>
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
-                <xsd:attribute name="argument1" type="xsd:string"/>
+                <xsd:attribute name="argument1" type="xsd:string">
+                </xsd:attribute>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>

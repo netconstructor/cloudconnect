@@ -17,13 +17,10 @@ public class ${className} extends AbstractPojoNamespaceHandler
         </#if>
         InvokerMessageProcessorDefinitionParser parser = null;
         <#list operations as operation>
+
         parser = new InvokerMessageProcessorDefinitionParser("messageProcessor",
-            ${className}.class, "${operation.getName()}", new String[] {
-             <#list operation.getParameters() as parameter>
-                "${parameter.getName()}"<#if parameter_has_next>,</#if>
-             </#list>
-            } );
-        registerMuleBeanDefinitionParser( "<@splitCamelCase>${operation.getName()}</@splitCamelCase>", parser );
+            ${javaClass.getName()}.class, "${operation.getName()}", new String[] {<#list operation.getParameters() as parameter> "${parameter.getName()}"<#if parameter_has_next>,</#if></#list> });
+        registerMuleBeanDefinitionParser("<@splitCamelCase>${operation.getName()}</@splitCamelCase>", parser);
         </#list>
     }
 }

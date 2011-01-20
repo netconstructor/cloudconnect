@@ -13,7 +13,6 @@ public class ConfigElementNamespaceHandler extends AbstractPojoNamespaceHandler
     public void init()
     {
         registerPojo("config", ConfigElementCloudConnector.class);
-
         InvokerMessageProcessorDefinitionParser parser = null;
     }
 }

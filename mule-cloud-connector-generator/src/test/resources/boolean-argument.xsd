@@ -28,7 +28,8 @@
     <xsd:complexType name="boolConsumingMethodType">
         <xsd:complexContent>
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
-                <xsd:attribute name="aBool" type="xsd:boolean"/>
+                <xsd:attribute name="aBool" type="xsd:boolean">
+                </xsd:attribute>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>

@@ -10,14 +10,13 @@
 
 package org.mule.tools.cc.generator;
 
-import java.io.IOException;
-
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaParameter;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class NamespaceHandlerGeneratorTestCase
 {
