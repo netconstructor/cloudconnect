@@ -8,7 +8,7 @@
 		</parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.mule.tools</groupId>
-    <artifactId>mule-cloud-connector-templateGenerator</artifactId>
+    <artifactId>mule-cloud-connector-generator</artifactId>
     <version>${cloudConnectVersion}</version>
     <packaging>jar</packaging>
     <name>Cloud Connector Generator</name>

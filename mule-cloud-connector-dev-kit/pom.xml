@@ -7,7 +7,7 @@
 	</parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.mule.distributions</groupId>
-    <artifactId>cloud-connector-dev-kit</artifactId>
+    <artifactId>mule-cloud-connector-dev-kit</artifactId>
     <version>${cloudConnectVersion}</version>
     <packaging>pom</packaging>
     <name>Mule Cloud Connect Developer Kit Distribution</name>
