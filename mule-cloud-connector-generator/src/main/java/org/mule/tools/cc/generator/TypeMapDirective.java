@@ -31,6 +31,7 @@ public class TypeMapDirective implements TemplateDirectiveModel
         TYPES_MAP = Collections.unmodifiableMap(mapping);
     }
 
+    @SuppressWarnings("rawtypes")
     public void execute(Environment environment,
                         Map params,
                         TemplateModel[] templateModels,
