@@ -20,6 +20,7 @@ public class TypeMapDirective implements TemplateDirectiveModel {
         mapping.put("int", "xsd:integer");
         mapping.put(Integer.class.getName(), "xsd:integer");
         mapping.put(String.class.getName(), "xsd:string");
+        mapping.put("java.lang.Date", "xsd:date");
 
         TYPES_MAP = Collections.unmodifiableMap(mapping);
     }
@@ -58,8 +59,9 @@ public class TypeMapDirective implements TemplateDirectiveModel {
             {
                 String message = String.format("Don't know how to map from Java type '%1s' to schema type", str);
                 throw new IllegalStateException(message);
+            } else {
+                out.write(schemaType);
             }
-            out.write(schemaType);
         }
 
         public void flush() throws IOException {

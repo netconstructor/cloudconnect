@@ -10,13 +10,6 @@
 
 package org.mule.tools.cc.generator;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -24,6 +17,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.util.IOUtil;
+
+import java.io.*;
 
 /**
  * Generate schema for a Mule cloud connector.
@@ -205,7 +200,7 @@ public class GeneratorMojo extends AbstractMojo
 
     private void runNamespaceHandlerGenerator(JavaClass javaClass) throws MojoExecutionException
     {
-        FreeMarkerNamespaceHandlerGenerator generator = new FreeMarkerNamespaceHandlerGenerator();
+        NamespaceHandlerGenerator generator = new NamespaceHandlerGenerator();
         generator.setJavaClass(javaClass);
 
         String packageName = determinePackageNameFromNamespaceHandlerFile();
@@ -255,7 +250,7 @@ public class GeneratorMojo extends AbstractMojo
         return className.replace(".java", "");
     }
 
-    private void runGenerator(FreeMarkerNamespaceHandlerGenerator generator) throws MojoExecutionException
+    private void runGenerator(NamespaceHandlerGenerator generator) throws MojoExecutionException
     {
         OutputStream output = null;
         try
