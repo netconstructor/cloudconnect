@@ -8,17 +8,17 @@
  * LICENSE.txt file.
  */
 
-package org.mule.tools.cc.parser;
+package org.mule.tools.cc.parser.qdox;
 
 import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.parser.ParseException;
+import org.mule.tools.cc.model.JavaClass;
+import org.mule.tools.cc.parser.ClassParser;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class JavaClassParser
-{
+public class QDoxClassParser implements ClassParser {
     public JavaClass parse(InputStream input)
     {
         try
@@ -26,18 +26,17 @@ public class JavaClassParser
             JavaDocBuilder builder = new JavaDocBuilder();
             builder.addSource(new InputStreamReader(input));
 
-            JavaClass[] typeDeclarations = builder.getClasses();
-            if (typeDeclarations == null)
+            if (builder.getClasses() == null)
             {
                 throw new IllegalArgumentException("Source file does not contain a Java class");
             }
 
-            if (typeDeclarations.length > 1)
+            if (builder.getClasses().length > 1)
             {
                 throw new IllegalArgumentException("Source file contains more than one Java class");
             }
 
-            return typeDeclarations[0];
+            return new QDoxClassAdapter(builder.getClasses()[0]);
         }
         catch (ParseException pe)
         {

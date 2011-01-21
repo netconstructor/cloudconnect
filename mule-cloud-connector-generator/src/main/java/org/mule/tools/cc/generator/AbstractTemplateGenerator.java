@@ -10,7 +10,6 @@
 
 package org.mule.tools.cc.generator;
 
-import com.thoughtworks.qdox.model.JavaClass;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
@@ -19,6 +18,7 @@ import freemarker.template.TemplateException;
 import org.mule.tools.cc.generator.directives.SplitCamelCaseDirective;
 import org.mule.tools.cc.generator.directives.TypeMapDirective;
 import org.mule.tools.cc.generator.directives.UncapitalizeDirective;
+import org.mule.tools.cc.model.JavaClass;
 
 import java.io.IOException;
 import java.io.OutputStream;

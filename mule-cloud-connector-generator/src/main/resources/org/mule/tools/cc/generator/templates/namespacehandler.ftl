@@ -6,17 +6,17 @@ package ${packageName};
 
 import org.mule.config.spring.handlers.AbstractPojoNamespaceHandler;
 import org.mule.config.spring.parsers.specific.InvokerMessageProcessorDefinitionParser;
-import ${javaClass.getPackage()}.${javaClass.getName()};
+import ${class.getPackage()}.${class.getName()};
 
 public class ${className} extends AbstractPojoNamespaceHandler
 {
     public void init()
     {
-        <#if hasSetters>
+        <#if class.hasProperties()>
         registerPojo("config", ${javaClass.getName()}.class);
         </#if>
         InvokerMessageProcessorDefinitionParser parser = null;
-        <#list operations as operation>
+        <#list class.getOperations() as operation>
 
         parser = new InvokerMessageProcessorDefinitionParser("messageProcessor",
             ${javaClass.getName()}.class, "${operation.getName()}", new String[] {<#list operation.getParameters() as parameter> "${parameter.getName()}"<#if parameter_has_next>,</#if></#list> });

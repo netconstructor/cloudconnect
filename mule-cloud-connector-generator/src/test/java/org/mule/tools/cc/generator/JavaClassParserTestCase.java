@@ -16,7 +16,7 @@ import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaParameter;
 import org.junit.Test;
-import org.mule.tools.cc.parser.JavaClassParser;
+import org.mule.tools.cc.parser.qdox.QDoxClassParser;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -28,21 +28,21 @@ public class JavaClassParserTestCase
     public void javaFileDoesNotContainClass() throws Exception
     {
         InputStream input = UnitTestUtils.getTestResource("package-info.java.txt");
-        new JavaClassParser().parse(input);
+        new QDoxClassParser().parse(input);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void javaFileContainsMoreThanOneClass() throws Exception
     {
         InputStream input = UnitTestUtils.getTestResource("MoreThanOneClass.java.txt");
-        new JavaClassParser().parse(input);
+        new QDoxClassParser().parse(input);
     }
 
     @Test
     public void parseMethodWithoutParameters() throws Exception
     {
         InputStream input = UnitTestUtils.getTestResource("MethodWithoutParameters.java.txt");
-        JavaClass javaClass = new JavaClassParser().parse(input);
+        JavaClass javaClass = new QDoxClassParser().parse(input);
         assertNotNull(javaClass);
         assertEquals(1, javaClass.getMethods().length);
 
@@ -56,7 +56,7 @@ public class JavaClassParserTestCase
     public void parseJavaFile() throws Exception
     {
         InputStream input = UnitTestUtils.getTestResource("SampleCloudConnector.java.txt");
-        JavaClass javaClass = new JavaClassParser().parse(input);
+        JavaClass javaClass = new QDoxClassParser().parse(input);
         assertNotNull(javaClass);
         assertEquals(1, javaClass.getMethods().length);
 

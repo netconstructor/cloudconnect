@@ -22,18 +22,18 @@
         </xsd:documentation>
     </xsd:annotation>
 
-    <#if hasSetters>
+    <#if class.hasProperties()>
     <!-- Configuration -->
     <xsd:element name="config" type="configType" substitutionGroup="mule:abstract-extension"/>
     <xsd:complexType name="configType">
         <xsd:complexContent>
             <xsd:extension base="mule:abstractExtensionType">
-            <#list setters as setter>
-                <xsd:attribute name="<@uncapitalize>${setter.getName().substring(3)}</@uncapitalize>" type="<@typeMap>${setter.getParameters()[0].getType().getValue()}</@typeMap>">
-                    <#if setter.getComment()?has_content>
+            <#list class.getProperties() as property>
+                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="<@typeMap>${property.getType()}</@typeMap>">
+                    <#if property.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation>
-                            ${setter.getComment()}
+                            ${property.getComment()}
                         </xsd:documentation>
                     </xsd:annotation>
                     </#if>
@@ -45,9 +45,9 @@
 
     </#if>
     <!-- Operations -->
-    <#list operations as operation>
+    <#list class.getOperations() as operation>
     <xsd:element name="<@splitCamelCase>${operation.getName()}</@splitCamelCase>" type="${operation.getName()}Type" substitutionGroup="mule:abstract-message-processor">
-        <#if operation.getComment()?has_content>
+        <#if operation.getDescription()?has_content>
         <xsd:annotation>
             <xsd:documentation>
                 ${operation.getComment()}
@@ -59,15 +59,11 @@
         <xsd:complexContent>
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
                 <#list operation.getParameters() as parameter>
-                <xsd:attribute name="${parameter.getName()}" type="<@typeMap>${parameter.getType().getValue()}</@typeMap>">
-                    <#if operation.getTagsByName("param")?has_content>
+                <xsd:attribute name="${parameter.getName()}" type="<@typeMap>${parameter.getType()}</@typeMap>">
+                    <#if parameter.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation>
-                            <#list operation.getTagsByName("param") as doclet>
-                            <#if doclet.getParameters()[0] == parameter.getName()>
-                            ${doclet.getValue().substring(doclet.getValue().indexOf(' '))}
-                            </#if>
-                            </#list>
+                            ${parameter.getDescription()}
                         </xsd:documentation>
                     </xsd:annotation>
                     </#if>

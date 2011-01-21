@@ -10,8 +10,6 @@
 
 package org.mule.tools.cc.generator;
 
-import org.mule.tools.cc.parser.JavaClassUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,8 +27,6 @@ public class NamespaceHandlerGenerator extends AbstractTemplateGenerator
         root.put("packageName", packageName);
         root.put("className", className);
         root.put("javaClass", javaClass);
-        root.put("hasSetters", JavaClassUtils.collectSetters(javaClass).size() > 0);
-        root.put("operations", JavaClassUtils.collectOperations(javaClass));
         return root;
     }
 

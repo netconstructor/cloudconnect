@@ -1,22 +1,8 @@
 
 package org.mule.tools.cc.generator;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-
-import freemarker.ext.beans.BeansWrapper;
-import freemarker.template.Configuration;
-import freemarker.template.ObjectWrapper;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import org.mule.tools.cc.generator.directives.SplitCamelCaseDirective;
-import org.mule.tools.cc.generator.directives.TypeMapDirective;
-import org.mule.tools.cc.generator.directives.UncapitalizeDirective;
-import org.mule.tools.cc.parser.JavaClassUtils;
 
 public class SchemaGenerator extends AbstractTemplateGenerator
 {
@@ -31,9 +17,7 @@ public class SchemaGenerator extends AbstractTemplateGenerator
         Map<String, Object> root = new HashMap<String, Object>();
         root.put("namespaceIdentifierSuffix", namespaceIdentifierSuffix);
         root.put("schemaVersion", schemaVersion);
-        root.put("hasSetters", JavaClassUtils.collectSetters(javaClass).size() > 0);
-        root.put("setters", JavaClassUtils.collectSetters(javaClass));
-        root.put("operations", JavaClassUtils.collectOperations(javaClass));
+        root.put("class", javaClass);
         return root;
     }
 

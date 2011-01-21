@@ -7,20 +7,20 @@
     <version>1.0</version>
     <packaging>pom</packaging>
     <name>Mule Cloud Connector</name>
-	<url>http://www.mulesoft.org/documentation/display/MULE3USER/Mule+Cloud+Connect</url>
+    <url>http://www.mulesoft.org/documentation/display/MULE3USER/Mule+Cloud+Connect</url>
 
     <properties>
-		<cloudConnectVersion>1.1-SNAPSHOT</cloudConnectVersion>
+        <cloudConnectVersion>1.1-SNAPSHOT</cloudConnectVersion>
         <mavenVersion>2.0.9</mavenVersion>
-		<junitVersion>4.8.2</junitVersion>
+        <junitVersion>4.8.2</junitVersion>
     </properties>
 
-<modules>
-	<module>mule-cloud-connector-archetype</module>
-	<module>mule-cloud-connector-dev-kit</module>
-	<module>mule-cloud-connector-generator</module>
-	<module>mule-cloud-connector-generator-maven-plugin</module>
-</modules>
+    <modules>
+        <module>mule-cloud-connector-archetype</module>
+        <module>mule-cloud-connector-dev-kit</module>
+        <module>mule-cloud-connector-generator</module>
+        <module>mule-cloud-connector-generator-maven-plugin</module>
+    </modules>
 
     <build>
         <extensions>
@@ -66,7 +66,7 @@
         </snapshotRepository>
     </distributionManagement>
 
-	<scm>
+    <scm>
         <connection>scm:git:git://github.com:mulesoft/cloudconnect.git
         </connection>
         <developerConnection>
