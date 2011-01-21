@@ -132,6 +132,18 @@ public class SchemaGeneratorTestCase
         generateAndCompareTo("boolean-argument.xsd");
     }
 
+    @Test
+    public void dateObjectArgument() throws Exception
+    {
+        JavaParameter parameter = UnitTestUtils.createMockParameter("aDate", "java.lang.Date");
+        JavaMethod method = UnitTestUtils.createMockMethod("dateConsumingMethod", "", parameter);
+        JavaClass mockClass = UnitTestUtils.createMockClass(method);
+
+        generator.setJavaClass(mockClass);
+
+        generateAndCompareTo("date-argument.xsd");
+    }
+
     @Ignore
     @Test
     public void optionalArgument()
