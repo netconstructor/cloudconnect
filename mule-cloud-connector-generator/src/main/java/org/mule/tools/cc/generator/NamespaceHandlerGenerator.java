@@ -10,52 +10,20 @@
 
 package org.mule.tools.cc.generator;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import org.mule.tools.cc.parser.JavaClassUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import freemarker.ext.beans.BeansWrapper;
-import freemarker.template.Configuration;
-import freemarker.template.ObjectWrapper;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-
-public class NamespaceHandlerGenerator extends AbstractGenerator
+public class NamespaceHandlerGenerator extends AbstractTemplateGenerator
 {
-    private static final String TEMPLATES_DIRECTORY = "/org/mule/tools/cc/generator/templates";
     private static final String NAMESPACE_HANDLER_TEMPLATE = "namespacehandler.ftl";
 
     private String packageName;
     private String className;
 
     @Override
-    public void generate(OutputStream output) throws IOException
-    {
-        Configuration cfg = createConfiguration();
-        Template temp = cfg.getTemplate(NAMESPACE_HANDLER_TEMPLATE);
-        Map<String, Object> model = createModel();
-
-        write(output, temp, model);
-    }
-
-    private void write(OutputStream output, Template temp, Map<String, Object> model) throws IOException
-    {
-        Writer out = new OutputStreamWriter(output);
-        try
-        {
-            temp.process(model, out);
-        }
-        catch (TemplateException e)
-        {
-            throw new RuntimeException("Unable to generate namespace handler template", e);
-        }
-        out.flush();
-    }
-
-    private Map<String, Object> createModel()
+    protected Map<String, Object> createModel()
     {
         Map<String, Object> root = new HashMap<String, Object>();
         root.put("packageName", packageName);
@@ -66,20 +34,10 @@ public class NamespaceHandlerGenerator extends AbstractGenerator
         return root;
     }
 
-    private Configuration createConfiguration() throws IOException
+    @Override
+    protected String getTemplate()
     {
-        Configuration cfg = new Configuration();
-        cfg.setClassForTemplateLoading(getClass(), TEMPLATES_DIRECTORY);
-        cfg.setSharedVariable("splitCamelCase", new SplitCamelCaseDirective());
-        cfg.setSharedVariable("uncapitalize", new UncapitalizeDirective());
-        cfg.setSharedVariable("typeMap", new TypeMapDirective());
-
-        cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
-        BeansWrapper bw = (BeansWrapper) cfg.getObjectWrapper();
-        bw.setSimpleMapWrapper(true);
-        bw.setExposureLevel(BeansWrapper.EXPOSE_ALL);
-        cfg.setObjectWrapper(bw);
-        return cfg;
+        return NAMESPACE_HANDLER_TEMPLATE;
     }
 
     public String getPackageName()

@@ -1,5 +1,4 @@
-
-package org.mule.tools.cc.generator;
+package org.mule.tools.cc.generator.directives;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -12,9 +11,7 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
-import org.apache.commons.lang.StringUtils;
-
-public class UncapitalizeDirective implements TemplateDirectiveModel
+public class SplitCamelCaseDirective implements TemplateDirectiveModel
 {
     @SuppressWarnings("rawtypes")
     public void execute(Environment environment,
@@ -33,7 +30,7 @@ public class UncapitalizeDirective implements TemplateDirectiveModel
 
         if (templateDirectiveBody != null)
         {
-            templateDirectiveBody.render(new UncapitalizeWriter(environment.getOut()));
+            templateDirectiveBody.render(new SplitCamelCaseWriter(environment.getOut()));
         }
         else
         {
@@ -41,11 +38,11 @@ public class UncapitalizeDirective implements TemplateDirectiveModel
         }
     }
 
-    private static class UncapitalizeWriter extends Writer
+    private static class SplitCamelCaseWriter extends Writer
     {
         private final Writer out;
 
-        UncapitalizeWriter(Writer out)
+        SplitCamelCaseWriter(Writer out)
         {
             this.out = out;
         }
@@ -53,9 +50,13 @@ public class UncapitalizeDirective implements TemplateDirectiveModel
         @Override
         public void write(char[] cbuf, int off, int len) throws IOException
         {
-            String str = new String(cbuf, off, len);
+            String camelCase = new String(cbuf, off, len);
 
-            out.write(StringUtils.uncapitalize(str));
+            camelCase = camelCase.replaceAll(
+                String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z][0-9])", "(?<=[^A-Z])(?=[A-Z])",
+                    "(?<=[A-Za-z0-9])(?=[^A-Za-z0-9])"), "-").toLowerCase();
+
+            out.write(camelCase);
         }
 
         @Override

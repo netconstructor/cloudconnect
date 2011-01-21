@@ -33,12 +33,12 @@ public class UnitTestUtils
         return input;
     }
 
-    public static void runGeneratorAndCompareTo(AbstractGenerator generator,
+    public static void runGeneratorAndCompareTo(AbstractTemplateGenerator templateGenerator,
                                                 String filename,
                                                 boolean printGeneratedOutput) throws IOException
     {
         ByteArrayOutputStream output = new ByteArrayOutputStream(1500);
-        generator.generate(output);
+        templateGenerator.generate(output);
 
         if (printGeneratedOutput)
         {

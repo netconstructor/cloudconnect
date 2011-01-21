@@ -1,10 +1,7 @@
-
-package org.mule.tools.cc.generator;
+package org.mule.tools.cc.generator.directives;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import freemarker.core.Environment;
@@ -14,23 +11,10 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
-public class TypeMapDirective implements TemplateDirectiveModel
+import org.apache.commons.lang.StringUtils;
+
+public class UncapitalizeDirective implements TemplateDirectiveModel
 {
-    private static final Map<String, String> TYPES_MAP;
-
-    static
-    {
-        Map<String, String> mapping = new HashMap<String, String>();
-        mapping.put("boolean", "xsd:boolean");
-        mapping.put(Boolean.class.getName(), "xsd:boolean");
-        mapping.put("int", "xsd:integer");
-        mapping.put(Integer.class.getName(), "xsd:integer");
-        mapping.put(String.class.getName(), "xsd:string");
-        mapping.put("java.lang.Date", "xsd:date");
-
-        TYPES_MAP = Collections.unmodifiableMap(mapping);
-    }
-
     @SuppressWarnings("rawtypes")
     public void execute(Environment environment,
                         Map params,
@@ -48,7 +32,7 @@ public class TypeMapDirective implements TemplateDirectiveModel
 
         if (templateDirectiveBody != null)
         {
-            templateDirectiveBody.render(new TypeMapWriter(environment.getOut()));
+            templateDirectiveBody.render(new UncapitalizeWriter(environment.getOut()));
         }
         else
         {
@@ -56,11 +40,11 @@ public class TypeMapDirective implements TemplateDirectiveModel
         }
     }
 
-    private static class TypeMapWriter extends Writer
+    private static class UncapitalizeWriter extends Writer
     {
         private final Writer out;
 
-        TypeMapWriter(Writer out)
+        UncapitalizeWriter(Writer out)
         {
             this.out = out;
         }
@@ -70,17 +54,7 @@ public class TypeMapDirective implements TemplateDirectiveModel
         {
             String str = new String(cbuf, off, len);
 
-            String schemaType = TYPES_MAP.get(str);
-            if (schemaType == null)
-            {
-                String message = String.format("Don't know how to map from Java type '%1s' to schema type",
-                    str);
-                throw new IllegalStateException(message);
-            }
-            else
-            {
-                out.write(schemaType);
-            }
+            out.write(StringUtils.uncapitalize(str));
         }
 
         @Override
