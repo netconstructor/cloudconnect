@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.mule.tools</groupId>
+	    <artifactId>mule-cloud-connector</artifactId>
+	    <version>1.0</version>
+	</parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.mule.distributions</groupId>
     <artifactId>cloud-connector-dev-kit</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>${cloudConnectVersion}</version>
     <packaging>pom</packaging>
     <name>Mule Cloud Connect Developer Kit Distribution</name>
     <description>Includes dependencies and scripts required to develop cloud connectors.</description>
@@ -48,18 +53,4 @@
             <version>1.2</version>
         </dependency>
     </dependencies>
-
-    <distributionManagement>
-        <repository>
-            <id>mule-releases</id>
-            <name>Codehaus Repository</name>
-            <url>dav:https://dav.codehaus.org/repository/mule</url>
-        </repository>
-        <snapshotRepository>
-            <id>mule-snapshots</id>
-            <name>Codehaus Snapshots Repository</name>
-            <url>dav:https://dav.codehaus.org/snapshots.repository/mule</url>
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
