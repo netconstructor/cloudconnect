@@ -13,34 +13,43 @@ package org.mule.tools.cc.parser.qdox;
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.parser.ParseException;
 import org.mule.tools.cc.model.JavaClass;
+import org.mule.tools.cc.parser.ClassParseException;
 import org.mule.tools.cc.parser.ClassParser;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class QDoxClassParser implements ClassParser {
-    public JavaClass parse(InputStream input)
+    private JavaDocBuilder javaDocBuilder;
+    public QDoxClassParser() {
+        this.javaDocBuilder = new JavaDocBuilder();
+    }
+
+    protected void setJavaDocBuilder(JavaDocBuilder javaDocBuilder) {
+        this.javaDocBuilder = javaDocBuilder;
+    }
+
+    public JavaClass parse(InputStream input) throws ClassParseException
     {
         try
         {
-            JavaDocBuilder builder = new JavaDocBuilder();
-            builder.addSource(new InputStreamReader(input));
+            javaDocBuilder.addSource(new InputStreamReader(input));
 
-            if (builder.getClasses() == null)
+            if (javaDocBuilder.getClasses() == null)
             {
-                throw new IllegalArgumentException("Source file does not contain a Java class");
+                throw new ClassParseException("Source file does not contain a Java class");
             }
 
-            if (builder.getClasses().length > 1)
+            if (javaDocBuilder.getClasses().length > 1)
             {
-                throw new IllegalArgumentException("Source file contains more than one Java class");
+                throw new ClassParseException("Source file contains more than one Java class");
             }
 
-            return new QDoxClassAdapter(builder.getClasses()[0]);
+            return new QDoxClassAdapter(javaDocBuilder.getClasses()[0]);
         }
         catch (ParseException pe)
         {
-            throw new IllegalArgumentException(pe);
+            throw new ClassParseException("Cannot parse", pe);
         }
     }
 }

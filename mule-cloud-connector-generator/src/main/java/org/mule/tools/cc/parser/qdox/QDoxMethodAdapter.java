@@ -3,6 +3,7 @@ package org.mule.tools.cc.parser.qdox;
 import org.mule.tools.cc.model.JavaMethod;
 import org.mule.tools.cc.model.JavaParameter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QDoxMethodAdapter implements JavaMethod
@@ -32,6 +33,8 @@ public class QDoxMethodAdapter implements JavaMethod
     }
 
     public void buildParameterCollection() {
+        this.parameters = new ArrayList<JavaParameter>();
+
         com.thoughtworks.qdox.model.JavaParameter[] parameters = javaMethod.getParameters();
         for( int i = 0; i < parameters.length; i++ ) {
             this.parameters.add( new QDoxParameterAdapter(parameters[i]));

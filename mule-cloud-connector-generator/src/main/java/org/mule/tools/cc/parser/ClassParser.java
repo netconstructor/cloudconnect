@@ -5,5 +5,5 @@ import org.mule.tools.cc.model.JavaClass;
 import java.io.InputStream;
 
 public interface ClassParser {
-    JavaClass parse(InputStream input);
+    JavaClass parse(InputStream input) throws ClassParseException;
 }

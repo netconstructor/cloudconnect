@@ -1,17 +1,12 @@
 package org.mule.tools.cc.generator.directives;
 
+import freemarker.core.Environment;
+import freemarker.template.*;
+import org.apache.commons.lang.StringUtils;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
-
-import freemarker.core.Environment;
-import freemarker.template.TemplateDirectiveBody;
-import freemarker.template.TemplateDirectiveModel;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateModel;
-import freemarker.template.TemplateModelException;
-
-import org.apache.commons.lang.StringUtils;
 
 public class UncapitalizeDirective implements TemplateDirectiveModel
 {
