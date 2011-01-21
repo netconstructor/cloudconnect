@@ -10,10 +10,13 @@
 
 package org.mule.tools.cc.generator;
 
-import java.io.IOException;
-
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaMethod;
+import com.thoughtworks.qdox.model.JavaParameter;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class NamespaceHandlerGeneratorTestCase
 {
@@ -28,31 +31,10 @@ public class NamespaceHandlerGeneratorTestCase
         generator.setClassName("FooNamespaceHandler");
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void missingPackageName() throws Exception
-    {
-        generator.setPackageName(null);
-        generator.generate(null);
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void missingClassName() throws Exception
-    {
-        generator.setClassName(null);
-        generator.generate(null);
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void missingJavaClass() throws Exception
-    {
-        generator.setJavaClass(null);
-        generator.generate(null);
-    }
-
     @Test
     public void generateClassSkeleton() throws Exception
     {
-        MockJavaClass javaClass = new MockJavaClass("org.mule.module.foo", "FooCloudConnector");
+        JavaClass javaClass = UnitTestUtils.createMockClass("org.mule.module.foo", "FooCloudConnector", new JavaMethod[] { } );
         generator.setJavaClass(javaClass);
 
         generateAndCompareTo("SkeletonNamespaceHandler.java.txt");
@@ -61,30 +43,34 @@ public class NamespaceHandlerGeneratorTestCase
     @Test
     public void generateWithoutConfigElement() throws Exception
     {
-        JavaMethodParameter parameterOne = new MockJavaMethodParameter("symbol", "String");
-        JavaMethodParameter parameterTwo = new MockJavaMethodParameter("currency", "String");
-        JavaMethod method = new MockJavaMethod("requestQuote", "Requests a quote",
-            parameterOne, parameterTwo);
-        MockJavaClass javaClass = new MockJavaClass("org.mule.module.stockquote",
-            "StockQuoteCloudConnector", method);
+        JavaParameter parameterOne = UnitTestUtils.createMockParameter("symbol", "String");
+        JavaParameter parameterTwo = UnitTestUtils.createMockParameter("currency", "String");
+        JavaParameter[] parameters = new JavaParameter[] { parameterOne, parameterTwo };
+
+        JavaMethod method = UnitTestUtils.createMockMethod("requestQuote", "Requests a quote", parameters);
+        JavaMethod[] methods = new JavaMethod[] { method };
+
+        JavaClass javaClass = UnitTestUtils.createMockClass("org.mule.module.stockquote", "StockQuoteCloudConnector", methods);
         generator.setJavaClass(javaClass);
 
         generator.setPackageName("org.mule.module.stockquote.config");
         generator.setClassName("StockQuoteNamespaceHandler");
+
         generateAndCompareTo("StockQuoteNamespaceHandler.java.txt");
     }
+
 
     @Test
     public void generateWithConfigElement() throws Exception
     {
-        JavaMethodParameter parameter = new MockJavaMethodParameter("value", "String");
-        JavaMethod method = new MockJavaMethod("setApiKey", null, parameter);
-        MockJavaClass javaClass = new MockJavaClass("org.mule.module.mock",
-            "ConfigElementCloudConnector", method);
+        JavaParameter parameter = UnitTestUtils.createMockParameter("value", "String");
+        JavaMethod method = UnitTestUtils.createMockMethod("setApiKey", "", new JavaParameter[] { parameter });
+        JavaClass javaClass = UnitTestUtils.createMockClass("org.mule.module.mock", "ConfigElementCloudConnector", new JavaMethod[] { method });
         generator.setJavaClass(javaClass);
 
         generator.setPackageName("org.mule.module.mock.config");
         generator.setClassName("ConfigElementNamespaceHandler");
+
         generateAndCompareTo("ConfigElementNamespaceHandler.java.txt");
     }
     

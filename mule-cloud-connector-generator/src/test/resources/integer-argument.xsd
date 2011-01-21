@@ -28,7 +28,8 @@
     <xsd:complexType name="intConsumingMethodType">
         <xsd:complexContent>
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
-                <xsd:attribute name="anInt" type="xsd:integer"/>
+                <xsd:attribute name="anInt" type="xsd:integer">
+                </xsd:attribute>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>

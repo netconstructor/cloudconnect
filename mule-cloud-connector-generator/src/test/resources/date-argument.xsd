@@ -23,17 +23,12 @@
     </xsd:annotation>
 
     <!-- Operations -->
-    <xsd:element name="operation" type="operationType" substitutionGroup="mule:abstract-message-processor">
-        <xsd:annotation>
-            <xsd:documentation>
-                This is the javadoc of the operation method
-            </xsd:documentation>
-        </xsd:annotation>
+    <xsd:element name="date-consuming-method" type="dateConsumingMethodType" substitutionGroup="mule:abstract-message-processor">
     </xsd:element>
-    <xsd:complexType name="operationType">
+    <xsd:complexType name="dateConsumingMethodType">
         <xsd:complexContent>
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
-                <xsd:attribute name="argument1" type="xsd:string">
+                <xsd:attribute name="aDate" type="xsd:date">
                 </xsd:attribute>
             </xsd:extension>
         </xsd:complexContent>

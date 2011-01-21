@@ -1,276 +1,65 @@
-/*
- * $Id$
- * --------------------------------------------------------------------------------------
- * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
- *
- * The software in this package is published under the terms of the CPAL v1.0
- * license, a copy of which has been included with this distribution in the
- * LICENSE.txt file.
- */
 
 package org.mule.tools.cc.generator;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import freemarker.ext.beans.BeansWrapper;
+import freemarker.template.Configuration;
+import freemarker.template.ObjectWrapper;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import org.mule.tools.cc.generator.directives.SplitCamelCaseDirective;
+import org.mule.tools.cc.generator.directives.TypeMapDirective;
+import org.mule.tools.cc.generator.directives.UncapitalizeDirective;
+import org.mule.tools.cc.parser.JavaClassUtils;
 
-public class SchemaGenerator extends AbstractGenerator
+public class SchemaGenerator extends AbstractTemplateGenerator
 {
+    private static final String SCHEMA_TEMPLATE = "schema.ftl";
+
     private String namespaceIdentifierSuffix;
     private String schemaVersion;
 
-    public static String splitCamelCase(String string)
+    @Override
+    protected Map<String, Object> createModel()
     {
-        return string.replaceAll(
-            String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z][0-9])", "(?<=[^A-Z])(?=[A-Z])",
-                "(?<=[A-Za-z0-9])(?=[^A-Za-z0-9])"), "-").toLowerCase();
+        Map<String, Object> root = new HashMap<String, Object>();
+        root.put("namespaceIdentifierSuffix", namespaceIdentifierSuffix);
+        root.put("schemaVersion", schemaVersion);
+        root.put("hasSetters", JavaClassUtils.collectSetters(javaClass).size() > 0);
+        root.put("setters", JavaClassUtils.collectSetters(javaClass));
+        root.put("operations", JavaClassUtils.collectOperations(javaClass));
+        return root;
     }
 
     @Override
-    public void generate(OutputStream output) throws IOException
+    protected String getTemplate()
     {
-        checkAllRequiredFieldsSet();
-        writer = new GeneratorWriter(output);
-
-        writeXmlPreamble();
-        writeStartElement();
-        writeImports();
-        writeAnnotation();
-        writeConfigElement();
-        writeOperations();
-        writeClosingStartElement();
-
-        writer.flush();
+        return SCHEMA_TEMPLATE;
     }
 
-    @Override
-    protected void checkAllRequiredFieldsSet()
+    public String getNamespaceIdentifierSuffix()
     {
-        super.checkAllRequiredFieldsSet();
-
-        if (StringUtils.isEmpty(namespaceIdentifierSuffix))
-        {
-            throw new IllegalStateException("namespaceIdentifierSuffix is not set");
-        }
-        if (StringUtils.isEmpty(schemaVersion))
-        {
-            throw new IllegalStateException("schemaVersion is not set");
-        }
+        return namespaceIdentifierSuffix;
     }
 
-    private void writeXmlPreamble() throws IOException
+    public void setNamespaceIdentifierSuffix(String namespaceIdentifierSuffix)
     {
-        writer.writeLine("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
+        this.namespaceIdentifierSuffix = namespaceIdentifierSuffix;
     }
 
-    private void writeStartElement() throws IOException
+    public String getSchemaVersion()
     {
-        writer.writeLine("<xsd:schema xmlns=\"http://www.mulesoft.org/schema/mule/%1s\"",
-            namespaceIdentifierSuffix);
-
-        writer.indentDepth(12);
-        writer.writeLine("xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"");
-        writer.writeLine("xmlns:mule=\"http://www.mulesoft.org/schema/mule/core\"");
-        writer.writeLine("xmlns:schemadoc=\"http://www.mulesoft.org/schema/mule/schemadoc\"");
-        writer.writeLine("xmlns:beans=\"http://www.springframework.org/schema/beans\"");
-        writer.writeLine("targetNamespace=\"http://www.mulesoft.org/schema/mule/%1s\"",
-            namespaceIdentifierSuffix);
-        writer.writeLine("elementFormDefault=\"qualified\"");
-        writer.writeLine("attributeFormDefault=\"unqualified\">");
-        writer.resetIndentDepth();
+        return schemaVersion;
     }
 
-    private void writeImports() throws IOException
+    public void setSchemaVersion(String schemaVersion)
     {
-        writer.newLine();
-        writer.indentDepth(4);
-        writer.writeLine("<xsd:import namespace=\"http://www.w3.org/XML/1998/namespace\"/>");
-
-        writer.writeLine("<xsd:import namespace=\"http://www.springframework.org/schema/beans\"");
-        writer.writeLine("            schemaLocation=\"http://www.springframework.org/schema/beans/spring-beans-3.0.xsd\"/>");
-
-        writer.writeLine("<xsd:import namespace=\"http://www.mulesoft.org/schema/mule/core\"");
-        writer.writeLine("            schemaLocation=\"http://www.mulesoft.org/schema/mule/core/%1s/mule.xsd\"/>",
-            schemaVersion);
-
-        writer.writeLine("<xsd:import namespace=\"http://www.mulesoft.org/schema/mule/schemadoc\"");
-        writer.writeLine("            schemaLocation=\"http://www.mulesoft.org/schema/mule/schemadoc/%1s/mule-schemadoc.xsd\"/>",
-            schemaVersion);
-        writer.resetIndentDepth();
-    }
-
-    private void writeAnnotation() throws IOException
-    {
-        writer.newLine();
-        writer.indentDepth(4);
-        writer.writeLine("<xsd:annotation>");
-        writer.writeLine("    <xsd:documentation>");
-        writer.writeLine("        This schema was auto-generated. Do not edit.");
-        writer.writeLine("    </xsd:documentation>");
-        writer.writeLine("</xsd:annotation>");
-        writer.resetIndentDepth();
-    }
-
-    private void writeConfigElement() throws IOException
-    {
-        List<JavaMethod> setterMethods = JavaClassUtils.collectSetters(javaClass);
-        if (setterMethods.size() > 0)
-        {
-            writer.newLine();
-            writer.writeLine("    <!-- Configration -->");
-            writeConfigXmlElement();
-            writeConfigElementType(setterMethods);
-        }
-    }
-
-    private void writeConfigXmlElement() throws IOException
-    {
-        writer.write("    ");
-        writer.writeLine("<xsd:element name=\"config\" type=\"configType\" substitutionGroup=\"mule:abstract-extension\"/>");
-    }
-
-    private void writeConfigElementType(List<JavaMethod> gettersAndSetters) throws IOException
-    {
-        writer.indentDepth(4);
-        writer.writeLine("<xsd:complexType name=\"configType\">");
-        writer.writeLine("    <xsd:complexContent>");
-        writer.writeLine("        <xsd:extension base=\"mule:abstractExtensionType\">");
-
-        for (JavaMethod method : gettersAndSetters)
-        {
-            // strip 'set' from the method name
-            String methodName = method.getName().substring(3);
-            methodName = StringUtils.uncapitalize(methodName);
-
-            writer.write("                <xsd:attribute name=\"");
-            writer.write(methodName);
-            writer.write("\" type=\"");
-
-            String type = method.getParameters().get(0).getType();
-            writer.write(SchemaTypesMapping.schemaTypeForJavaTypeName(type));
-            writer.write("\">");
-            writer.newLine();
-
-            if (StringUtils.isNotBlank(method.getJavadoc()))
-            {
-                writer.indentDepth(20);
-                new JavadocToSchemadocTransformer(method.getJavadoc()).generate(writer);
-                writer.indentDepth(4);
-            }
-
-            writer.writeLine("            </xsd:attribute>");
-        }
-        writer.writeLine("        </xsd:extension>");
-        writer.writeLine("    </xsd:complexContent>");
-        writer.writeLine("</xsd:complexType>");
-        writer.resetIndentDepth();
-    }
-
-    private void writeOperations() throws IOException
-    {
-        writer.newLine();
-        writer.writeLine("    <!-- Operations -->");
-
-        for (JavaMethod method : javaClass.getMethods())
-        {
-            writeOperation(method);
-        }
-    }
-
-    private void writeOperation(JavaMethod method) throws IOException
-    {
-        if (isValidMethod(method))
-        {
-            writeOperationElementDeclaration(method);
-            writeOperationElementType(method);
-            writer.newLine();
-        }
-    }
-
-    /**
-     * Ignore getters and setters, they are only needed for Spring to put configuration values
-     * into the instance. Ignore non-public methods.
-     */
-    private boolean isValidMethod(JavaMethod method)
-    {
-        boolean isNotPublic = !method.isPublic();
-        boolean isGetMethod = method.getName().startsWith("get");
-        boolean isSetMethod = JavaClassUtils.isSetterMethod(method);
-        boolean hasParameters = method.getParameters().size() > 0;
-
-        if (isNotPublic || isSetMethod || (isGetMethod && !hasParameters))
-        {
-            return false;
-        }
-        return true;
-    }
-
-    private void writeOperationElementDeclaration(JavaMethod method) throws IOException
-    {
-        String elementName = splitCamelCase(method.getName());
-
-        writer.write("    <xsd:element name=\"");
-        writer.write(elementName);
-        writer.write("\" type=\"");
-        writer.write(method.getName());
-        writer.write("Type\" substitutionGroup=\"mule:abstract-message-processor\">");
-        writer.newLine();
-
-        writer.indentDepth(8);
-        new JavadocToSchemadocTransformer(method.getJavadoc()).generate(writer);
-        writer.resetIndentDepth();
-
-        writer.writeLine("    </xsd:element>");
-    }
-
-    private void writeOperationElementType(JavaMethod method) throws IOException
-    {
-        writer.indentDepth(4);
-        writer.writeLine("<xsd:complexType name=\"%1sType\">", method.getName());
-        writer.writeLine("    <xsd:complexContent>");
-        writer.writeLine("        <xsd:extension base=\"mule:abstractInterceptingMessageProcessorType\">");
-
-        for (JavaMethodParameter parameter : method.getParameters())
-        {
-            String type = schemaTypeForParameter(parameter, method);
-            writer.writeLine("            <xsd:attribute name=\"%1s\" type=\"%2s\"/>",
-                parameter.getName(), type);
-        }
-
-        writer.writeLine("        </xsd:extension>");
-        writer.writeLine("    </xsd:complexContent>");
-        writer.writeLine("</xsd:complexType>");
-        writer.resetIndentDepth();
-    }
-
-    private String schemaTypeForParameter(JavaMethodParameter parameter, JavaMethod method)
-    {
-        try
-        {
-            return SchemaTypesMapping.schemaTypeForJavaTypeName(parameter.getType());
-        }
-        catch (IllegalStateException ise)
-        {
-            String message = String.format("Don't know how to map the type of parameter %1s (method: %2s). Parameter type is %3s",
-                parameter.getName(), method.getName(), parameter.getType());
-            throw new IllegalStateException(message);
-        }
-    }
-
-    private void writeClosingStartElement() throws IOException
-    {
-        writer.writeLine("</xsd:schema>");
-    }
-
-    public void setNamespaceIdentifierSuffix(String suffix)
-    {
-        namespaceIdentifierSuffix = suffix;
-    }
-
-    public void setSchemaVersion(String version)
-    {
-        schemaVersion = version;
+        this.schemaVersion = schemaVersion;
     }
 }

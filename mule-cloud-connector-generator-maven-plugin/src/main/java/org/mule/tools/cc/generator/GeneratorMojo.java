@@ -10,6 +10,8 @@
 
 package org.mule.tools.cc.generator;
 
+import com.thoughtworks.qdox.model.JavaClass;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

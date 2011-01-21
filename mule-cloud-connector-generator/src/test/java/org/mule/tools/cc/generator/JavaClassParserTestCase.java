@@ -12,7 +12,11 @@ package org.mule.tools.cc.generator;
 
 import java.io.InputStream;
 
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaMethod;
+import com.thoughtworks.qdox.model.JavaParameter;
 import org.junit.Test;
+import org.mule.tools.cc.parser.JavaClassParser;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -40,12 +44,12 @@ public class JavaClassParserTestCase
         InputStream input = UnitTestUtils.getTestResource("MethodWithoutParameters.java.txt");
         JavaClass javaClass = new JavaClassParser().parse(input);
         assertNotNull(javaClass);
-        assertEquals(1, javaClass.getMethods().size());
+        assertEquals(1, javaClass.getMethods().length);
 
-        JavaMethod method = javaClass.getMethods().get(0);
+        JavaMethod method = javaClass.getMethods()[0];
         assertEquals("voidMethodWithoutParameters", method.getName());
         assertTrue(method.isPublic());
-        assertEquals(0, method.getParameters().size());
+        assertEquals(0, method.getParameters().length);
     }
 
     @Test
@@ -54,15 +58,15 @@ public class JavaClassParserTestCase
         InputStream input = UnitTestUtils.getTestResource("SampleCloudConnector.java.txt");
         JavaClass javaClass = new JavaClassParser().parse(input);
         assertNotNull(javaClass);
-        assertEquals(1, javaClass.getMethods().size());
+        assertEquals(1, javaClass.getMethods().length);
 
-        JavaMethod method = javaClass.getMethods().get(0);
+        JavaMethod method = javaClass.getMethods()[0];
         assertEquals("sampleMethod", method.getName());
         assertTrue(method.isPublic());
-        assertEquals(1, method.getParameters().size());
+        assertEquals(1, method.getParameters().length);
 
-        JavaMethodParameter parameter = method.getParameters().get(0);
+        JavaParameter parameter = method.getParameters()[0];
         assertEquals("input", parameter.getName());
-        assertEquals("String", parameter.getType());
+        assertEquals("java.lang.String", parameter.getType().getValue());
     }
 }
