@@ -9,7 +9,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="mule-cloud-connector-templateGenerator" />
+    <orderEntry type="module" module-name="mule-cloud-connector-generator" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.5" level="project" />
     <orderEntry type="library" name="Maven: qdox:qdox:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.16" level="project" />
