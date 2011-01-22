@@ -12,9 +12,9 @@ package org.mule.tools.cc.model;
 public interface JavaParameter
 {
 
-    public String getName();
+    String getName();
 
-    public String getType();
+    String getType();
 
-    public String getDescription();
+    String getDescription();
 }

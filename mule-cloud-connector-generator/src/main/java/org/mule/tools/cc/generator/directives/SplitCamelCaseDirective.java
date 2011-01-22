@@ -53,9 +53,9 @@ public class SplitCamelCaseDirective implements TemplateDirectiveModel
 
         private final Writer out;
 
-        SplitCamelCaseWriter(Writer out)
+        SplitCamelCaseWriter(Writer output)
         {
-            this.out = out;
+            this.out = output;
         }
 
         @Override

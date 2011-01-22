@@ -54,9 +54,9 @@ public class UncapitalizeDirective implements TemplateDirectiveModel
 
         private final Writer out;
 
-        UncapitalizeWriter(Writer out)
+        UncapitalizeWriter(Writer output)
         {
-            this.out = out;
+            this.out = output;
         }
 
         @Override

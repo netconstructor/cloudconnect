@@ -78,9 +78,9 @@ public class TypeMapDirective implements TemplateDirectiveModel
 
         private final Writer out;
 
-        TypeMapWriter(Writer out)
+        TypeMapWriter(Writer output)
         {
-            this.out = out;
+            this.out = output;
         }
 
         @Override

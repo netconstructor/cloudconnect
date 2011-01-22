@@ -93,9 +93,12 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass
         com.thoughtworks.qdox.model.JavaMethod[] methods = javaClass.getMethods(true);
         for (int i = 0; i < methods.length; i++)
         {
-            if (methods[i].isPublic() && !methods[i].isStatic() && !methods[i].isPropertyAccessor() &&
-                !methods[i].isPropertyMutator() && !methods[i].isConstructor() &&
-                !OBJECT_CLASS_NAME.equals(methods[i].getParentClass().getName()))
+            if (methods[i].isPublic()
+                && !methods[i].isStatic()
+                && !methods[i].isPropertyAccessor()
+                && !methods[i].isPropertyMutator()
+                && !methods[i].isConstructor()
+                && !OBJECT_CLASS_NAME.equals(methods[i].getParentClass().getName()))
             {
                 this.operations.add(new QDoxMethodAdapter(methods[i]));
             }

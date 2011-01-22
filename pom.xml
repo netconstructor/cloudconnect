@@ -16,6 +16,7 @@
     </properties>
 
     <modules>
+        <module>mule-cloud-connector-parent</module>
         <module>mule-cloud-connector-archetype</module>
         <module>mule-cloud-connector-dev-kit</module>
         <module>mule-cloud-connector-generator</module>
@@ -47,6 +48,22 @@
                 <version>2.4.3</version>
                 <configuration>
                     <encoding>ISO-8859-1</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.6</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.mule.tools</groupId>
+                        <artifactId>mule-cloud-connector-parent</artifactId>
+                        <version>1.1-SNAPSHOT</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <consoleOutput>true</consoleOutput>
+                    <configLocation>org/mule/tools/cc/checkstyle/checkstyle.xml</configLocation>
                 </configuration>
             </plugin>
         </plugins>
@@ -94,4 +111,17 @@
             <email>dan.feist@mulesource.com</email>
         </developer>
     </developers>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <configLocation>org/mule/tools/cc/checkstyle/checkstyle.xml</configLocation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

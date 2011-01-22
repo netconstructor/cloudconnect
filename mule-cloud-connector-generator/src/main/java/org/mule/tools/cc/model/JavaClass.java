@@ -14,15 +14,15 @@ import java.util.List;
 public interface JavaClass
 {
 
-    public String getName();
+    String getName();
 
-    public String getPackage();
+    String getPackage();
 
-    public String getDescription();
+    String getDescription();
 
-    public List<JavaProperty> getProperties();
+    List<JavaProperty> getProperties();
 
-    public boolean hasProperties();
+    boolean hasProperties();
 
-    public List<JavaMethod> getOperations();
+    List<JavaMethod> getOperations();
 }

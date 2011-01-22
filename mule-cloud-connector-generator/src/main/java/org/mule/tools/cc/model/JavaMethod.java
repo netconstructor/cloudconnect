@@ -14,9 +14,9 @@ import java.util.List;
 public interface JavaMethod
 {
 
-    public String getName();
+    String getName();
 
-    public String getDescription();
+    String getDescription();
 
-    public List<JavaParameter> getParameters();
+    List<JavaParameter> getParameters();
 }
