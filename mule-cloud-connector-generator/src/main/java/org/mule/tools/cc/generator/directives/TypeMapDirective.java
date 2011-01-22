@@ -28,6 +28,7 @@ public class TypeMapDirective implements TemplateDirectiveModel
         mapping.put("boolean", "xsd:boolean");
         mapping.put(Boolean.class.getName(), "xsd:boolean");
         mapping.put("int", "xsd:integer");
+        mapping.put("long", "xsd:long");
         mapping.put(Integer.class.getName(), "xsd:integer");
         mapping.put(String.class.getName(), "xsd:string");
         mapping.put("java.lang.Date", "xsd:date");
@@ -52,7 +53,13 @@ public class TypeMapDirective implements TemplateDirectiveModel
 
         if (templateDirectiveBody != null)
         {
-            templateDirectiveBody.render(new TypeMapWriter(environment.getOut()));
+            try
+            {
+                templateDirectiveBody.render(new TypeMapWriter(environment.getOut()));
+            }
+            catch(InvalidTypeException ite) {
+                throw new TemplateModelException(ite);
+            }
         }
         else
         {
@@ -77,14 +84,9 @@ public class TypeMapDirective implements TemplateDirectiveModel
             String schemaType = TYPES_MAP.get(str);
             if (schemaType == null)
             {
-                String message = String.format("Don't know how to map from Java type '%1s' to schema type",
-                    str);
-                throw new IllegalStateException(message);
+                throw new InvalidTypeException(str);
             }
-            else
-            {
-                out.write(schemaType);
-            }
+            out.write(TYPES_MAP.get(str));
         }
 
         @Override

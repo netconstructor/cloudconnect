@@ -10,8 +10,6 @@
 
 package org.mule.tools.cc.generator;
 
-import com.thoughtworks.qdox.model.JavaClass;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,6 +23,10 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.util.IOUtil;
+
+import org.mule.tools.cc.model.JavaClass;
+import org.mule.tools.cc.parser.ClassParseException;
+import org.mule.tools.cc.parser.qdox.QDoxClassParser;
 
 /**
  * Generate schema for a Mule cloud connector.
@@ -159,17 +161,17 @@ public class GeneratorMojo extends AbstractMojo
         try
         {
             input = new FileInputStream(cloudConnector);
-            return new JavaClassParser().parse(input);
+            return new QDoxClassParser().parse(input);
         }
         catch (IOException iox)
         {
             throw new MojoExecutionException(
                 "Error while parsing " + cloudConnector.getAbsolutePath(), iox);
         }
-        catch (IllegalArgumentException iax)
+        catch (ClassParseException cpe)
         {
             throw new MojoExecutionException(
-                "Error while parsing " + cloudConnector.getAbsolutePath(), iax);
+                "Error while parsing " + cloudConnector.getAbsolutePath(), cpe);
         }
         finally
         {

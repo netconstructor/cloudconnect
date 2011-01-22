@@ -33,7 +33,7 @@
                     <#if property.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation>
-                            ${property.getComment()}
+                            ${property.getDescription()}
                         </xsd:documentation>
                     </xsd:annotation>
                     </#if>
@@ -50,7 +50,7 @@
         <#if operation.getDescription()?has_content>
         <xsd:annotation>
             <xsd:documentation>
-                ${operation.getComment()}
+                ${operation.getDescription()}
             </xsd:documentation>
         </xsd:annotation>
         </#if>

@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass {
+    private static final String CLASS_PROPERTY_NAME = "class";
+    private static final String OBJECT_CLASS_NAME = "Object";
     private JavaClass javaClass;
     private List<JavaProperty> properties;
     private List<JavaMethod> operations;
@@ -55,7 +57,9 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass {
 
         BeanProperty[] properties = javaClass.getBeanProperties(true);
         for (int i = 0; i < properties.length; i++) {
-            this.properties.add(new QDoxPropertyAdapter(properties[i]));
+            if(!CLASS_PROPERTY_NAME.equals(properties[i].getName())) {
+                this.properties.add(new QDoxPropertyAdapter(properties[i]));
+            }
         }
     }
 
@@ -73,7 +77,8 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass {
         com.thoughtworks.qdox.model.JavaMethod[] methods = javaClass.getMethods(true);
         for (int i = 0; i < methods.length; i++) {
             if (methods[i].isPublic() && !methods[i].isStatic() && !methods[i].isPropertyAccessor() &&
-                    !methods[i].isPropertyMutator() && !methods[i].isConstructor()) {
+                    !methods[i].isPropertyMutator() && !methods[i].isConstructor() &&
+                    !OBJECT_CLASS_NAME.equals(methods[i].getParentClass().getName())) {
                 this.operations.add(new QDoxMethodAdapter(methods[i]));
             }
         }
