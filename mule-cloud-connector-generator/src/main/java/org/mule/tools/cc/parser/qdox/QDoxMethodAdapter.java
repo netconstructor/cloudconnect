@@ -17,36 +17,44 @@ import java.util.List;
 
 public class QDoxMethodAdapter implements JavaMethod
 {
+
     private com.thoughtworks.qdox.model.JavaMethod javaMethod;
     private List<JavaParameter> parameters;
 
 
-    public QDoxMethodAdapter(com.thoughtworks.qdox.model.JavaMethod javaMethod) {
+    public QDoxMethodAdapter(com.thoughtworks.qdox.model.JavaMethod javaMethod)
+    {
         this.javaMethod = javaMethod;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return this.javaMethod.getName();
     }
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return javaMethod.getComment();
     }
 
-    public List<JavaParameter> getParameters() {
-        if( parameters == null ) {
+    public List<JavaParameter> getParameters()
+    {
+        if (parameters == null)
+        {
             buildParameterCollection();
         }
 
         return this.parameters;
     }
 
-    public void buildParameterCollection() {
+    public void buildParameterCollection()
+    {
         this.parameters = new ArrayList<JavaParameter>();
 
         com.thoughtworks.qdox.model.JavaParameter[] parameters = javaMethod.getParameters();
-        for( int i = 0; i < parameters.length; i++ ) {
-            this.parameters.add( new QDoxParameterAdapter(parameters[i]));
+        for (int i = 0; i < parameters.length; i++)
+        {
+            this.parameters.add(new QDoxParameterAdapter(parameters[i]));
         }
     }
 }

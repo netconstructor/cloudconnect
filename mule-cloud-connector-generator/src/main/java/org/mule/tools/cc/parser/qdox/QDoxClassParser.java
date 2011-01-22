@@ -9,22 +9,28 @@
  */
 package org.mule.tools.cc.parser.qdox;
 
-import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.parser.ParseException;
 import org.mule.tools.cc.model.JavaClass;
 import org.mule.tools.cc.parser.ClassParseException;
 import org.mule.tools.cc.parser.ClassParser;
 
+import com.thoughtworks.qdox.JavaDocBuilder;
+import com.thoughtworks.qdox.parser.ParseException;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class QDoxClassParser implements ClassParser {
+public class QDoxClassParser implements ClassParser
+{
+
     private JavaDocBuilder javaDocBuilder;
-    public QDoxClassParser() {
+
+    public QDoxClassParser()
+    {
         this.javaDocBuilder = new JavaDocBuilder();
     }
 
-    protected void setJavaDocBuilder(JavaDocBuilder javaDocBuilder) {
+    protected void setJavaDocBuilder(JavaDocBuilder javaDocBuilder)
+    {
         this.javaDocBuilder = javaDocBuilder;
     }
 

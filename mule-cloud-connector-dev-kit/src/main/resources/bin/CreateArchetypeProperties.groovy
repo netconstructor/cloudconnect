@@ -1,4 +1,3 @@
-
 stdinReader = new BufferedReader(new InputStreamReader(System.in))
 outputFilename = args[0]
 
@@ -30,15 +29,15 @@ def askQuestions()
 
     question("Maven group id of the new connector", "groupId", false)
     question("Maven artifact id of the new connector\n(should use naming convention mule-module-<yourname>)",
-        "artifactId", false)
+             "artifactId", false)
     question("Maven version of the new connector", "version", false)
     question("Java package for the new connector\n(should use the naming convention org.mule.module.<yourname>)",
-        "package", false)
+             "package", false)
 
     while (cloudServiceTypeIsInvalid())
     {
         question("Type of project\nCan be either be\n * based on existing Java code\n * a HTTP based service\n * a WSDL\nOptions: [j], [h] or [w]",
-            "cloudServiceType", true)
+                 "cloudServiceType", true)
     }
     if (isJavaService())
     {
@@ -62,7 +61,7 @@ def askQuestions()
     }
 }
 
-def question(String text, String key, boolean required=true)
+def question(String text, String key, boolean required = true)
 {
     printQuestion(text, key)
 
@@ -117,7 +116,7 @@ def cloudServiceTypeIsInvalid()
 
 def isJavaService()
 {
-	return archetypeProperties.cloudServiceType.equalsIgnoreCase("j")
+    return archetypeProperties.cloudServiceType.equalsIgnoreCase("j")
 }
 
 def isHttpService()

@@ -3,14 +3,18 @@ package org.mule.tools.cc.parser.qdox;
 import com.thoughtworks.qdox.model.BeanProperty;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaMethod;
+
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class QDoxClassAdapterTest {
+public class QDoxClassAdapterTest
+{
 
     private static final String COMMENT = "COMMENT";
     private static final String PACKAGE = "PACKAGE";
@@ -25,7 +29,8 @@ public class QDoxClassAdapterTest {
     private static final String TOSTRING_METHOD_NAME = "toString";
 
     @Test
-    public void name() throws Exception {
+    public void name() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getName()).thenReturn(NAME);
 
@@ -35,7 +40,8 @@ public class QDoxClassAdapterTest {
     }
 
     @Test
-    public void pkg() throws Exception {
+    public void pkg() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getPackage()).thenReturn(PACKAGE);
 
@@ -45,7 +51,8 @@ public class QDoxClassAdapterTest {
     }
 
     @Test
-    public void description() throws Exception {
+    public void description() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getComment()).thenReturn(COMMENT);
 
@@ -55,7 +62,8 @@ public class QDoxClassAdapterTest {
     }
 
     @Test
-    public void properties() throws Exception {
+    public void properties() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
         BeanProperty propertyMockA = mock(BeanProperty.class);
         when(propertyMockA.getName()).thenReturn(PROPERTY_A);
@@ -63,7 +71,7 @@ public class QDoxClassAdapterTest {
         when(propertyMockB.getName()).thenReturn(PROPERTY_B);
         BeanProperty propertyMockC = mock(BeanProperty.class);
         when(propertyMockC.getName()).thenReturn(PROPERTY_C);
-        BeanProperty[] properties = new BeanProperty[] { propertyMockA, propertyMockB, propertyMockC };
+        BeanProperty[] properties = new BeanProperty[] {propertyMockA, propertyMockB, propertyMockC};
         when(classMock.getBeanProperties(eq(true))).thenReturn(properties);
 
         QDoxClassAdapter adapter = new QDoxClassAdapter(classMock);
@@ -75,11 +83,12 @@ public class QDoxClassAdapterTest {
     }
 
     @Test
-    public void classBeanPropertyNotAvailable() throws Exception {
+    public void classBeanPropertyNotAvailable() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
         BeanProperty propertyMockA = mock(BeanProperty.class);
         when(propertyMockA.getName()).thenReturn(CLASS_PROPERTY);
-        BeanProperty[] properties = new BeanProperty[] { propertyMockA };
+        BeanProperty[] properties = new BeanProperty[] {propertyMockA};
         when(classMock.getBeanProperties(eq(true))).thenReturn(properties);
 
         QDoxClassAdapter adapter = new QDoxClassAdapter(classMock);
@@ -88,10 +97,11 @@ public class QDoxClassAdapterTest {
     }
 
     @Test
-    public void hasProperties() throws Exception {
+    public void hasProperties() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
         BeanProperty propertyMock = mock(BeanProperty.class);
-        BeanProperty[] properties = new BeanProperty[] { propertyMock };
+        BeanProperty[] properties = new BeanProperty[] {propertyMock};
         when(classMock.getBeanProperties(eq(true))).thenReturn(properties);
 
         QDoxClassAdapter adapter = new QDoxClassAdapter(classMock);
@@ -100,9 +110,10 @@ public class QDoxClassAdapterTest {
     }
 
     @Test
-    public void doesntHaveProperties() throws Exception {
+    public void doesntHaveProperties() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
-        BeanProperty[] properties = new BeanProperty[] { };
+        BeanProperty[] properties = new BeanProperty[] {};
         when(classMock.getBeanProperties(eq(true))).thenReturn(properties);
 
         QDoxClassAdapter adapter = new QDoxClassAdapter(classMock);
@@ -111,7 +122,8 @@ public class QDoxClassAdapterTest {
     }
 
     @Test
-    public void operations() throws Exception {
+    public void operations() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getName()).thenReturn(NAME);
         JavaMethod methodMock = mock(JavaMethod.class);
@@ -122,7 +134,7 @@ public class QDoxClassAdapterTest {
         when(methodMock.isPropertyMutator()).thenReturn(false);
         when(methodMock.isConstructor()).thenReturn(false);
         when(methodMock.getParentClass()).thenReturn(classMock);
-        JavaMethod[] methods = new JavaMethod[] { methodMock };
+        JavaMethod[] methods = new JavaMethod[] {methodMock};
         when(classMock.getMethods(eq(true))).thenReturn(methods);
 
         QDoxClassAdapter adapter = new QDoxClassAdapter(classMock);
@@ -132,7 +144,8 @@ public class QDoxClassAdapterTest {
     }
 
     @Test
-    public void discardStatic() throws Exception {
+    public void discardStatic() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getName()).thenReturn(NAME);
         JavaMethod methodMock = mock(JavaMethod.class);
@@ -143,7 +156,7 @@ public class QDoxClassAdapterTest {
         when(methodMock.isPropertyMutator()).thenReturn(false);
         when(methodMock.isConstructor()).thenReturn(false);
         when(methodMock.getParentClass()).thenReturn(classMock);
-        JavaMethod[] methods = new JavaMethod[] { methodMock };
+        JavaMethod[] methods = new JavaMethod[] {methodMock};
         when(classMock.getMethods(eq(true))).thenReturn(methods);
 
         QDoxClassAdapter adapter = new QDoxClassAdapter(classMock);
@@ -152,7 +165,8 @@ public class QDoxClassAdapterTest {
     }
 
     @Test
-    public void discardPropertyAccessor() throws Exception {
+    public void discardPropertyAccessor() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getName()).thenReturn(NAME);
         JavaMethod methodMock = mock(JavaMethod.class);
@@ -163,7 +177,7 @@ public class QDoxClassAdapterTest {
         when(methodMock.isPropertyMutator()).thenReturn(false);
         when(methodMock.isConstructor()).thenReturn(false);
         when(methodMock.getParentClass()).thenReturn(classMock);
-        JavaMethod[] methods = new JavaMethod[] { methodMock };
+        JavaMethod[] methods = new JavaMethod[] {methodMock};
         when(classMock.getMethods(eq(true))).thenReturn(methods);
 
         QDoxClassAdapter adapter = new QDoxClassAdapter(classMock);
@@ -172,7 +186,8 @@ public class QDoxClassAdapterTest {
     }
 
     @Test
-    public void discardPropertyMutator() throws Exception {
+    public void discardPropertyMutator() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getName()).thenReturn(NAME);
         JavaMethod methodMock = mock(JavaMethod.class);
@@ -183,7 +198,7 @@ public class QDoxClassAdapterTest {
         when(methodMock.isPropertyMutator()).thenReturn(true);
         when(methodMock.isConstructor()).thenReturn(false);
         when(methodMock.getParentClass()).thenReturn(classMock);
-        JavaMethod[] methods = new JavaMethod[] { methodMock };
+        JavaMethod[] methods = new JavaMethod[] {methodMock};
         when(classMock.getMethods(eq(true))).thenReturn(methods);
 
         QDoxClassAdapter adapter = new QDoxClassAdapter(classMock);
@@ -192,7 +207,8 @@ public class QDoxClassAdapterTest {
     }
 
     @Test
-    public void discardConstructors() throws Exception {
+    public void discardConstructors() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getName()).thenReturn(NAME);
         JavaMethod methodMock = mock(JavaMethod.class);
@@ -203,7 +219,7 @@ public class QDoxClassAdapterTest {
         when(methodMock.isPropertyMutator()).thenReturn(false);
         when(methodMock.isConstructor()).thenReturn(true);
         when(methodMock.getParentClass()).thenReturn(classMock);
-        JavaMethod[] methods = new JavaMethod[] { methodMock };
+        JavaMethod[] methods = new JavaMethod[] {methodMock};
         when(classMock.getMethods(eq(true))).thenReturn(methods);
 
         QDoxClassAdapter adapter = new QDoxClassAdapter(classMock);
@@ -212,7 +228,8 @@ public class QDoxClassAdapterTest {
     }
 
     @Test
-    public void discardNonPublicMethods() throws Exception {
+    public void discardNonPublicMethods() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getName()).thenReturn(NAME);
         JavaMethod methodMock = mock(JavaMethod.class);
@@ -223,7 +240,7 @@ public class QDoxClassAdapterTest {
         when(methodMock.isPropertyMutator()).thenReturn(false);
         when(methodMock.isConstructor()).thenReturn(false);
         when(methodMock.getParentClass()).thenReturn(classMock);
-                JavaMethod[] methods = new JavaMethod[] { methodMock };
+        JavaMethod[] methods = new JavaMethod[] {methodMock};
         when(classMock.getMethods(eq(true))).thenReturn(methods);
 
         QDoxClassAdapter adapter = new QDoxClassAdapter(classMock);
@@ -232,7 +249,8 @@ public class QDoxClassAdapterTest {
     }
 
     @Test
-    public void discardBaseObjectMethods() throws Exception {
+    public void discardBaseObjectMethods() throws Exception
+    {
         JavaClass classMock = mock(JavaClass.class);
         JavaMethod methodMock = mock(JavaMethod.class);
         JavaClass objectClassMock = mock(JavaClass.class);
@@ -244,7 +262,7 @@ public class QDoxClassAdapterTest {
         when(methodMock.isPropertyMutator()).thenReturn(false);
         when(methodMock.isConstructor()).thenReturn(false);
         when(methodMock.getParentClass()).thenReturn(objectClassMock);
-        JavaMethod[] methods = new JavaMethod[] { methodMock };
+        JavaMethod[] methods = new JavaMethod[] {methodMock};
         when(classMock.getMethods(eq(true))).thenReturn(methods);
 
         QDoxClassAdapter adapter = new QDoxClassAdapter(classMock);

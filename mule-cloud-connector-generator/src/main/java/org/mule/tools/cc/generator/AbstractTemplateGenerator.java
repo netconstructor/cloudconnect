@@ -9,11 +9,6 @@
  */
 package org.mule.tools.cc.generator;
 
-import freemarker.ext.beans.BeansWrapper;
-import freemarker.template.Configuration;
-import freemarker.template.ObjectWrapper;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import org.mule.tools.cc.generator.directives.SplitCamelCaseDirective;
 import org.mule.tools.cc.generator.directives.TypeMapDirective;
 import org.mule.tools.cc.generator.directives.UncapitalizeDirective;
@@ -25,8 +20,15 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Map;
 
+import freemarker.ext.beans.BeansWrapper;
+import freemarker.template.Configuration;
+import freemarker.template.ObjectWrapper;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+
 public abstract class AbstractTemplateGenerator
 {
+
     private static final String TEMPLATES_DIRECTORY = "/org/mule/tools/cc/generator/templates";
 
     protected JavaClass javaClass;

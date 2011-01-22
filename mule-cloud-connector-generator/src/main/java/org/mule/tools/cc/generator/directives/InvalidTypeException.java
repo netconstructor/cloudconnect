@@ -9,8 +9,11 @@
  */
 package org.mule.tools.cc.generator.directives;
 
-public class InvalidTypeException extends RuntimeException {
-    public InvalidTypeException(String type) {
+public class InvalidTypeException extends RuntimeException
+{
+
+    public InvalidTypeException(String type)
+    {
         super(String.format("Don't know how to map from Java type '%1s' to schema type", type));
     }
 }

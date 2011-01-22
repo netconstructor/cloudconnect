@@ -1,38 +1,38 @@
 #set($D = '$')
-#set($ModuleName = "$artifactId")
-#set($ModuleNameLower = "${ModuleName.toLowerCase()}")
-#set($PackagePath = "${package.replace('.', '/')}")
-#set($ArchetypeIsSnapshot = $version.endsWith("-SNAPSHOT"))
-<?xml version="1.0" encoding="UTF-8"?>
+        #set($ModuleName = "$artifactId")
+        #set($ModuleNameLower = "${ModuleName.toLowerCase()}")
+        #set($PackagePath = "${package.replace('.', '/')}")
+        #set($ArchetypeIsSnapshot = $version.endsWith("-SNAPSHOT"))
+        <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <modelVersion>4.0.0</modelVersion>
-   <groupId>${groupId}</groupId>
-   <artifactId>${artifactId}</artifactId>
-   <packaging>jar</packaging>
-   <name>Mule ${cloudService} Cloud Connector</name>
-   <version>${version}</version>
-   <description>Mule Cloud connector to ${cloudService}</description>
-   <url>http://www.muleforge.org/projects/${artifactId}</url>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <packaging>jar</packaging>
+    <name>Mule ${cloudService} Cloud Connector</name>
+    <version>${version}</version>
+    <description>Mule Cloud connector to ${cloudService}</description>
+    <url>http://www.muleforge.org/projects/${artifactId}</url>
 
-   <properties>
-#if($cloudServiceType == "WSDL")
+    <properties>
+        #if($cloudServiceType == "WSDL")
         <!-- the CXF version must be in line with the version Mule uses -->
         <cxf.version>2.3.0</cxf.version>
-#end
+        #end
         <mule.version>${muleVersion}</mule.version>
         <!-- Tools properties -->
         <eclipsePluginVersion>2.8</eclipsePluginVersion>
         <vmtype>org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType</vmtype>
-#if($cloudServiceType == "HTTP")
+        #if($cloudServiceType == "HTTP")
         <!-- Jersey client is JDK6 only -->
         <jdk.name>JavaSE-1.6</jdk.name>
         <jdk.version>1.6</jdk.version>
-#else
+        #else
         <jdk.name>J2SE-1.5</jdk.name>
         <jdk.version>1.5</jdk.version>
-#end
+        #end
     </properties>
 
     <build>
@@ -49,13 +49,13 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-#if($cloudServiceType == "HTTP")
+                    #if($cloudServiceType == "HTTP")
                     <source>1.6</source>
                     <target>1.6</target>
-#else
+                    #else
                     <source>1.5</source>
                     <target>1.5</target>
-#end
+                    #end
                     <encoding>ISO-8859-1</encoding>
                 </configuration>
             </plugin>
@@ -81,7 +81,7 @@
                     <jdkName>${D}{jdk.version}</jdkName>
                 </configuration>
             </plugin>
-#if($cloudServiceType == "WSDL")
+            #if($cloudServiceType == "WSDL")
             <!-- generate code from the WSDL file -->
             <plugin>
                 <groupId>org.apache.cxf</groupId>
@@ -109,7 +109,7 @@
                     </execution>
                 </executions>
             </plugin>
-#end
+            #end
             <plugin>
                 <groupId>org.mule.tools</groupId>
                 <artifactId>mule-cloud-connector-generator-maven-plugin</artifactId>
@@ -122,9 +122,12 @@
                         </goals>
                         <configuration>
                             <muleVersion>${D}{mule.version}</muleVersion>
-                            <cloudConnector>${D}{project.basedir}/src/main/java/${PackagePath}/${cloudService}CloudConnector.java</cloudConnector>
+                            <cloudConnector>
+                                ${D}{project.basedir}/src/main/java/${PackagePath}/${cloudService}CloudConnector.java
+                            </cloudConnector>
                             <schemaFilename>mule-${cloudServiceLower}.xsd</schemaFilename>
-                            <namespaceHandler>${PackagePath}/config/${cloudService}NamespaceHandler.java</namespaceHandler>
+                            <namespaceHandler>${PackagePath}/config/${cloudService}NamespaceHandler.java
+                            </namespaceHandler>
                         </configuration>
                     </execution>
                 </executions>
@@ -220,7 +223,7 @@
             <version>${D}{mule.version}</version>
             <optional>true</optional>
         </dependency>
-#if($cloudServiceType == "WSDL")
+        #if($cloudServiceType == "WSDL")
         <!-- CXF dependencies -->
         <dependency>
             <groupId>org.apache.cxf</groupId>
@@ -237,15 +240,15 @@
             <scope>provided</scope>
         </dependency>
 
-#end
-#if($cloudServiceType == "HTTP")
+        #end
+        #if($cloudServiceType == "HTTP")
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
             <version>1.3</version>
         </dependency>
 
-#end
+        #end
         <!-- for testing -->
         <dependency>
             <groupId>junit</groupId>
@@ -273,15 +276,15 @@
             <url>http://dist.codehaus.org/mule/dependencies/maven2</url>
             <layout>default</layout>
         </repository>
-#if($cloudServiceType == "HTTP")
+        #if($cloudServiceType == "HTTP")
         <repository>
             <id>dev.java.net</id>
             <name>Java.net Repository for Maven</name>
             <url>http://download.java.net/maven/2/</url>
         </repository>
-#end
+        #end
     </repositories>
-#if($ArchetypeIsSnapshot == true)
+    #if($ArchetypeIsSnapshot == true)
 
     <pluginRepositories>
         <pluginRepository>
@@ -296,5 +299,5 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-#end
+    #end
 </project>

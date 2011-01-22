@@ -9,15 +9,20 @@
  */
 package org.mule.tools.cc.generator.directives;
 
-import freemarker.core.Environment;
-import freemarker.template.*;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
+import freemarker.core.Environment;
+import freemarker.template.TemplateDirectiveBody;
+import freemarker.template.TemplateDirectiveModel;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
+
 public class SplitCamelCaseDirective implements TemplateDirectiveModel
 {
+
     @SuppressWarnings("rawtypes")
     public void execute(Environment environment,
                         Map params,
@@ -45,6 +50,7 @@ public class SplitCamelCaseDirective implements TemplateDirectiveModel
 
     private static class SplitCamelCaseWriter extends Writer
     {
+
         private final Writer out;
 
         SplitCamelCaseWriter(Writer out)
@@ -58,8 +64,8 @@ public class SplitCamelCaseDirective implements TemplateDirectiveModel
             String camelCase = new String(cbuf, off, len);
 
             camelCase = camelCase.replaceAll(
-                String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z][0-9])", "(?<=[^A-Z])(?=[A-Z])",
-                    "(?<=[A-Za-z0-9])(?=[^A-Za-z0-9])"), "-").toLowerCase();
+                    String.format("%s|%s|%s", "(?<=[A-Z])(?=[A-Z][a-z][0-9])", "(?<=[^A-Z])(?=[A-Z])",
+                                  "(?<=[A-Za-z0-9])(?=[^A-Za-z0-9])"), "-").toLowerCase();
 
             out.write(camelCase);
         }

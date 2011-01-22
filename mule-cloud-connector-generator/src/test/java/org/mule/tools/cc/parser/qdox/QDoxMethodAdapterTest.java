@@ -2,6 +2,7 @@ package org.mule.tools.cc.parser.qdox;
 
 import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaParameter;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -9,7 +10,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-public class QDoxMethodAdapterTest {
+public class QDoxMethodAdapterTest
+{
+
     private static final String NAME = "NAME";
     private static final String COMMENT = "COMMENT";
     private static final String PARAMETER_A = "PARAMETER_A";
@@ -18,7 +21,8 @@ public class QDoxMethodAdapterTest {
 
 
     @Test
-    public void name() throws Exception {
+    public void name() throws Exception
+    {
         JavaMethod methodMock = mock(JavaMethod.class);
         when(methodMock.getName()).thenReturn(NAME);
 
@@ -28,7 +32,8 @@ public class QDoxMethodAdapterTest {
     }
 
     @Test
-    public void description() throws Exception {
+    public void description() throws Exception
+    {
         JavaMethod methodMock = mock(JavaMethod.class);
         when(methodMock.getComment()).thenReturn(COMMENT);
 
@@ -39,7 +44,8 @@ public class QDoxMethodAdapterTest {
     }
 
     @Test
-    public void parameters() throws Exception {
+    public void parameters() throws Exception
+    {
         JavaMethod methodMock = mock(JavaMethod.class);
         JavaParameter parameterMockA = mock(JavaParameter.class);
         when(parameterMockA.getName()).thenReturn(PARAMETER_A);
@@ -47,7 +53,7 @@ public class QDoxMethodAdapterTest {
         when(parameterMockB.getName()).thenReturn(PARAMETER_B);
         JavaParameter parameterMockC = mock(JavaParameter.class);
         when(parameterMockC.getName()).thenReturn(PARAMETER_C);
-        JavaParameter[] parameters = new JavaParameter[]{parameterMockA, parameterMockB, parameterMockC};
+        JavaParameter[] parameters = new JavaParameter[] {parameterMockA, parameterMockB, parameterMockC};
         when(methodMock.getParameters()).thenReturn(parameters);
 
         QDoxMethodAdapter adapter = new QDoxMethodAdapter(methodMock);

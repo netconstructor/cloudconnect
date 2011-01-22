@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class NamespaceHandlerGenerator extends AbstractTemplateGenerator
 {
+
     private static final String NAMESPACE_HANDLER_TEMPLATE = "namespacehandler.ftl";
 
     private String packageName;

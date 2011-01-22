@@ -9,17 +9,22 @@
  */
 package org.mule.tools.cc.generator.directives;
 
-import freemarker.core.Environment;
-import freemarker.template.*;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import freemarker.core.Environment;
+import freemarker.template.TemplateDirectiveBody;
+import freemarker.template.TemplateDirectiveModel;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
+
 public class TypeMapDirective implements TemplateDirectiveModel
 {
+
     private static final Map<String, String> TYPES_MAP;
 
     static
@@ -57,7 +62,8 @@ public class TypeMapDirective implements TemplateDirectiveModel
             {
                 templateDirectiveBody.render(new TypeMapWriter(environment.getOut()));
             }
-            catch(InvalidTypeException ite) {
+            catch (InvalidTypeException ite)
+            {
                 throw new TemplateModelException(ite);
             }
         }
@@ -69,6 +75,7 @@ public class TypeMapDirective implements TemplateDirectiveModel
 
     private static class TypeMapWriter extends Writer
     {
+
         private final Writer out;
 
         TypeMapWriter(Writer out)

@@ -1,19 +1,23 @@
-#set($D = '$')
-package ${package}.config;
+#set($D='$')
+        package ${package}.config;
 
 import org.mule.construct.SimpleFlowConstruct;
 import org.mule.tck.FunctionalTestCase;
 
-public class ${cloudService}NamespaceHandlerTestCase extends FunctionalTestCase
+public class $
 {
-    @Override
-    protected String getConfigResources()
-    {
-        return "${cloudServiceLower}-namespace-config.xml";
-    }
 
-    public void testSendMessageToFlow() throws Exception
-    {
+    cloudService
+}NamespaceHandlerTestCase extends FunctionalTestCase
+        {
+@Override
+protected String getConfigResources()
+        {
+        return"${cloudServiceLower}-namespace-config.xml";
+}
+
+public void testSendMessageToFlow()throws Exception
+        {
         /*
             This test case tests your Mule integration.
             
@@ -30,10 +34,10 @@ public class ${cloudService}NamespaceHandlerTestCase extends FunctionalTestCase
             MuleEvent responseEvent = flow.process(event);
             assertEquals(<expected test output>, responseEvent.getMessage().getPayloadAsString());
         */
-    }
+        }
 
-    private SimpleFlowConstruct lookupFlowConstruct(String name)
-    {
-        return (SimpleFlowConstruct) muleContext.getRegistry().lookupFlowConstruct(name);
-    }
+private SimpleFlowConstruct lookupFlowConstruct(String name)
+        {
+        return(SimpleFlowConstruct)muleContext.getRegistry().lookupFlowConstruct(name);
 }
+        }

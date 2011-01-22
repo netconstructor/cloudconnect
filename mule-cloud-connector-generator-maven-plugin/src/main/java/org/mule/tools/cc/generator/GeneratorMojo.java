@@ -10,6 +10,10 @@
 
 package org.mule.tools.cc.generator;
 
+import org.mule.tools.cc.model.JavaClass;
+import org.mule.tools.cc.parser.ClassParseException;
+import org.mule.tools.cc.parser.qdox.QDoxClassParser;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,10 +28,6 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.util.IOUtil;
 
-import org.mule.tools.cc.model.JavaClass;
-import org.mule.tools.cc.parser.ClassParseException;
-import org.mule.tools.cc.parser.qdox.QDoxClassParser;
-
 /**
  * Generate schema for a Mule cloud connector.
  *
@@ -36,6 +36,7 @@ import org.mule.tools.cc.parser.qdox.QDoxClassParser;
  */
 public class GeneratorMojo extends AbstractMojo
 {
+
     /**
      * Absolute path to the Java source file of the cloud connector class.
      *
@@ -166,12 +167,12 @@ public class GeneratorMojo extends AbstractMojo
         catch (IOException iox)
         {
             throw new MojoExecutionException(
-                "Error while parsing " + cloudConnector.getAbsolutePath(), iox);
+                    "Error while parsing " + cloudConnector.getAbsolutePath(), iox);
         }
         catch (ClassParseException cpe)
         {
             throw new MojoExecutionException(
-                "Error while parsing " + cloudConnector.getAbsolutePath(), cpe);
+                    "Error while parsing " + cloudConnector.getAbsolutePath(), cpe);
         }
         finally
         {
@@ -283,7 +284,7 @@ public class GeneratorMojo extends AbstractMojo
         createDirectory(absolutePackageDir);
 
         File namespaceJavaFile = new File(generatedSourcesDirectory(),
-            namespaceHandlerProjectRelativeFile().getPath());
+                                          namespaceHandlerProjectRelativeFile().getPath());
         return new FileOutputStream(namespaceJavaFile);
     }
 
