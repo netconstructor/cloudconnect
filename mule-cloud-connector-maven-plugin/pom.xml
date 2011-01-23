@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <parent>
+        <groupId>org.mule.tools</groupId>
+        <artifactId>mule-cloud-connector</artifactId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.mule.tools</groupId>
+    <artifactId>mule-cloud-connector-maven-plugin</artifactId>
+    <version>${cloudConnectVersion}</version>
+    <packaging>maven-plugin</packaging>
+    <name>Maven Plugin for Cloud Connector Generator</name>
+    <description>Integrate generating schema and Spring bean definition parser from a cloud connector class into the
+        Maven build.
+    </description>
+
+    <properties>
+        <localRepositoryUrl>${project.build.directory}/it-repo</localRepositoryUrl>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.mule.tools</groupId>
+            <artifactId>mule-cloud-connector-generator</artifactId>
+            <version>${cloudConnectVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>${mavenVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-project</artifactId>
+            <version>${mavenVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junitVersion}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <version>1.5</version>
+            <configuration>
+              <debug>false</debug>
+              <ignoreFailures>false</ignoreFailures>
+              <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+              <setupIncludes>
+                <setupInclude>it-parent/pom.xml</setupInclude>
+              </setupIncludes>
+              <pomIncludes>
+              	<pomInclude>*/pom.xml</pomInclude>
+              </pomIncludes>
+              <pomExcludes>
+                <pomExclude>it-parent/**</pomExclude>
+              </pomExcludes>
+              <localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
+              <settingsFile>src/it/settings.xml</settingsFile>
+              <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+              </goals>
+            </configuration>
+            <executions>
+              <execution>
+                <id>integration-test</id>
+                <goals>
+                  <goal>install</goal>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+</project>
