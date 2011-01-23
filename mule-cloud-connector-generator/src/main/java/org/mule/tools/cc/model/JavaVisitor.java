@@ -9,12 +9,7 @@
  */
 package org.mule.tools.cc.model;
 
-public interface JavaProperty extends JavaBase<JavaProperty>
+public interface JavaVisitor<V>
 {
-
-    String getName();
-
-    String getType();
-
-    String getDescription();
+    public void visit(V v);
 }

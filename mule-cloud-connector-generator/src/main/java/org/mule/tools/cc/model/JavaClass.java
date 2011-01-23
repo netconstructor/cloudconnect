@@ -11,7 +11,7 @@ package org.mule.tools.cc.model;
 
 import java.util.List;
 
-public interface JavaClass
+public interface JavaClass extends JavaBase<JavaClass>
 {
 
     String getName();

@@ -9,7 +9,7 @@
  */
 package org.mule.tools.cc.model;
 
-public interface JavaParameter
+public interface JavaParameter extends JavaBase<JavaParameter>
 {
 
     String getName();

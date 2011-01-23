@@ -11,6 +11,7 @@ package org.mule.tools.cc.parser.qdox;
 
 import org.mule.tools.cc.model.JavaMethod;
 import org.mule.tools.cc.model.JavaParameter;
+import org.mule.tools.cc.model.JavaVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,5 +57,10 @@ public class QDoxMethodAdapter implements JavaMethod
         {
             this.parameters.add(new QDoxParameterAdapter(parameters[i]));
         }
+    }
+
+    public void accept(JavaVisitor<JavaMethod> visitor)
+    {
+        visitor.visit(this);
     }
 }

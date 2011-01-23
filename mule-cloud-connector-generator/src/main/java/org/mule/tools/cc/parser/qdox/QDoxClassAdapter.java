@@ -11,6 +11,7 @@ package org.mule.tools.cc.parser.qdox;
 
 import org.mule.tools.cc.model.JavaMethod;
 import org.mule.tools.cc.model.JavaProperty;
+import org.mule.tools.cc.model.JavaVisitor;
 
 import com.thoughtworks.qdox.model.BeanProperty;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -104,5 +105,10 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass
             }
         }
 
+    }
+
+    public void accept(JavaVisitor<org.mule.tools.cc.model.JavaClass> visitor)
+    {
+        visitor.visit(this);
     }
 }

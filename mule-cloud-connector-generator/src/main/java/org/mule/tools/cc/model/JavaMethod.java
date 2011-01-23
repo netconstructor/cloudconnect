@@ -11,7 +11,7 @@ package org.mule.tools.cc.model;
 
 import java.util.List;
 
-public interface JavaMethod
+public interface JavaMethod extends JavaBase<JavaMethod>
 {
 
     String getName();

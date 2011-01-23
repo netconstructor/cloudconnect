@@ -10,6 +10,7 @@
 package org.mule.tools.cc.parser.qdox;
 
 import org.mule.tools.cc.model.JavaProperty;
+import org.mule.tools.cc.model.JavaVisitor;
 
 import com.thoughtworks.qdox.model.BeanProperty;
 
@@ -36,5 +37,10 @@ public class QDoxPropertyAdapter implements JavaProperty
     public String getDescription()
     {
         return this.javaProperty.getMutator().getComment();
+    }
+
+    public void accept(JavaVisitor<JavaProperty> visitor)
+    {
+        visitor.visit(this);
     }
 }

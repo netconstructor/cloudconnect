@@ -7,14 +7,14 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.tools.cc.model;
+package org.mule.tools.cc.validators;
 
-public interface JavaProperty extends JavaBase<JavaProperty>
+import org.mule.tools.cc.model.JavaParameter;
+import org.mule.tools.cc.model.JavaVisitor;
+
+public class TypeValidator implements JavaVisitor<JavaParameter>
 {
-
-    String getName();
-
-    String getType();
-
-    String getDescription();
+    public void visit(JavaParameter javaParameter)
+    {
+    }
 }
