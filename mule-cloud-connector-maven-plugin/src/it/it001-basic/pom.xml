@@ -20,10 +20,14 @@
                 <version>1.1-SNAPSHOT</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <cloudConnector>src/main/java/org/mule/tools/cc/it001/BasicCloudConnector.java</cloudConnector>
-                    <namespaceHandler>org/mule/tools/cc/it001/BasicNamespaceHandler.java</namespaceHandler>
                     <muleVersion>3.1</muleVersion>
-                    <schemaFilename>mule-basic.xsd</schemaFilename>
+                    <connectors>
+                        <connector>
+                            <cloudConnector>src/main/java/org/mule/tools/cc/it001/BasicCloudConnector.java</cloudConnector>
+                            <namespaceHandler>org/mule/tools/cc/it001/BasicNamespaceHandler.java</namespaceHandler>
+                            <schemaFilename>mule-basic.xsd</schemaFilename>
+                        </connector>
+                    </connectors>
                 </configuration>
             </plugin>
         </plugins>

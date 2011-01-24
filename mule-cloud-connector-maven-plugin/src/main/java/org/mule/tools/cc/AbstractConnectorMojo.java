@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -27,12 +28,11 @@ import org.codehaus.plexus.util.IOUtil;
 public abstract class AbstractConnectorMojo extends AbstractMojo
 {
     /**
-     * Absolute path to the Java source file of the cloud connector class.
-     *
+     * List of connectors defined for this project
      * @parameter
      * @required
      */
-    private File cloudConnector;
+    private List<Connector> connectors;
 
     /**
      * Directory containing the classes.
@@ -69,9 +69,9 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         return targetDirectory;
     }
 
-    public File getCloudConnector()
+    public List<Connector> getConnectors()
     {
-        return cloudConnector;
+        return connectors;
     }
 
     protected void createDirectory(File directory) throws MojoExecutionException
@@ -85,7 +85,7 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         }
     }
 
-    protected JavaClass parseCloudConnectorClass() throws MojoExecutionException
+    protected JavaClass parseCloudConnectorClass(File cloudConnector) throws MojoExecutionException
     {
         if (cloudConnector.exists() == false)
         {

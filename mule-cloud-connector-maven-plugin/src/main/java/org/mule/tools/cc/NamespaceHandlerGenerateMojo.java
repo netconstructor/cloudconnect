@@ -28,42 +28,38 @@ import org.codehaus.plexus.util.IOUtil;
 public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
 {
 
-    /**
-     * Absolute path to the generated namespace handler source file.
-     *
-     * @parameter
-     * @required
-     */
-    private File namespaceHandler;
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         createAndAttachGeneratedSourcesDirectory();
 
-        JavaClass javaClass = parseCloudConnectorClass();
-
-        NamespaceHandlerGenerator generator = new NamespaceHandlerGenerator();
-        generator.setJavaClass(javaClass);
-
-        String packageName = determinePackageNameFromNamespaceHandlerFile();
-        generator.setPackageName(packageName);
-
-        String className = determineClassNameFromNamespaceHandlerFile();
-        generator.setClassName(className);
-
-        OutputStream output = null;
-        try
+        for (Connector c : getConnectors())
         {
-            output = openNamespaceHandlerFileStream();
-            generator.generate(output);
-        }
-        catch (IOException iox)
-        {
-            throw new MojoExecutionException("Error while generating schema", iox);
-        }
-        finally
-        {
-            IOUtil.close(output);
+            JavaClass javaClass = parseCloudConnectorClass(c.getCloudConnector());
+
+            NamespaceHandlerGenerator generator = new NamespaceHandlerGenerator();
+            generator.setJavaClass(javaClass);
+
+            String packageName = determinePackageNameFromNamespaceHandlerFile(c.getNamespaceHandler());
+            generator.setPackageName(packageName);
+
+            String className = determineClassNameFromNamespaceHandlerFile(c.getNamespaceHandler());
+            generator.setClassName(className);
+
+            OutputStream output = null;
+            try
+            {
+                output = openNamespaceHandlerFileStream(c.getNamespaceHandler());
+                generator.generate(output);
+            }
+            catch (IOException iox)
+            {
+                throw new MojoExecutionException("Error while generating schema", iox);
+            }
+            finally
+            {
+                IOUtil.close(output);
+            }
         }
     }
 
@@ -79,7 +75,7 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
         return new File(getTargetDirectory(), "generated-sources/mule");
     }
 
-    private String determinePackageNameFromNamespaceHandlerFile()
+    private String determinePackageNameFromNamespaceHandlerFile(File namespaceHandler)
     {
         String namespaceHandlerPath = namespaceHandler.getAbsolutePath();
 
@@ -90,20 +86,20 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
         // cut off the leading '/'
         relativeNamespaceHandlerPath = relativeNamespaceHandlerPath.substring(1);
 
-        String packageName = namespaceHandlerProjectRelativeFile().getParent();
+        String packageName = namespaceHandlerProjectRelativeFile(namespaceHandler).getParent();
         packageName = packageName.replace('/', '.');    // unix paths
         packageName = packageName.replace('\\', '.');   // windows paths
 
         return packageName;
     }
 
-    private String determineClassNameFromNamespaceHandlerFile()
+    private String determineClassNameFromNamespaceHandlerFile(File namespaceHandler)
     {
         String className = namespaceHandler.getName();
         return className.replace(".java", "");
     }
 
-    private File namespaceHandlerProjectRelativeFile()
+    private File namespaceHandlerProjectRelativeFile(File namespaceHandler)
     {
         String namespaceHandlerPath = namespaceHandler.getAbsolutePath();
 
@@ -117,14 +113,14 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
         return new File(relativeNamespaceHandlerPath);
     }
 
-    private OutputStream openNamespaceHandlerFileStream() throws IOException, MojoExecutionException
+    private OutputStream openNamespaceHandlerFileStream(File namespaceHandler) throws IOException, MojoExecutionException
     {
-        String packageDir = namespaceHandlerProjectRelativeFile().getParentFile().getPath();
+        String packageDir = namespaceHandlerProjectRelativeFile(namespaceHandler).getParentFile().getPath();
         File absolutePackageDir = new File(generatedSourcesDirectory(), packageDir);
         createDirectory(absolutePackageDir);
 
         File namespaceJavaFile = new File(generatedSourcesDirectory(),
-                                          namespaceHandlerProjectRelativeFile().getPath());
+                                          namespaceHandlerProjectRelativeFile(namespaceHandler).getPath());
         return new FileOutputStream(namespaceJavaFile);
     }
 

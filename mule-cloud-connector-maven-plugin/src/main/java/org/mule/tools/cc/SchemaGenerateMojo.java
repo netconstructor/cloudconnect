@@ -27,13 +27,6 @@ import org.codehaus.plexus.util.IOUtil;
  */
 public class SchemaGenerateMojo extends AbstractConnectorMojo
 {
-    /**
-     * Filename of the generated schema file.
-     *
-     * @parameter
-     * @required
-     */
-    private String schemaFilename;
 
     /**
      * @parameter
@@ -44,33 +37,38 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         createAndAttachGeneratedResourcesDirectory();
-        String suffix = determineNamespaceIdentifierSuffixFromSchemaFilename();
-        String schemaVersion = determineSchemaVersionFromMuleVersion();
 
-        JavaClass javaClass = parseCloudConnectorClass();
+        for (Connector c : getConnectors())
+        {
 
-        SchemaGenerator generator = new SchemaGenerator();
-        generator.setJavaClass(javaClass);
-        generator.setNamespaceIdentifierSuffix(suffix);
-        generator.setSchemaVersion(schemaVersion);
+            String suffix = determineNamespaceIdentifierSuffixFromSchemaFilename(c.getSchemaFilename());
+            String schemaVersion = determineSchemaVersionFromMuleVersion();
 
-        OutputStream output = null;
-        try
-        {
-            output = openSchemaFileStream();
-            generator.generate(output);
-        }
-        catch (IOException iox)
-        {
-            throw new MojoExecutionException("Error while generating schema", iox);
-        }
-        finally
-        {
-            IOUtil.close(output);
+            JavaClass javaClass = parseCloudConnectorClass(c.getCloudConnector());
+
+            SchemaGenerator generator = new SchemaGenerator();
+            generator.setJavaClass(javaClass);
+            generator.setNamespaceIdentifierSuffix(suffix);
+            generator.setSchemaVersion(schemaVersion);
+
+            OutputStream output = null;
+            try
+            {
+                output = openSchemaFileStream(c.getSchemaFilename());
+                generator.generate(output);
+            }
+            catch (IOException iox)
+            {
+                throw new MojoExecutionException("Error while generating schema", iox);
+            }
+            finally
+            {
+                IOUtil.close(output);
+            }
         }
     }
 
-    private String determineNamespaceIdentifierSuffixFromSchemaFilename() throws MojoExecutionException
+    private String determineNamespaceIdentifierSuffixFromSchemaFilename(String schemaFilename) throws MojoExecutionException
     {
         if (schemaFilename.startsWith("mule-") == false)
         {
@@ -104,7 +102,7 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
         getProjectHelper().addResource(project, resourceDirectory.getAbsolutePath(), null, null);
     }
 
-    private OutputStream openSchemaFileStream() throws IOException, MojoExecutionException
+    private OutputStream openSchemaFileStream(String schemaFilename) throws IOException, MojoExecutionException
     {
         File metaInfDirectory = new File(generatedResourcesDirectory(), "META-INF");
         createDirectory(metaInfDirectory);
