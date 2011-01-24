@@ -122,12 +122,16 @@
                         </goals>
                         <configuration>
                             <muleVersion>${D}{mule.version}</muleVersion>
-                            <cloudConnector>
-                                ${D}{project.basedir}/src/main/java/${PackagePath}/${cloudService}CloudConnector.java
-                            </cloudConnector>
-                            <schemaFilename>mule-${cloudServiceLower}.xsd</schemaFilename>
-                            <namespaceHandler>${PackagePath}/config/${cloudService}NamespaceHandler.java
-                            </namespaceHandler>
+                            <connectors>
+                                <connector>
+                                    <cloudConnector>
+                                        ${D}{project.basedir}/src/main/java/${PackagePath}/${cloudService}CloudConnector.java
+                                    </cloudConnector>
+                                    <schemaFilename>mule-${cloudServiceLower}.xsd</schemaFilename>
+                                    <namespaceHandler>${PackagePath}/config/${cloudService}NamespaceHandler.java
+                                    </namespaceHandler>
+                                </connector>
+                            </connectors>
                         </configuration>
                     </execution>
                 </executions>
