@@ -37,7 +37,7 @@ public class SchemaGenerator extends AbstractTemplateGenerator
         Map<String, Object> root = new HashMap<String, Object>();
         root.put("namespaceIdentifierSuffix", namespaceIdentifierSuffix);
         root.put("schemaVersion", schemaVersion);
-        root.put("class", javaClass);
+        root.put("class", getJavaClass());
         return root;
     }
 

@@ -26,7 +26,7 @@ public class NamespaceHandlerGenerator extends AbstractTemplateGenerator
         Map<String, Object> root = new HashMap<String, Object>();
         root.put("packageName", packageName);
         root.put("className", className);
-        root.put("class", javaClass);
+        root.put("class", getJavaClass());
         return root;
     }
 

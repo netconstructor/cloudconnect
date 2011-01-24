@@ -136,6 +136,15 @@ public abstract class AbstractTemplateGenerator
         }
         out.flush();
     }
+
+    /**
+     * Retrieve java class
+     * @return Java class model
+     */
+    public JavaClass getJavaClass()
+    {
+        return javaClass;
+    }
 }
 
 

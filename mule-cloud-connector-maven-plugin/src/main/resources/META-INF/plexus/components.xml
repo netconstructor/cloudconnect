@@ -1,0 +1,56 @@
+<!--
+  ~ $Id$
+  ~ Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
+  ~
+  ~ The software in this package is published under the terms of the CPAL v1.0
+  ~ license, a copy of which has been included with this distribution in the
+  ~ LICENSE.txt file.
+  -->
+<component-set>
+    <components>
+        <component>
+            <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+            <role-hint>cloud-connector</role-hint>
+            <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
+            </implementation>
+            <configuration>
+                <phases>
+                    <validate>org.mule.tools:mule-cloud-connector-maven-plugin:connector-validate</validate>
+                    <initialize></initialize>
+                    <generate-sources>org.mule.tools:mule-cloud-connector-maven-plugin:namespace-handler-generate
+                    </generate-sources>
+                    <process-sources>
+                    </process-sources>
+                    <generate-resources>org.mule.tools:mule-cloud-connector-maven-plugin:schema-generate
+                    </generate-resources>
+                    <process-resources>
+                    </process-resources>
+                    <compile>
+                    </compile>
+                    <process-classes>
+                    </process-classes>
+                    <generate-test-sources></generate-test-sources>
+                    <process-test-sources></process-test-sources>
+                    <generate-test-resources></generate-test-resources>
+                    <process-test-resources>
+                    </process-test-resources>
+                    <test-compile>
+                    </test-compile>
+                    <process-test-classes>
+                    </process-test-classes>
+                    <test></test>
+                    <package></package>
+                    <pre-integration-test></pre-integration-test>
+                    <integration-test>
+                    </integration-test>
+                    <post-integration-test></post-integration-test>
+                    <verify></verify>
+                    <install>
+                    </install>
+                    <deploy>
+                    </deploy>
+                </phases>
+            </configuration>
+        </component>
+    </components>
+</component-set>
