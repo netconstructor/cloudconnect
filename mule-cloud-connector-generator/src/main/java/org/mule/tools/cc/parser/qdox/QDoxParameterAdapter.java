@@ -36,13 +36,19 @@ public class QDoxParameterAdapter implements JavaParameter
 
     public String getDescription()
     {
-        DocletTag[] doclets = javaParameter.getParentMethod().getTagsByName("param");
-
-        for (int i = 0; i < doclets.length; i++)
+        if (javaParameter.getParentMethod() != null)
         {
-            if (doclets[i].getParameters()[0].equals(javaParameter.getName()))
+            DocletTag[] doclets = javaParameter.getParentMethod().getTagsByName("param");
+
+            for (int i = 0; i < doclets.length; i++)
             {
-                return doclets[i].getValue().substring(doclets[i].getValue().indexOf(' '));
+                if (doclets[i].getParameters()[0].equals(javaParameter.getName()))
+                {
+                    if (doclets[i].getValue().indexOf(' ') != -1)
+                    {
+                        return doclets[i].getValue().substring(doclets[i].getValue().indexOf(' '));
+                    }
+                }
             }
         }
 
