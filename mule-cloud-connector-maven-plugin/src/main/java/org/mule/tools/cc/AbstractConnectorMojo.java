@@ -11,6 +11,7 @@ package org.mule.tools.cc;
 
 import org.mule.tools.cc.model.JavaClass;
 import org.mule.tools.cc.parser.ClassParseException;
+import org.mule.tools.cc.parser.ClassParser;
 import org.mule.tools.cc.parser.qdox.QDoxClassParser;
 
 import java.io.File;
@@ -27,8 +28,10 @@ import org.codehaus.plexus.util.IOUtil;
 
 public abstract class AbstractConnectorMojo extends AbstractMojo
 {
+
     /**
      * List of connectors defined for this project
+     *
      * @parameter
      * @required
      */
@@ -53,6 +56,16 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
      * @readonly
      */
     protected MavenProject project;
+
+    /**
+     *
+     */
+    private ClassParser parser;
+
+    public AbstractConnectorMojo()
+    {
+        parser = new QDoxClassParser();
+    }
 
     public MavenProjectHelper getProjectHelper()
     {
@@ -96,7 +109,7 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         try
         {
             input = new FileInputStream(cloudConnector);
-            return new QDoxClassParser().parse(input);
+            return parser.parse(input);
         }
         catch (IOException iox)
         {
@@ -114,4 +127,8 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         }
     }
 
+    public ClassParser getParser()
+    {
+        return parser;
+    }
 }

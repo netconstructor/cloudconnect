@@ -11,10 +11,12 @@ package org.mule.tools.cc.parser;
 
 import org.mule.tools.cc.model.JavaClass;
 
+import java.io.File;
 import java.io.InputStream;
 
 public interface ClassParser
 {
 
+    void addSourceTree(File sourceTree);
     JavaClass parse(InputStream input) throws ClassParseException;
 }

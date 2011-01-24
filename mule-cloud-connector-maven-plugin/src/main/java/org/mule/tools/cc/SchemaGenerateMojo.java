@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -37,6 +38,13 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         createAndAttachGeneratedResourcesDirectory();
+
+        // setup source roots
+        for (String sourceRoot : (List<String>) getProject().getCompileSourceRoots())
+        {
+            System.out.println(sourceRoot);
+            getParser().addSourceTree( new File(sourceRoot));
+        }
 
         for (Connector c : getConnectors())
         {

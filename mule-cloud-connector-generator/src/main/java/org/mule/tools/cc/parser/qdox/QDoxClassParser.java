@@ -16,12 +16,12 @@ import org.mule.tools.cc.parser.ClassParser;
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.parser.ParseException;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class QDoxClassParser implements ClassParser
 {
-
     private JavaDocBuilder javaDocBuilder;
 
     public QDoxClassParser()
@@ -34,6 +34,11 @@ public class QDoxClassParser implements ClassParser
         this.javaDocBuilder = javaDocBuilder;
     }
 
+    public void addSourceTree(File sourceTree)
+    {
+        javaDocBuilder.addSourceTree(sourceTree);
+    }
+
     public JavaClass parse(InputStream input) throws ClassParseException
     {
         try
@@ -43,11 +48,6 @@ public class QDoxClassParser implements ClassParser
             if (javaDocBuilder.getClasses() == null)
             {
                 throw new ClassParseException("Source file does not contain a Java class");
-            }
-
-            if (javaDocBuilder.getClasses().length > 1)
-            {
-                throw new ClassParseException("Source file contains more than one Java class");
             }
 
             return new QDoxClassAdapter(javaDocBuilder.getClasses()[0]);

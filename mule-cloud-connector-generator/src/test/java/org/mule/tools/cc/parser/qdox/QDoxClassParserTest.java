@@ -43,22 +43,6 @@ public class QDoxClassParserTest
         parser.parse(inputStreamMock);
     }
 
-    @Test(expected = ClassParseException.class)
-    public void moreThanOneClass() throws Exception
-    {
-        InputStream inputStreamMock = mock(InputStream.class);
-        JavaDocBuilder javaDocBuilder = mock(JavaDocBuilder.class);
-
-        JavaClass classMockA = mock(JavaClass.class);
-        JavaClass classMockB = mock(JavaClass.class);
-        JavaClass[] classes = new JavaClass[] {classMockA, classMockB};
-        when(javaDocBuilder.getClasses()).thenReturn(classes);
-
-        QDoxClassParser parser = new QDoxClassParser();
-        parser.setJavaDocBuilder(javaDocBuilder);
-        parser.parse(inputStreamMock);
-    }
-
     @Test
     public void success() throws Exception
     {
