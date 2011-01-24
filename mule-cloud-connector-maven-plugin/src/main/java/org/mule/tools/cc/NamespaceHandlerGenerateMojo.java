@@ -13,9 +13,13 @@ import org.mule.tools.cc.generator.NamespaceHandlerGenerator;
 import org.mule.tools.cc.model.JavaClass;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * @phase generate-sources
@@ -23,6 +27,7 @@ import org.apache.maven.plugin.MojoFailureException;
  */
 public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
 {
+
     /**
      * Absolute path to the generated namespace handler source file.
      *
@@ -46,6 +51,20 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
         String className = determineClassNameFromNamespaceHandlerFile();
         generator.setClassName(className);
 
+        OutputStream output = null;
+        try
+        {
+            output = openNamespaceHandlerFileStream();
+            generator.generate(output);
+        }
+        catch (IOException iox)
+        {
+            throw new MojoExecutionException("Error while generating schema", iox);
+        }
+        finally
+        {
+            IOUtil.close(output);
+        }
     }
 
     private void createAndAttachGeneratedSourcesDirectory() throws MojoExecutionException
@@ -97,4 +116,16 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
 
         return new File(relativeNamespaceHandlerPath);
     }
+
+    private OutputStream openNamespaceHandlerFileStream() throws IOException, MojoExecutionException
+    {
+        String packageDir = namespaceHandlerProjectRelativeFile().getParentFile().getPath();
+        File absolutePackageDir = new File(generatedSourcesDirectory(), packageDir);
+        createDirectory(absolutePackageDir);
+
+        File namespaceJavaFile = new File(generatedSourcesDirectory(),
+                                          namespaceHandlerProjectRelativeFile().getPath());
+        return new FileOutputStream(namespaceJavaFile);
+    }
+
 }
