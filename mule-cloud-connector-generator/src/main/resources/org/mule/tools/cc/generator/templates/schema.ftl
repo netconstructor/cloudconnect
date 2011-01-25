@@ -29,7 +29,11 @@
         <xsd:complexContent>
             <xsd:extension base="mule:abstractExtensionType">
             <#list class.getProperties() as property>
+                <#if property.isEnum()>
+                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getType()}Enum">
+                <#else>
                 <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="<@typeMap>${property.getType()}</@typeMap>">
+                </#if>
                     <#if property.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation>
@@ -38,6 +42,15 @@
                     </xsd:annotation>
                     </#if>
                 </xsd:attribute>
+                <#if property.isEnum()>
+                <xsd:simpleType name="${property.getName()}Enum">
+                    <xsd:restriction base="xsd:string">
+                        <#list property.getEnumValues() as enumValue>
+                        <xsd:enumeration value="${enumValue}" />
+                        </#list>
+                    </xsd:restriction>
+                </xsd:simpleType>
+                </#if>
             </#list>
             </xsd:extension>
         </xsd:complexContent>

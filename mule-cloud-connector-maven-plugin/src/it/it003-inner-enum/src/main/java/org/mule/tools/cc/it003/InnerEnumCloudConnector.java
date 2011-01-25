@@ -6,7 +6,7 @@ public class InnerEnumCloudConnector
     {
         XML,
         JSON
-    };
+    }
 
     public void format(Format format)
     {

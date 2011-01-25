@@ -9,6 +9,8 @@
  */
 package org.mule.tools.cc.model;
 
+import java.util.List;
+
 public interface JavaProperty extends JavaBase<JavaProperty>
 {
 
@@ -17,4 +19,8 @@ public interface JavaProperty extends JavaBase<JavaProperty>
     String getType();
 
     String getDescription();
+
+    boolean isEnum();
+
+    List<String> getEnumValues();
 }

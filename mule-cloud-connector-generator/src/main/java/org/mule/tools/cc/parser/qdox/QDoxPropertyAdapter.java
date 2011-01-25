@@ -13,6 +13,10 @@ import org.mule.tools.cc.model.JavaProperty;
 import org.mule.tools.cc.model.JavaVisitor;
 
 import com.thoughtworks.qdox.model.BeanProperty;
+import com.thoughtworks.qdox.model.JavaField;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QDoxPropertyAdapter implements JavaProperty
 {
@@ -36,7 +40,30 @@ public class QDoxPropertyAdapter implements JavaProperty
 
     public String getDescription()
     {
-        return this.javaProperty.getMutator().getComment();
+        if( this.javaProperty.getMutator() != null )
+        {
+            return this.javaProperty.getMutator().getComment();
+        }
+
+        return null;
+    }
+
+    public boolean isEnum()
+    {
+        return javaProperty.getType().getJavaClass().isEnum();
+    }
+
+    public List<String> getEnumValues()
+    {
+        List<String> list = new ArrayList<String>();
+
+        JavaField[] fields = javaProperty.getType().getJavaClass().getFields();
+        for( int i = 0; i < fields.length; i++ )
+        {
+            list.add(fields[i].getName());
+        }
+
+        return list;
     }
 
     public void accept(JavaVisitor<JavaProperty> visitor)
