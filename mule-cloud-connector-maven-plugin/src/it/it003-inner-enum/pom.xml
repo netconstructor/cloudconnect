@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>org.mule.tools.cc.it</groupId>
+        <artifactId>it-parent</artifactId>
+        <version>1.1-SNAPSHOT</version>
+        <relativePath>../it-parent/pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.mule.tools.cc.it</groupId>
+    <artifactId>it003-inner-enum</artifactId>
+    <version>1.1-SNAPSHOT</version>
+    <packaging>cloud-connector</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.mule.tools</groupId>
+                <artifactId>mule-cloud-connector-maven-plugin</artifactId>
+                <version>1.1-SNAPSHOT</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <muleVersion>3.1</muleVersion>
+                    <connectors>
+                        <connector>
+                            <cloudConnectorClass>org.mule.tools.cc.it003.InnerEnumCloudConnector</cloudConnectorClass>
+                            <namespaceHandler>org/mule/tools/cc/it003/InnerEnumNamespaceHandler.java</namespaceHandler>
+                            <schemaFilename>mule-extended.xsd</schemaFilename>
+                        </connector>
+                    </connectors>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
