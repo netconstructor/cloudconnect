@@ -3,6 +3,7 @@ package org.mule.tools.cc.parser.qdox;
 import com.thoughtworks.qdox.model.BeanProperty;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaMethod;
+import com.thoughtworks.qdox.model.JavaPackage;
 
 import org.junit.Test;
 
@@ -43,7 +44,9 @@ public class QDoxClassAdapterTest
     public void pkg() throws Exception
     {
         JavaClass classMock = mock(JavaClass.class);
-        when(classMock.getPackage()).thenReturn(PACKAGE);
+        JavaPackage packageMock = mock(JavaPackage.class);
+        when(classMock.getPackage()).thenReturn(packageMock);
+        when(packageMock.getName()).thenReturn(PACKAGE);
 
         QDoxClassAdapter adapter = new QDoxClassAdapter(classMock);
 

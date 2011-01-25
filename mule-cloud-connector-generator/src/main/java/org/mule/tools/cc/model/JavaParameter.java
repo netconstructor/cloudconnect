@@ -9,6 +9,8 @@
  */
 package org.mule.tools.cc.model;
 
+import java.util.List;
+
 public interface JavaParameter extends JavaBase<JavaParameter>
 {
 
@@ -19,4 +21,6 @@ public interface JavaParameter extends JavaBase<JavaParameter>
     String getDescription();
 
     boolean isEnum();
+
+    List<String> getEnumValues();
 }

@@ -101,40 +101,20 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
 
     protected JavaClass parseCloudConnectorClass(String cloudConnectorClass) throws MojoExecutionException
     {
-        File cloudConnector = null;
-        String cloudConnectorFile = cloudConnectorClass.replace(".", File.separator) + ".java";
-
-        boolean found = false;
-        for (String sourceRoots : (List<String>) getProject().getCompileSourceRoots())
+        for (String sourceRoot : (List<String>) project.getCompileSourceRoots())
         {
-            cloudConnector = new File(sourceRoots, cloudConnectorFile);
-            if (cloudConnector.exists() == true)
-            {
-                found = true;
-                break;
-            }
-        }
-
-        if (!found)
-        {
-            throw new MojoExecutionException("Cannot find " + cloudConnectorClass);
+            parser.addSourceTree(new File(sourceRoot));
         }
 
         InputStream input = null;
         try
         {
-            input = new FileInputStream(cloudConnector);
-            return parser.parse(cloudConnectorClass, input);
-        }
-        catch (IOException iox)
-        {
-            throw new MojoExecutionException(
-                    "Error while parsing " + cloudConnector.getAbsolutePath(), iox);
+            return parser.parse(cloudConnectorClass);
         }
         catch (ClassParseException cpe)
         {
             throw new MojoExecutionException(
-                    "Error while parsing " + cloudConnector.getAbsolutePath(), cpe);
+                    "Error while parsing ", cpe);
         }
         finally
         {

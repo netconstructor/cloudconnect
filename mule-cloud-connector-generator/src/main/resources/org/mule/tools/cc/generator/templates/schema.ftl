@@ -59,7 +59,11 @@
         <xsd:complexContent>
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
                 <#list operation.getParameters() as parameter>
+                <#if parameter.isEnum()>
+                <xsd:attribute name="${parameter.getName()}" type="${parameter.getName()}Enum">
+                <#else>
                 <xsd:attribute name="${parameter.getName()}" type="<@typeMap>${parameter.getType()}</@typeMap>">
+                </#if>
                     <#if parameter.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation>
@@ -68,6 +72,15 @@
                     </xsd:annotation>
                     </#if>
                 </xsd:attribute>
+                <#if parameter.isEnum()>
+                <xsd:simpleType name="${parameter.getName()}Enum">
+                    <xsd:restriction base="xsd:string">
+                        <#list parameter.getEnumValues() as enumValue>
+                        <xsd:enumeration value="${enumValue}" />
+                        </#list>
+                    </xsd:restriction>
+                </xsd:simpleType>
+                </#if>
                 </#list>
             </xsd:extension>
         </xsd:complexContent>

@@ -20,5 +20,5 @@ public interface ClassParser
 
     void addSourceTree(File sourceTree);
 
-    JavaClass parse(String sourceFile, InputStream inputStream) throws ClassParseException;
+    JavaClass parse(String sourceFile) throws ClassParseException;
 }

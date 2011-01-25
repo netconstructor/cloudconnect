@@ -40,7 +40,7 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass
 
     public String getPackage()
     {
-        return javaClass.getPackage();
+        return javaClass.getPackage().getName();
     }
 
     public String getDescription()

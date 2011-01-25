@@ -50,24 +50,22 @@ public class QDoxClassParser implements ClassParser
         javaDocBuilder.addSourceTree(sourceTree);
     }
 
-    public JavaClass parse(String fullClassName, InputStream inputStream) throws ClassParseException
+    public JavaClass parse(String fullClassName) throws ClassParseException
     {
         try
         {
-            String classPath = fullClassName.replace(".", File.separator);
-            String className = FilenameUtils.getBaseName(classPath);
-            String packageName = FilenameUtils.getPathNoEndSeparator(classPath).replace(File.separator, ".");
-            javaDocBuilder.addSource(new InputStreamReader(inputStream));
-
             if (javaDocBuilder.getClasses() == null)
             {
                 throw new ClassParseException("Source file does not contain a Java class");
             }
 
+            String classPath = fullClassName.replace(".", File.separator);
+            String className = FilenameUtils.getBaseName(classPath);
+            String packageName = FilenameUtils.getPathNoEndSeparator(classPath).replace(File.separator, ".");
             for (int i = 0; i < javaDocBuilder.getClasses().length; i++)
             {
                 if (javaDocBuilder.getClasses()[i].getName().equals(className)
-                    && javaDocBuilder.getClasses()[i].getPackage().equals(packageName))
+                    && javaDocBuilder.getClasses()[i].getPackage().getName().equals(packageName))
                 {
                     return new QDoxClassAdapter(javaDocBuilder.getClasses()[i]);
                 }

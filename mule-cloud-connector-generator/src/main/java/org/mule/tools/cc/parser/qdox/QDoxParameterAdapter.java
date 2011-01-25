@@ -13,6 +13,10 @@ import org.mule.tools.cc.model.JavaParameter;
 import org.mule.tools.cc.model.JavaVisitor;
 
 import com.thoughtworks.qdox.model.DocletTag;
+import com.thoughtworks.qdox.model.JavaField;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QDoxParameterAdapter implements JavaParameter
 {
@@ -37,6 +41,19 @@ public class QDoxParameterAdapter implements JavaParameter
     public boolean isEnum()
     {
         return javaParameter.getType().getJavaClass().isEnum();
+    }
+
+    public List<String> getEnumValues()
+    {
+        List<String> list = new ArrayList<String>();
+
+        JavaField[] fields = javaParameter.getType().getJavaClass().getFields();
+        for( int i = 0; i < fields.length; i++ )
+        {
+            list.add(fields[i].getName());
+        }
+
+        return list;
     }
 
     public String getDescription()
