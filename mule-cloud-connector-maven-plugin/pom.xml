@@ -50,7 +50,7 @@
                 <artifactId>maven-invoker-plugin</artifactId>
                 <version>1.5</version>
                 <configuration>
-                    <debug>true</debug>
+                    <debug>false</debug>
                     <ignoreFailures>false</ignoreFailures>
                     <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
                     <setupIncludes>

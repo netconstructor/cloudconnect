@@ -25,7 +25,7 @@ public class Connector
      * @parameter
      * @required
      */
-    private File cloudConnector;
+    private String cloudConnectorClass;
 
     public String getSchemaFilename()
     {
@@ -37,8 +37,8 @@ public class Connector
         return namespaceHandler;
     }
 
-    public File getCloudConnector()
+    public String getCloudConnectorClass()
     {
-        return cloudConnector;
+        return cloudConnectorClass;
     }
 }

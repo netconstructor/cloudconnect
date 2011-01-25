@@ -52,7 +52,7 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
             String suffix = determineNamespaceIdentifierSuffixFromSchemaFilename(c.getSchemaFilename());
             String schemaVersion = determineSchemaVersionFromMuleVersion();
 
-            JavaClass javaClass = parseCloudConnectorClass(c.getCloudConnector());
+            JavaClass javaClass = parseCloudConnectorClass(c.getCloudConnectorClass());
 
             SchemaGenerator generator = new SchemaGenerator();
             generator.setJavaClass(javaClass);

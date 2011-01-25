@@ -12,21 +12,32 @@ package org.mule.tools.cc.parser.qdox;
 import org.mule.tools.cc.model.JavaClass;
 import org.mule.tools.cc.parser.ClassParseException;
 import org.mule.tools.cc.parser.ClassParser;
+import org.mule.tools.cc.parser.ClassParserLog;
 
+import com.sun.tools.javac.util.Paths;
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.parser.ParseException;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.apache.commons.io.FilenameUtils;
+
 public class QDoxClassParser implements ClassParser
 {
+    private ClassParserLog log;
     private JavaDocBuilder javaDocBuilder;
 
     public QDoxClassParser()
     {
         this.javaDocBuilder = new JavaDocBuilder();
+    }
+
+    public void setLog(ClassParserLog log)
+    {
+        this.log = log;
     }
 
     protected void setJavaDocBuilder(JavaDocBuilder javaDocBuilder)
@@ -39,18 +50,30 @@ public class QDoxClassParser implements ClassParser
         javaDocBuilder.addSourceTree(sourceTree);
     }
 
-    public JavaClass parse(InputStream input) throws ClassParseException
+    public JavaClass parse(String fullClassName, InputStream inputStream) throws ClassParseException
     {
         try
         {
-            javaDocBuilder.addSource(new InputStreamReader(input));
+            String classPath = fullClassName.replace(".", File.separator);
+            String className = FilenameUtils.getBaseName(classPath);
+            String packageName = FilenameUtils.getPathNoEndSeparator(classPath).replace(File.separator, ".");
+            javaDocBuilder.addSource(new InputStreamReader(inputStream));
 
             if (javaDocBuilder.getClasses() == null)
             {
                 throw new ClassParseException("Source file does not contain a Java class");
             }
 
-            return new QDoxClassAdapter(javaDocBuilder.getClasses()[0]);
+            for (int i = 0; i < javaDocBuilder.getClasses().length; i++)
+            {
+                if (javaDocBuilder.getClasses()[i].getName().equals(className)
+                    && javaDocBuilder.getClasses()[i].getPackage().equals(packageName))
+                {
+                    return new QDoxClassAdapter(javaDocBuilder.getClasses()[i]);
+                }
+            }
+
+            throw new ClassParseException("Cannot find class " + fullClassName);
         }
         catch (ParseException pe)
         {

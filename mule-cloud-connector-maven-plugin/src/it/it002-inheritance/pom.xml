@@ -8,7 +8,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.mule.tools.cc.it</groupId>
-    <artifactId>it001-basic</artifactId>
+    <artifactId>it002-inheritance</artifactId>
     <version>1.1-SNAPSHOT</version>
     <packaging>cloud-connector</packaging>
 
@@ -23,9 +23,9 @@
                     <muleVersion>3.1</muleVersion>
                     <connectors>
                         <connector>
-                            <cloudConnectorClass>org.mule.tools.cc.it001.BasicCloudConnector</cloudConnectorClass>
-                            <namespaceHandler>org/mule/tools/cc/it001/BasicNamespaceHandler.java</namespaceHandler>
-                            <schemaFilename>mule-basic.xsd</schemaFilename>
+                            <cloudConnectorClass>org.mule.tools.cc.it002.ExtendedCloudConnector</cloudConnectorClass>
+                            <namespaceHandler>org/mule/tools/cc/it002/ExtendedNamespaceHandler.java</namespaceHandler>
+                            <schemaFilename>mule-extended.xsd</schemaFilename>
                         </connector>
                     </connectors>
                 </configuration>

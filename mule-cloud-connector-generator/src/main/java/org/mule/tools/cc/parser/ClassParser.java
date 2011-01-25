@@ -16,7 +16,9 @@ import java.io.InputStream;
 
 public interface ClassParser
 {
+    void setLog(ClassParserLog log);
 
     void addSourceTree(File sourceTree);
-    JavaClass parse(InputStream input) throws ClassParseException;
+
+    JavaClass parse(String sourceFile, InputStream inputStream) throws ClassParseException;
 }

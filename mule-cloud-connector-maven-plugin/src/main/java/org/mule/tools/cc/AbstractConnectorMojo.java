@@ -65,6 +65,7 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
     public AbstractConnectorMojo()
     {
         parser = new QDoxClassParser();
+        parser.setLog(new MavenClassParserLog(getLog()));
     }
 
     public MavenProjectHelper getProjectHelper()
@@ -98,18 +99,32 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         }
     }
 
-    protected JavaClass parseCloudConnectorClass(File cloudConnector) throws MojoExecutionException
+    protected JavaClass parseCloudConnectorClass(String cloudConnectorClass) throws MojoExecutionException
     {
-        if (cloudConnector.exists() == false)
+        File cloudConnector = null;
+        String cloudConnectorFile = cloudConnectorClass.replace(".", File.separator) + ".java";
+
+        boolean found = false;
+        for (String sourceRoots : (List<String>) getProject().getCompileSourceRoots())
         {
-            throw new MojoExecutionException(cloudConnector.getAbsolutePath() + " does not exist");
+            cloudConnector = new File(sourceRoots, cloudConnectorFile);
+            if (cloudConnector.exists() == true)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            throw new MojoExecutionException("Cannot find " + cloudConnectorClass);
         }
 
         InputStream input = null;
         try
         {
             input = new FileInputStream(cloudConnector);
-            return parser.parse(input);
+            return parser.parse(cloudConnectorClass, input);
         }
         catch (IOException iox)
         {

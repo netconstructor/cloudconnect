@@ -35,7 +35,7 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
 
         for (Connector c : getConnectors())
         {
-            JavaClass javaClass = parseCloudConnectorClass(c.getCloudConnector());
+            JavaClass javaClass = parseCloudConnectorClass(c.getCloudConnectorClass());
 
             NamespaceHandlerGenerator generator = new NamespaceHandlerGenerator();
             generator.setJavaClass(javaClass);
