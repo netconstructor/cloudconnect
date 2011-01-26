@@ -43,6 +43,11 @@ public class QDoxParameterAdapter implements JavaParameter
         return javaParameter.getType().getJavaClass().isEnum();
     }
 
+    public String getEnumName()
+    {
+        return javaParameter.getType().getJavaClass().getName();
+    }
+
     public String getDescription()
     {
         if (javaParameter.getParentMethod() != null)

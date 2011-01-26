@@ -29,7 +29,7 @@ public class QDoxEnumAdapter implements JavaEnum
 
     public String getName()
     {
-        return javaType.getValue();
+        return javaType.getJavaClass().getName();
     }
 
     public List<String> getValues()

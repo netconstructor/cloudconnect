@@ -21,4 +21,6 @@ public interface JavaProperty extends JavaBase<JavaProperty>
     String getDescription();
 
     boolean isEnum();
+
+    String getEnumName();
 }

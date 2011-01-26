@@ -30,7 +30,7 @@
             <xsd:extension base="mule:abstractExtensionType">
             <#list class.getProperties() as property>
                 <#if property.isEnum()>
-                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getType()}Enum">
+                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getEnumName()}Enum">
                 <#else>
                 <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="<@typeMap>${property.getType()}</@typeMap>">
                 </#if>
@@ -64,7 +64,7 @@
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
                 <#list operation.getParameters() as parameter>
                 <#if parameter.isEnum()>
-                <xsd:attribute name="${parameter.getName()}" type="${parameter.getName()}Enum">
+                <xsd:attribute name="${parameter.getName()}" type="${parameter.getEnumName()}Enum">
                 <#else>
                 <xsd:attribute name="${parameter.getName()}" type="<@typeMap>${parameter.getType()}</@typeMap>">
                 </#if>
