@@ -10,6 +10,7 @@
 package org.mule.tools.cc;
 
 import org.mule.tools.cc.generator.NamespaceHandlerGenerator;
+import org.mule.tools.cc.generator.SpringNamespaceHandlerGenerator;
 import org.mule.tools.cc.model.JavaClass;
 
 import java.io.File;
@@ -46,6 +47,12 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
             String className = determineClassNameFromNamespaceHandlerFile(c.getNamespaceHandler());
             generator.setClassName(className);
 
+            String suffix = determineNamespaceIdentifierSuffixFromSchemaFilename(c.getSchemaFilename());
+            SpringNamespaceHandlerGenerator springNamespaceHandlerGenerator = new SpringNamespaceHandlerGenerator();
+            springNamespaceHandlerGenerator.setNamespaceIdentifierSuffix(suffix);
+            springNamespaceHandlerGenerator.setPackageName(packageName);
+            springNamespaceHandlerGenerator.setClassName(className);
+
             OutputStream output = null;
             try
             {
@@ -60,6 +67,21 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
             {
                 IOUtil.close(output);
             }
+
+            try
+            {
+                output = openSpringNamespaceHandlerFileStream();
+                springNamespaceHandlerGenerator.generate(output);
+            }
+            catch (IOException iox)
+            {
+                throw new MojoExecutionException("Error while generating schema", iox);
+            }
+            finally
+            {
+                IOUtil.close(output);
+            }
+
         }
     }
 
@@ -123,5 +145,15 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                                           namespaceHandlerProjectRelativeFile(namespaceHandler).getPath());
         return new FileOutputStream(namespaceJavaFile);
     }
+
+    private OutputStream openSpringNamespaceHandlerFileStream() throws IOException, MojoExecutionException
+    {
+        File metaInfDirectory = new File(generatedResourcesDirectory(), "META-INF");
+        createDirectory(metaInfDirectory);
+
+        File springSchemaFile = new File(metaInfDirectory, "spring.handlers");
+        return new FileOutputStream(springSchemaFile);
+    }
+
 
 }

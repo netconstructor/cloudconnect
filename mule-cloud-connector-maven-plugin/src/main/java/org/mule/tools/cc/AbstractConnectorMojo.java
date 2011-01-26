@@ -126,4 +126,25 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
     {
         return parser;
     }
+
+    protected File generatedResourcesDirectory()
+    {
+        return new File(getTargetDirectory(), "generated-resources/mule");
+    }
+
+    protected String determineNamespaceIdentifierSuffixFromSchemaFilename(String schemaFilename) throws MojoExecutionException
+    {
+        if (schemaFilename.startsWith("mule-") == false)
+        {
+            throw new MojoExecutionException("schemaFilename must start with 'mule-'");
+        }
+        if (schemaFilename.endsWith(".xsd") == false)
+        {
+            throw new MojoExecutionException("schemaFilename must end with the .xsd extension");
+        }
+
+        String suffix = schemaFilename.replace("mule-", "");
+        suffix = suffix.replace(".xsd", "");
+        return suffix;
+    }
 }

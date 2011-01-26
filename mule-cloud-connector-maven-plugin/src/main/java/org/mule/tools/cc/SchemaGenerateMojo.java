@@ -61,7 +61,7 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
             generator.setSchemaVersion(schemaVersion);
 
             SpringSchemaGenerator springSchemaGenerator = new SpringSchemaGenerator();
-            generator.setNamespaceIdentifierSuffix(suffix);
+            springSchemaGenerator.setNamespaceIdentifierSuffix(suffix);
 
             OutputStream output = null;
             try
@@ -95,32 +95,11 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
         }
     }
 
-    private String determineNamespaceIdentifierSuffixFromSchemaFilename(String schemaFilename) throws MojoExecutionException
-    {
-        if (schemaFilename.startsWith("mule-") == false)
-        {
-            throw new MojoExecutionException("schemaFilename must start with 'mule-'");
-        }
-        if (schemaFilename.endsWith(".xsd") == false)
-        {
-            throw new MojoExecutionException("schemaFilename must end with the .xsd extension");
-        }
-
-        String suffix = schemaFilename.replace("mule-", "");
-        suffix = suffix.replace(".xsd", "");
-        return suffix;
-    }
-
     private String determineSchemaVersionFromMuleVersion()
     {
         return muleVersion.substring(0, 3);
     }
 
-
-    private File generatedResourcesDirectory()
-    {
-        return new File(getTargetDirectory(), "generated-resources/mule");
-    }
 
     private void createAndAttachGeneratedResourcesDirectory() throws MojoExecutionException
     {
