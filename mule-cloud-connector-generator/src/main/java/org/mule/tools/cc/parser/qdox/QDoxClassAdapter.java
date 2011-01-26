@@ -157,7 +157,6 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass
                 com.thoughtworks.qdox.model.JavaParameter[] parameters = methods[i].getParameters();
                 for (int j = 0; j < parameters.length; j++)
                 {
-                    System.out.println("PARAMETER " + parameters[j].getName() + " TYPE " + parameters[j].getType().getValue() + " ISENUM " + parameters[j].getType().getJavaClass().isEnum());
                     if (parameters[j].getType().getJavaClass().isEnum())
                     {
                         this.enums.add(new QDoxEnumAdapter(parameters[j].getType()));
