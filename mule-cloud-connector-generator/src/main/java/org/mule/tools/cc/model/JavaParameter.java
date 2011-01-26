@@ -21,6 +21,4 @@ public interface JavaParameter extends JavaBase<JavaParameter>
     String getDescription();
 
     boolean isEnum();
-
-    List<String> getEnumValues();
 }

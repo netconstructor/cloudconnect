@@ -11,20 +11,9 @@ package org.mule.tools.cc.model;
 
 import java.util.List;
 
-public interface JavaClass extends JavaBase<JavaClass>
+public interface JavaEnum
 {
-
     String getName();
 
-    String getPackage();
-
-    String getDescription();
-
-    List<JavaProperty> getProperties();
-
-    boolean hasProperties();
-
-    List<JavaMethod> getOperations();
-
-    List<JavaEnum> getEnums();
+    List<String> getValues();
 }

@@ -53,19 +53,6 @@ public class QDoxPropertyAdapter implements JavaProperty
         return javaProperty.getType().getJavaClass().isEnum();
     }
 
-    public List<String> getEnumValues()
-    {
-        List<String> list = new ArrayList<String>();
-
-        JavaField[] fields = javaProperty.getType().getJavaClass().getFields();
-        for( int i = 0; i < fields.length; i++ )
-        {
-            list.add(fields[i].getName());
-        }
-
-        return list;
-    }
-
     public void accept(JavaVisitor<JavaProperty> visitor)
     {
         visitor.visit(this);

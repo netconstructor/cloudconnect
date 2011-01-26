@@ -42,15 +42,6 @@
                     </xsd:annotation>
                     </#if>
                 </xsd:attribute>
-                <#if property.isEnum()>
-                <xsd:simpleType name="${property.getName()}Enum">
-                    <xsd:restriction base="xsd:string">
-                        <#list property.getEnumValues() as enumValue>
-                        <xsd:enumeration value="${enumValue}" />
-                        </#list>
-                    </xsd:restriction>
-                </xsd:simpleType>
-                </#if>
             </#list>
             </xsd:extension>
         </xsd:complexContent>
@@ -85,19 +76,22 @@
                     </xsd:annotation>
                     </#if>
                 </xsd:attribute>
-                <#if parameter.isEnum()>
-                <xsd:simpleType name="${parameter.getName()}Enum">
-                    <xsd:restriction base="xsd:string">
-                        <#list parameter.getEnumValues() as enumValue>
-                        <xsd:enumeration value="${enumValue}" />
-                        </#list>
-                    </xsd:restriction>
-                </xsd:simpleType>
-                </#if>
                 </#list>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+
+    </#list>
+
+    <!-- Enums -->
+    <#list class.getEnums() as enum>
+    <xsd:simpleType name="${enum.getName()}Enum">
+        <xsd:restriction base="xsd:string">
+            <#list enum.getValues() as enumValue>
+            <xsd:enumeration value="${enumValue}" />
+            </#list>
+        </xsd:restriction>
+    </xsd:simpleType>
 
     </#list>
 </xsd:schema>

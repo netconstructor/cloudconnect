@@ -9,6 +9,7 @@
  */
 package org.mule.tools.cc.parser.qdox;
 
+import org.mule.tools.cc.model.JavaEnum;
 import org.mule.tools.cc.model.JavaMethod;
 import org.mule.tools.cc.model.JavaProperty;
 import org.mule.tools.cc.model.JavaVisitor;
@@ -27,10 +28,14 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass
     private JavaClass javaClass;
     private List<JavaProperty> properties;
     private List<JavaMethod> operations;
+    private List<JavaEnum> enums;
 
     protected QDoxClassAdapter(JavaClass javaClass)
     {
         this.javaClass = javaClass;
+
+        buildPropertyCollection();
+        buildOperationCollection();
     }
 
     public String getName()
@@ -70,11 +75,16 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass
         BeanProperty[] properties = javaClass.getBeanProperties(true);
         for (int i = 0; i < properties.length; i++)
         {
-            if (!CLASS_PROPERTY_NAME.equals(properties[i].getName()))
+            if (isValidProperty(properties[i]))
             {
                 this.properties.add(new QDoxPropertyAdapter(properties[i]));
             }
         }
+    }
+
+    private boolean isValidProperty(BeanProperty property)
+    {
+        return !CLASS_PROPERTY_NAME.equals(property.getName());
     }
 
     public List<JavaMethod> getOperations()
@@ -87,6 +97,16 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass
         return this.operations;
     }
 
+    public List<JavaEnum> getEnums()
+    {
+        if (this.enums == null)
+        {
+            buildEnumCollection();
+        }
+
+        return this.enums;
+    }
+
     private void buildOperationCollection()
     {
         this.operations = new ArrayList<JavaMethod>();
@@ -94,12 +114,7 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass
         com.thoughtworks.qdox.model.JavaMethod[] methods = javaClass.getMethods(true);
         for (int i = 0; i < methods.length; i++)
         {
-            if (methods[i].isPublic()
-                && !methods[i].isStatic()
-                && !methods[i].isPropertyAccessor()
-                && !methods[i].isPropertyMutator()
-                && !methods[i].isConstructor()
-                && !OBJECT_CLASS_NAME.equals(methods[i].getParentClass().getName()))
+            if (isValidMethod(methods[i]))
             {
                 this.operations.add(new QDoxMethodAdapter(methods[i]));
             }
@@ -107,8 +122,67 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass
 
     }
 
+    private boolean isValidMethod(com.thoughtworks.qdox.model.JavaMethod method)
+    {
+        return method.isPublic()
+               && !method.isStatic()
+               && !method.isPropertyAccessor()
+               && !method.isPropertyMutator()
+               && !method.isConstructor()
+               && !OBJECT_CLASS_NAME.equals(method.getParentClass().getName());
+    }
+
+    private void buildEnumCollection()
+    {
+        this.enums = new ArrayList<JavaEnum>();
+
+        BeanProperty[] properties = javaClass.getBeanProperties(true);
+        for (int i = 0; i < properties.length; i++)
+        {
+            if (isValidProperty(properties[i]) &&
+                properties[i].getType().getJavaClass().isEnum())
+            {
+                this.enums.add(new QDoxEnumAdapter(properties[i].getType()));
+            }
+        }
+
+        com.thoughtworks.qdox.model.JavaMethod[] methods = javaClass.getMethods(true);
+        for (int i = 0; i < methods.length; i++)
+        {
+            if (isValidMethod(methods[i]))
+            {
+                com.thoughtworks.qdox.model.JavaParameter[] parameters = methods[i].getParameters();
+                for (int j = 0; j < parameters.length; j++)
+                {
+                    if (parameters[j].getType().getJavaClass().isEnum())
+                    {
+                        this.enums.add(new QDoxEnumAdapter(parameters[j].getType()));
+                    }
+                }
+            }
+        }
+    }
+
     public void accept(JavaVisitor<org.mule.tools.cc.model.JavaClass> visitor)
     {
         visitor.visit(this);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 1;
+        hash = hash * 31 + getName().hashCode();
+        hash = hash * 31 + getPackage().hashCode();
+
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        return (o instanceof QDoxClassAdapter &&
+                ((QDoxClassAdapter) o).getName().equals(getName()) &&
+                ((QDoxClassAdapter) o).getPackage().equals(getPackage()));
     }
 }
