@@ -39,6 +39,8 @@ public class TypeMapDirective implements TemplateDirectiveModel
         mapping.put("java.lang.Date", "xsd:date");
         mapping.put("java.lang.Class", "xsd:string");
         mapping.put("java.net.URL", "xsd:string");
+        mapping.put("java.util.Map", "xsd:string");
+        mapping.put("org.w3c.dom.Node", "xsd:string");
 
         TYPES_MAP = Collections.unmodifiableMap(mapping);
     }
