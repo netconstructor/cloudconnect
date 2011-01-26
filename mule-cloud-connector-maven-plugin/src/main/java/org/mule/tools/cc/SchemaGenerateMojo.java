@@ -43,7 +43,6 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
         // setup source roots
         for (String sourceRoot : (List<String>) getProject().getCompileSourceRoots())
         {
-            System.out.println(sourceRoot);
             getParser().addSourceTree( new File(sourceRoot));
         }
 
