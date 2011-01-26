@@ -10,6 +10,7 @@
 package org.mule.tools.cc;
 
 import org.mule.tools.cc.generator.SchemaGenerator;
+import org.mule.tools.cc.generator.SpringSchemaGenerator;
 import org.mule.tools.cc.model.JavaClass;
 
 import java.io.File;
@@ -59,6 +60,9 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
             generator.setNamespaceIdentifierSuffix(suffix);
             generator.setSchemaVersion(schemaVersion);
 
+            SpringSchemaGenerator springSchemaGenerator = new SpringSchemaGenerator();
+            generator.setNamespaceIdentifierSuffix(suffix);
+
             OutputStream output = null;
             try
             {
@@ -73,6 +77,21 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
             {
                 IOUtil.close(output);
             }
+
+            try
+            {
+                output = openSpringSchemaFileStream();
+                springSchemaGenerator.generate(output);
+            }
+            catch (IOException iox)
+            {
+                throw new MojoExecutionException("Error while generating schema", iox);
+            }
+            finally
+            {
+                IOUtil.close(output);
+            }
+
         }
     }
 
@@ -118,4 +137,14 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
         File schemaFile = new File(metaInfDirectory, schemaFilename);
         return new FileOutputStream(schemaFile);
     }
+
+    private OutputStream openSpringSchemaFileStream() throws IOException, MojoExecutionException
+    {
+        File metaInfDirectory = new File(generatedResourcesDirectory(), "META-INF");
+        createDirectory(metaInfDirectory);
+
+        File springSchemaFile = new File(metaInfDirectory, "spring.schemas");
+        return new FileOutputStream(springSchemaFile);
+    }
+
 }

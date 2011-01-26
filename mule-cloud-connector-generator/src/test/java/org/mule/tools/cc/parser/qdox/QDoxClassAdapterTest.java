@@ -4,6 +4,8 @@ import com.thoughtworks.qdox.model.BeanProperty;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaPackage;
+import com.thoughtworks.qdox.model.JavaParameter;
+import com.thoughtworks.qdox.model.Type;
 
 import org.junit.Test;
 
@@ -35,7 +37,7 @@ public class QDoxClassAdapterTest
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getName()).thenReturn(NAME);
         when(classMock.getMethods(true)).thenReturn(new JavaMethod[] { });
-        when(classMock.getBeanProperties(true)).thenReturn(new BeanProperty[] { });
+        when(classMock.getBeanProperties(true)).thenReturn(new BeanProperty[] {});
 
         QDoxClassAdapter adapter = new QDoxClassAdapter(classMock);
 
@@ -73,14 +75,21 @@ public class QDoxClassAdapterTest
     @Test
     public void properties() throws Exception
     {
+        JavaClass typeClassMock = mock(JavaClass.class);
+        when(typeClassMock.isEnum()).thenReturn(false);
+        Type typeMock = mock(Type.class);
+        when(typeMock.getJavaClass()).thenReturn(typeClassMock);
         JavaClass classMock = mock(JavaClass.class);
-        when(classMock.getMethods(true)).thenReturn(new JavaMethod[] { });
+        when(classMock.getMethods(true)).thenReturn(new JavaMethod[] {});
         BeanProperty propertyMockA = mock(BeanProperty.class);
         when(propertyMockA.getName()).thenReturn(PROPERTY_A);
+        when(propertyMockA.getType()).thenReturn(typeMock);
         BeanProperty propertyMockB = mock(BeanProperty.class);
         when(propertyMockB.getName()).thenReturn(PROPERTY_B);
+        when(propertyMockB.getType()).thenReturn(typeMock);
         BeanProperty propertyMockC = mock(BeanProperty.class);
         when(propertyMockC.getName()).thenReturn(PROPERTY_C);
+        when(propertyMockC.getType()).thenReturn(typeMock);
         BeanProperty[] properties = new BeanProperty[] {propertyMockA, propertyMockB, propertyMockC};
         when(classMock.getBeanProperties(eq(true))).thenReturn(properties);
 
@@ -111,9 +120,14 @@ public class QDoxClassAdapterTest
     @Test
     public void hasProperties() throws Exception
     {
+        JavaClass typeClassMock = mock(JavaClass.class);
+        when(typeClassMock.isEnum()).thenReturn(false);
+        Type typeMock = mock(Type.class);
+        when(typeMock.getJavaClass()).thenReturn(typeClassMock);
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getMethods(true)).thenReturn(new JavaMethod[] { });
         BeanProperty propertyMock = mock(BeanProperty.class);
+        when(propertyMock.getType()).thenReturn(typeMock);
         BeanProperty[] properties = new BeanProperty[] {propertyMock};
         when(classMock.getBeanProperties(eq(true))).thenReturn(properties);
 
@@ -149,6 +163,7 @@ public class QDoxClassAdapterTest
         when(methodMock.isPropertyMutator()).thenReturn(false);
         when(methodMock.isConstructor()).thenReturn(false);
         when(methodMock.getParentClass()).thenReturn(classMock);
+        when(methodMock.getParameters()).thenReturn(new JavaParameter[] { });
         JavaMethod[] methods = new JavaMethod[] {methodMock};
         when(classMock.getMethods(eq(true))).thenReturn(methods);
 
