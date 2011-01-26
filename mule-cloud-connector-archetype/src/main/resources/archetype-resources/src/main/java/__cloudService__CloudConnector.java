@@ -1,15 +1,11 @@
 #set($D='$')
-        package ${package};
+package ${package};
 
-public class $
+public class ${cloudService}CloudConnector
 {
-
-    cloudService
-}CloudConnector
-        {
-        /*
-        * TODO
-        *     - add getters/setters for configuration settings
-        *     - add code that interacts with the cloud service
-        */
-        }
+    /*
+    * TODO
+    *     - add getters/setters for configuration settings
+    *     - add code that interacts with the cloud service
+    */
+}

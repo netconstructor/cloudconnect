@@ -1,16 +1,16 @@
 #set($D = '$')
-        #set($ModuleName = "$artifactId")
-        #set($ModuleNameLower = "${ModuleName.toLowerCase()}")
-        #set($PackagePath = "${package.replace('.', '/')}")
-        #set($ArchetypeIsSnapshot = $version.endsWith("-SNAPSHOT"))
-        <?xml version="1.0" encoding="UTF-8"?>
+#set($ModuleName = "$artifactId")
+#set($ModuleNameLower = "${ModuleName.toLowerCase()}")
+#set($PackagePath = "${package.replace('.', '/')}")
+#set($ArchetypeIsSnapshot = $version.endsWith("-SNAPSHOT"))
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>${groupId}</groupId>
     <artifactId>${artifactId}</artifactId>
-    <packaging>jar</packaging>
+    <packaging>cloud-connector</packaging>
     <name>Mule ${cloudService} Cloud Connector</name>
     <version>${version}</version>
     <description>Mule Cloud connector to ${cloudService}</description>
@@ -114,27 +114,20 @@
                 <groupId>org.mule.tools</groupId>
                 <artifactId>mule-cloud-connector-maven-plugin</artifactId>
                 <version>1.1-SNAPSHOT</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <muleVersion>${D}{mule.version}</muleVersion>
-                            <connectors>
-                                <connector>
-                                    <cloudConnector>
-                                        ${D}{project.basedir}/src/main/java/${PackagePath}/${cloudService}CloudConnector.java
-                                    </cloudConnector>
-                                    <schemaFilename>mule-${cloudServiceLower}.xsd</schemaFilename>
-                                    <namespaceHandler>${PackagePath}/config/${cloudService}NamespaceHandler.java
-                                    </namespaceHandler>
-                                </connector>
-                            </connectors>
-                        </configuration>
-                    </execution>
-                </executions>
+                <extensions>true</extensions>
+                <configuration>
+                    <muleVersion>${D}{mule.version}</muleVersion>
+                    <connectors>
+                        <connector>
+                            <cloudConnectorClass>
+                                ${package}.${cloudService}CloudConnector
+                            </cloudConnectorClass>
+                            <schemaFilename>mule-${cloudServiceLower}.xsd</schemaFilename>
+                            <namespaceHandler>${PackagePath}/config/${cloudService}NamespaceHandler.java
+                            </namespaceHandler>
+                        </connector>
+                    </connectors>
+                </configuration>
             </plugin>
 
             <!-- The release distribution for this project -->
