@@ -10,6 +10,7 @@
 package org.mule.tools.cc.model;
 
 import java.util.List;
+import java.util.Set;
 
 public interface JavaClass extends JavaBase<JavaClass>
 {
@@ -26,5 +27,5 @@ public interface JavaClass extends JavaBase<JavaClass>
 
     List<JavaMethod> getOperations();
 
-    List<JavaEnum> getEnums();
+    Set<JavaEnum> getEnums();
 }

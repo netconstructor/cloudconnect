@@ -18,7 +18,9 @@ import com.thoughtworks.qdox.model.BeanProperty;
 import com.thoughtworks.qdox.model.JavaClass;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass
 {
@@ -28,7 +30,7 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass
     private JavaClass javaClass;
     private List<JavaProperty> properties;
     private List<JavaMethod> operations;
-    private List<JavaEnum> enums;
+    private Set<JavaEnum> enums;
 
     protected QDoxClassAdapter(JavaClass javaClass)
     {
@@ -97,7 +99,7 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass
         return this.operations;
     }
 
-    public List<JavaEnum> getEnums()
+    public Set<JavaEnum> getEnums()
     {
         if (this.enums == null)
         {
@@ -134,7 +136,7 @@ public class QDoxClassAdapter implements org.mule.tools.cc.model.JavaClass
 
     private void buildEnumCollection()
     {
-        this.enums = new ArrayList<JavaEnum>();
+        this.enums = new HashSet<JavaEnum>();
 
         BeanProperty[] properties = javaClass.getBeanProperties(true);
         for (int i = 0; i < properties.length; i++)
