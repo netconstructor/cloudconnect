@@ -90,7 +90,6 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
             {
                 IOUtil.close(output);
             }
-
         }
     }
 
@@ -109,8 +108,7 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
 
     private OutputStream openSchemaFileStream(String schemaFilename) throws IOException, MojoExecutionException
     {
-        File metaInfDirectory = new File(generatedResourcesDirectory(), "META-INF");
-        createDirectory(metaInfDirectory);
+        File metaInfDirectory = getResourcesMetaInf();
 
         File schemaFile = new File(metaInfDirectory, schemaFilename);
         return new FileOutputStream(schemaFile);
@@ -118,11 +116,18 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
 
     private OutputStream openSpringSchemaFileStream() throws IOException, MojoExecutionException
     {
-        File metaInfDirectory = new File(generatedResourcesDirectory(), "META-INF");
-        createDirectory(metaInfDirectory);
+        File metaInfDirectory = getResourcesMetaInf();
 
         File springSchemaFile = new File(metaInfDirectory, "spring.schemas");
         return new FileOutputStream(springSchemaFile);
+    }
+
+    private File getResourcesMetaInf()
+            throws MojoExecutionException
+    {
+        File metaInfDirectory = new File(generatedResourcesDirectory(), "META-INF");
+        createDirectory(metaInfDirectory);
+        return metaInfDirectory;
     }
 
 }
