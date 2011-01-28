@@ -36,9 +36,9 @@
                 </#if>
                     <#if property.getDescription()?has_content>
                     <xsd:annotation>
-                        <xsd:documentation>
+                        <xsd:documentation><![CDATA[
                             ${property.getDescription()}
-                        </xsd:documentation>
+                        ]]></xsd:documentation>
                     </xsd:annotation>
                     </#if>
                 </xsd:attribute>
@@ -53,9 +53,9 @@
     <xsd:element name="<@splitCamelCase>${operation.getName()}</@splitCamelCase>" type="${operation.getName()}Type" substitutionGroup="mule:abstract-message-processor">
         <#if operation.getDescription()?has_content>
         <xsd:annotation>
-            <xsd:documentation>
+            <xsd:documentation><![CDATA[
                 ${operation.getDescription()}
-            </xsd:documentation>
+            ]]></xsd:documentation>
         </xsd:annotation>
         </#if>
     </xsd:element>
@@ -70,9 +70,9 @@
                 </#if>
                     <#if parameter.getDescription()?has_content>
                     <xsd:annotation>
-                        <xsd:documentation>
+                        <xsd:documentation><![CDATA[
                             ${parameter.getDescription()}
-                        </xsd:documentation>
+                        ]]></xsd:documentation>
                     </xsd:annotation>
                     </#if>
                 </xsd:attribute>
