@@ -49,7 +49,7 @@
                     </test-compile>
                     <process-test-classes>
                     </process-test-classes>
-                    <test></test>
+                    <test>org.apache.maven.plugins:maven-surefire-plugin:test</test>
                     <package>org.apache.maven.plugins:maven-jar-plugin:jar</package>
                     <pre-integration-test></pre-integration-test>
                     <integration-test>
