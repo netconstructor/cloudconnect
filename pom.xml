@@ -12,6 +12,7 @@
     <properties>
         <mavenVersion>2.0.9</mavenVersion>
         <junitVersion>4.8.2</junitVersion>
+        <muleVersion>3.1.0</muleVersion>
     </properties>
 
     <modules>
