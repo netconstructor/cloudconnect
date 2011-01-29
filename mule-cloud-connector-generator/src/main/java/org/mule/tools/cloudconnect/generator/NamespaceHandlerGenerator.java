@@ -19,6 +19,7 @@ public class NamespaceHandlerGenerator extends AbstractTemplateGenerator
 
     private String packageName;
     private String className;
+    private String factoryBean;
 
     @Override
     protected Map<String, Object> createModel()
@@ -27,6 +28,7 @@ public class NamespaceHandlerGenerator extends AbstractTemplateGenerator
         root.put("packageName", packageName);
         root.put("className", className);
         root.put("class", getJavaClass());
+        root.put("factoryBean", factoryBean);
         return root;
     }
 
@@ -54,5 +56,15 @@ public class NamespaceHandlerGenerator extends AbstractTemplateGenerator
     public void setClassName(String className)
     {
         this.className = className;
+    }
+
+    public String getFactoryBean()
+    {
+        return factoryBean;
+    }
+
+    public void setFactoryBean(String factoryBean)
+    {
+        this.factoryBean = factoryBean;
     }
 }

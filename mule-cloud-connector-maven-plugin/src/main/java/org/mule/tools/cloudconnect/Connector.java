@@ -27,6 +27,12 @@ public class Connector
      */
     private String cloudConnectorClass;
 
+    /**
+     * Name of the class that will be used as a factory bean.
+     * @parameter
+     */
+    private String factoryBean;
+
     public String getSchemaFilename()
     {
         return schemaFilename;
@@ -40,5 +46,10 @@ public class Connector
     public String getCloudConnectorClass()
     {
         return cloudConnectorClass;
+    }
+
+    public String getFactoryBean()
+    {
+        return factoryBean;
     }
 }

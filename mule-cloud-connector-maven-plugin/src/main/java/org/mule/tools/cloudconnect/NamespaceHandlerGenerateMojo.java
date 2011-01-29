@@ -40,6 +40,7 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
 
             NamespaceHandlerGenerator generator = new NamespaceHandlerGenerator();
             generator.setJavaClass(javaClass);
+            generator.setFactoryBean(c.getFactoryBean());
 
             String packageName = determinePackageNameFromNamespaceHandlerFile(c.getNamespaceHandler());
             generator.setPackageName(packageName);
