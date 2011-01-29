@@ -20,7 +20,7 @@ import java.lang.reflect.Type;
 
 import org.springframework.beans.factory.FactoryBean;
 
-public class IBeanFactoryBean<T> implements FactoryBean<T>, MuleContextAware
+public abstract class IBeanFactoryBean<T> implements FactoryBean<T>, MuleContextAware
 {
 
     protected MuleContext muleContext;
@@ -29,8 +29,13 @@ public class IBeanFactoryBean<T> implements FactoryBean<T>, MuleContextAware
     {
         IBeanBinding binding = createBinding(getObjectType().getSimpleName());
         binding.setInterface(getObjectType());
-        return (T) binding.createProxy(new Object());
+        T ibean = (T) binding.createProxy(new Object());
+        init(ibean);
+
+        return ibean;
     }
+
+    public abstract void init(T object);
 
     @SuppressWarnings("unchecked")
     public Class<T> getObjectType()
