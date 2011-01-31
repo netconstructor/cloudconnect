@@ -13,6 +13,7 @@ import java.util.List;
 
 public interface JavaEnum
 {
+
     String getName();
 
     List<String> getValues();

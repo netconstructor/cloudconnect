@@ -23,11 +23,13 @@ public class ${className} extends AbstractPojoNamespaceHandler
             new OrphanDefinitionParser(${factoryBean}.class, true)).addIgnored("name");
         </#if>
         InvokerMessageProcessorDefinitionParser parser = null;
-        <#list class.getOperations() as operation>
+        <#list class.getMethods() as method>
+        <#if method.isOperation()>
 
         parser = new InvokerMessageProcessorDefinitionParser("messageProcessor",
-            ${class.getName()}.class, "${operation.getName()}", new String[] {<#list operation.getParameters() as parameter> "${parameter.getName()}"<#if parameter_has_next>,</#if></#list> });
-        registerMuleBeanDefinitionParser("<@splitCamelCase>${operation.getName()}</@splitCamelCase>", parser);
+            ${class.getName()}.class, "${method.getName()}", new String[] {<#list method.getParameters() as parameter> "${parameter.getName()}"<#if parameter_has_next>,</#if></#list> });
+        registerMuleBeanDefinitionParser("<@splitCamelCase>${method.getName()}</@splitCamelCase>", parser);
+        </#if>
         </#list>
     }
 }

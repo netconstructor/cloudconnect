@@ -9,19 +9,22 @@
  */
 package org.mule.tools.cloudconnect.parser.qdox;
 
-import org.mule.tools.cloudconnect.model.JavaMethod;
+import org.mule.tools.cloudconnect.model.AbstractJavaMethod;
+import org.mule.tools.cloudconnect.model.JavaAnnotation;
+import org.mule.tools.cloudconnect.model.JavaClass;
 import org.mule.tools.cloudconnect.model.JavaParameter;
-import org.mule.tools.cloudconnect.model.JavaVisitor;
+
+import com.thoughtworks.qdox.model.Annotation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class QDoxMethodAdapter implements JavaMethod
+public class QDoxMethodAdapter extends AbstractJavaMethod
 {
 
     private com.thoughtworks.qdox.model.JavaMethod javaMethod;
     private List<JavaParameter> parameters;
-
+    private List<JavaAnnotation> annotations;
 
     public QDoxMethodAdapter(com.thoughtworks.qdox.model.JavaMethod javaMethod)
     {
@@ -48,6 +51,36 @@ public class QDoxMethodAdapter implements JavaMethod
         return this.parameters;
     }
 
+    public List<JavaAnnotation> getAnnotations()
+    {
+        if (annotations == null)
+        {
+            buildAnnotationCollection();
+        }
+
+        return annotations;
+    }
+
+    public boolean isPublic()
+    {
+        return javaMethod.isPublic();
+    }
+
+    public boolean isPropertyAccessor()
+    {
+        return javaMethod.isPropertyAccessor();
+    }
+
+    public boolean isPropertyMutator()
+    {
+        return javaMethod.isPropertyMutator();
+    }
+
+    public boolean isConstructor()
+    {
+        return javaMethod.isConstructor();
+    }
+
     public void buildParameterCollection()
     {
         this.parameters = new ArrayList<JavaParameter>();
@@ -59,8 +92,24 @@ public class QDoxMethodAdapter implements JavaMethod
         }
     }
 
-    public void accept(JavaVisitor<JavaMethod> visitor)
+    public void buildAnnotationCollection()
     {
-        visitor.visit(this);
+        this.annotations = new ArrayList<JavaAnnotation>();
+
+        Annotation[] annotations = javaMethod.getAnnotations();
+        for (int i = 0; i < annotations.length; i++)
+        {
+            this.annotations.add(new QDoxAnnotationAdapter(annotations[i]));
+        }
+    }
+
+    public boolean isStatic()
+    {
+        return javaMethod.isStatic();
+    }
+
+    public JavaClass getParentClass()
+    {
+        return new QDoxClassAdapter(javaMethod.getParentClass());
     }
 }

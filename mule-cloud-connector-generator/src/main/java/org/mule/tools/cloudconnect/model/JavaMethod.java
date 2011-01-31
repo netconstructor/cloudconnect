@@ -11,7 +11,7 @@ package org.mule.tools.cloudconnect.model;
 
 import java.util.List;
 
-public interface JavaMethod extends JavaBase<JavaMethod>
+public interface JavaMethod
 {
 
     String getName();
@@ -19,4 +19,20 @@ public interface JavaMethod extends JavaBase<JavaMethod>
     String getDescription();
 
     List<JavaParameter> getParameters();
+
+    List<JavaAnnotation> getAnnotations();
+
+    boolean isOperation();
+
+    boolean isPublic();
+
+    boolean isPropertyAccessor();
+
+    boolean isPropertyMutator();
+
+    boolean isConstructor();
+
+    boolean isStatic();
+
+    JavaClass getParentClass();
 }

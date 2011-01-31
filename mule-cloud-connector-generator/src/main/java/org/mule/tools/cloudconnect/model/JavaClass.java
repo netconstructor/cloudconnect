@@ -12,7 +12,7 @@ package org.mule.tools.cloudconnect.model;
 import java.util.List;
 import java.util.Set;
 
-public interface JavaClass extends JavaBase<JavaClass>
+public interface JavaClass
 {
 
     String getName();
@@ -25,7 +25,7 @@ public interface JavaClass extends JavaBase<JavaClass>
 
     boolean hasProperties();
 
-    List<JavaMethod> getOperations();
+    List<JavaMethod> getMethods();
 
     Set<JavaEnum> getEnums();
 }

@@ -9,7 +9,7 @@
  */
 package org.mule.tools.cloudconnect.model;
 
-public interface JavaProperty extends JavaBase<JavaProperty>
+public interface JavaProperty
 {
 
     String getName();

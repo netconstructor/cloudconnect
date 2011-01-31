@@ -9,7 +9,7 @@
  */
 package org.mule.tools.cloudconnect.model;
 
-public interface JavaParameter extends JavaBase<JavaParameter>
+public interface JavaParameter
 {
 
     String getName();

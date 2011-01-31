@@ -9,7 +9,8 @@
  */
 package org.mule.tools.cloudconnect.model;
 
-public interface JavaBase<T>
+public interface JavaAnnotation
 {
-    void accept(JavaVisitor<T> visitor);
+
+    String getType();
 }

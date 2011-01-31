@@ -10,7 +10,6 @@
 package org.mule.tools.cloudconnect.parser.qdox;
 
 import org.mule.tools.cloudconnect.model.JavaParameter;
-import org.mule.tools.cloudconnect.model.JavaVisitor;
 
 import com.thoughtworks.qdox.model.DocletTag;
 
@@ -63,10 +62,5 @@ public class QDoxParameterAdapter implements JavaParameter
         }
 
         return null;
-    }
-
-    public void accept(JavaVisitor<JavaParameter> visitor)
-    {
-        visitor.visit(this);
     }
 }

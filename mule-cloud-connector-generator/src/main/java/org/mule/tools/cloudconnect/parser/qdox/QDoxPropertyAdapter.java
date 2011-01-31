@@ -10,7 +10,6 @@
 package org.mule.tools.cloudconnect.parser.qdox;
 
 import org.mule.tools.cloudconnect.model.JavaProperty;
-import org.mule.tools.cloudconnect.model.JavaVisitor;
 
 import com.thoughtworks.qdox.model.BeanProperty;
 
@@ -36,7 +35,7 @@ public class QDoxPropertyAdapter implements JavaProperty
 
     public String getDescription()
     {
-        if( this.javaProperty.getMutator() != null )
+        if (this.javaProperty.getMutator() != null)
         {
             return this.javaProperty.getMutator().getComment();
         }
@@ -52,10 +51,5 @@ public class QDoxPropertyAdapter implements JavaProperty
     public String getEnumName()
     {
         return javaProperty.getType().getJavaClass().getName();
-    }
-
-    public void accept(JavaVisitor<JavaProperty> visitor)
-    {
-        visitor.visit(this);
     }
 }

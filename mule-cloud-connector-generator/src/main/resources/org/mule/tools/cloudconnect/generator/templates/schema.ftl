@@ -49,20 +49,21 @@
 
     </#if>
     <!-- Operations -->
-    <#list class.getOperations() as operation>
-    <xsd:element name="<@splitCamelCase>${operation.getName()}</@splitCamelCase>" type="${operation.getName()}Type" substitutionGroup="mule:abstract-message-processor">
-        <#if operation.getDescription()?has_content>
+    <#list class.getMethods() as method>
+    <#if method.isOperation()>
+    <xsd:element name="<@splitCamelCase>${method.getName()}</@splitCamelCase>" type="${method.getName()}Type" substitutionGroup="mule:abstract-message-processor">
+        <#if method.getDescription()?has_content>
         <xsd:annotation>
             <xsd:documentation><![CDATA[
-                ${operation.getDescription()}
+                ${method.getDescription()}
             ]]></xsd:documentation>
         </xsd:annotation>
         </#if>
     </xsd:element>
-    <xsd:complexType name="${operation.getName()}Type">
+    <xsd:complexType name="${method.getName()}Type">
         <xsd:complexContent>
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
-                <#list operation.getParameters() as parameter>
+                <#list method.getParameters() as parameter>
                 <#if parameter.isEnum()>
                 <xsd:attribute name="${parameter.getName()}" type="${parameter.getEnumName()}Enum">
                 <#else>
@@ -81,6 +82,7 @@
         </xsd:complexContent>
     </xsd:complexType>
 
+    </#if>
     </#list>
 
     <!-- Enums -->

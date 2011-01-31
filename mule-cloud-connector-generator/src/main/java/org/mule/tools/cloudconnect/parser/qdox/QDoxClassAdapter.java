@@ -12,7 +12,6 @@ package org.mule.tools.cloudconnect.parser.qdox;
 import org.mule.tools.cloudconnect.model.JavaEnum;
 import org.mule.tools.cloudconnect.model.JavaMethod;
 import org.mule.tools.cloudconnect.model.JavaProperty;
-import org.mule.tools.cloudconnect.model.JavaVisitor;
 
 import com.thoughtworks.qdox.model.BeanProperty;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -26,10 +25,9 @@ public class QDoxClassAdapter implements org.mule.tools.cloudconnect.model.JavaC
 {
 
     private static final String CLASS_PROPERTY_NAME = "class";
-    private static final String OBJECT_CLASS_NAME = "Object";
     private JavaClass javaClass;
     private List<JavaProperty> properties;
-    private List<JavaMethod> operations;
+    private List<JavaMethod> methods;
     private Set<JavaEnum> enums;
 
     protected QDoxClassAdapter(JavaClass javaClass)
@@ -37,7 +35,7 @@ public class QDoxClassAdapter implements org.mule.tools.cloudconnect.model.JavaC
         this.javaClass = javaClass;
 
         buildPropertyCollection();
-        buildOperationCollection();
+        buildMethodCollection();
         buildEnumCollection();
     }
 
@@ -90,14 +88,14 @@ public class QDoxClassAdapter implements org.mule.tools.cloudconnect.model.JavaC
         return !CLASS_PROPERTY_NAME.equals(property.getName());
     }
 
-    public List<JavaMethod> getOperations()
+    public List<JavaMethod> getMethods()
     {
-        if (this.operations == null)
+        if (this.methods == null)
         {
-            buildOperationCollection();
+            buildMethodCollection();
         }
 
-        return this.operations;
+        return this.methods;
     }
 
     public Set<JavaEnum> getEnums()
@@ -110,29 +108,16 @@ public class QDoxClassAdapter implements org.mule.tools.cloudconnect.model.JavaC
         return this.enums;
     }
 
-    private void buildOperationCollection()
+    private void buildMethodCollection()
     {
-        this.operations = new ArrayList<JavaMethod>();
+        this.methods = new ArrayList<JavaMethod>();
 
         com.thoughtworks.qdox.model.JavaMethod[] methods = javaClass.getMethods(true);
         for (int i = 0; i < methods.length; i++)
         {
-            if (isValidMethod(methods[i]))
-            {
-                this.operations.add(new QDoxMethodAdapter(methods[i]));
-            }
+            this.methods.add(new QDoxMethodAdapter(methods[i]));
         }
 
-    }
-
-    private boolean isValidMethod(com.thoughtworks.qdox.model.JavaMethod method)
-    {
-        return method.isPublic()
-               && !method.isStatic()
-               && !method.isPropertyAccessor()
-               && !method.isPropertyMutator()
-               && !method.isConstructor()
-               && !OBJECT_CLASS_NAME.equals(method.getParentClass().getName());
     }
 
     private void buildEnumCollection()
@@ -152,23 +137,15 @@ public class QDoxClassAdapter implements org.mule.tools.cloudconnect.model.JavaC
         com.thoughtworks.qdox.model.JavaMethod[] methods = javaClass.getMethods(true);
         for (int i = 0; i < methods.length; i++)
         {
-            if (isValidMethod(methods[i]))
+            com.thoughtworks.qdox.model.JavaParameter[] parameters = methods[i].getParameters();
+            for (int j = 0; j < parameters.length; j++)
             {
-                com.thoughtworks.qdox.model.JavaParameter[] parameters = methods[i].getParameters();
-                for (int j = 0; j < parameters.length; j++)
+                if (parameters[j].getType().getJavaClass().isEnum())
                 {
-                    if (parameters[j].getType().getJavaClass().isEnum())
-                    {
-                        this.enums.add(new QDoxEnumAdapter(parameters[j].getType()));
-                    }
+                    this.enums.add(new QDoxEnumAdapter(parameters[j].getType()));
                 }
             }
         }
-    }
-
-    public void accept(JavaVisitor<org.mule.tools.cloudconnect.model.JavaClass> visitor)
-    {
-        visitor.visit(this);
     }
 
     @Override
