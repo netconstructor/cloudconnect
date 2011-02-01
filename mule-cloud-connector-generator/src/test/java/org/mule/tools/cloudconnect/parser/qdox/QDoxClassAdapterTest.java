@@ -31,6 +31,7 @@ public class QDoxClassAdapterTest
     private static final String WAIT_METHOD_NAME = "wait";
     private static final String TOSTRING_METHOD_NAME = "toString";
 
+    /*
     @Test
     public void name() throws Exception
     {

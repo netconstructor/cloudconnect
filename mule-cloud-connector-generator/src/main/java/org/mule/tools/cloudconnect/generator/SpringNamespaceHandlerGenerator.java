@@ -17,7 +17,6 @@ public class SpringNamespaceHandlerGenerator extends AbstractTemplateGenerator
 
     private static final String NAMESPACE_HANDLER_TEMPLATE = "springnamespacehandler.ftl";
 
-    private String namespaceIdentifierSuffix;
     private String packageName;
     private String className;
 
@@ -25,9 +24,9 @@ public class SpringNamespaceHandlerGenerator extends AbstractTemplateGenerator
     protected Map<String, Object> createModel()
     {
         Map<String, Object> root = new HashMap<String, Object>();
-        root.put("namespaceIdentifierSuffix", namespaceIdentifierSuffix);
         root.put("packageName", packageName);
         root.put("className", className);
+        root.put("class", getJavaClass());
         return root;
     }
 
@@ -35,16 +34,6 @@ public class SpringNamespaceHandlerGenerator extends AbstractTemplateGenerator
     protected String getTemplate()
     {
         return NAMESPACE_HANDLER_TEMPLATE;
-    }
-
-    public String getNamespaceIdentifierSuffix()
-    {
-        return namespaceIdentifierSuffix;
-    }
-
-    public void setNamespaceIdentifierSuffix(String namespaceIdentifierSuffix)
-    {
-        this.namespaceIdentifierSuffix = namespaceIdentifierSuffix;
     }
 
     public String getPackageName()

@@ -13,4 +13,6 @@ public interface JavaAnnotation
 {
 
     String getType();
+
+    <T> T getNamedParameter(String name);
 }

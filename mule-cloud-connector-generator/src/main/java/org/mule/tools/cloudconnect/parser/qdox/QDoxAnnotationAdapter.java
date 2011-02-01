@@ -13,6 +13,8 @@ import org.mule.tools.cloudconnect.model.JavaAnnotation;
 
 import com.thoughtworks.qdox.model.Annotation;
 
+import java.util.Set;
+
 public class QDoxAnnotationAdapter implements JavaAnnotation
 {
 
@@ -26,5 +28,10 @@ public class QDoxAnnotationAdapter implements JavaAnnotation
     public String getType()
     {
         return annotation.getType().getValue();
+    }
+
+    public <T> T getNamedParameter(String name)
+    {
+        return (T)annotation.getNamedParameter(name);
     }
 }

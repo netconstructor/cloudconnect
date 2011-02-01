@@ -18,7 +18,7 @@ public class QDoxMethodAdapterTest
     private static final String PARAMETER_A = "PARAMETER_A";
     private static final String PARAMETER_B = "PARAMETER_B";
     private static final String PARAMETER_C = "PARAMETER_C";
-
+        /*
 
     @Test
     public void name() throws Exception
@@ -64,4 +64,5 @@ public class QDoxMethodAdapterTest
         assertEquals(PARAMETER_C, adapter.getParameters().get(2).getName());
 
     }
+    */
 }

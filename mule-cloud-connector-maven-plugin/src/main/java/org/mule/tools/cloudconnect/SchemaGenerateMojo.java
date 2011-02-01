@@ -12,6 +12,7 @@ package org.mule.tools.cloudconnect;
 import org.mule.tools.cloudconnect.generator.SchemaGenerator;
 import org.mule.tools.cloudconnect.generator.SpringSchemaGenerator;
 import org.mule.tools.cloudconnect.model.JavaClass;
+import org.mule.tools.cloudconnect.model.JavaModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,75 +30,53 @@ import org.codehaus.plexus.util.IOUtil;
  */
 public class SchemaGenerateMojo extends AbstractConnectorMojo
 {
-
-    /**
-     * @parameter
-     * @required
-     */
-    private String muleVersion;
-
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         createAndAttachGeneratedResourcesDirectory();
 
-        // setup source roots
-        for (String sourceRoot : (List<String>) getProject().getCompileSourceRoots())
+        JavaModel model = parseModel();
+        for (JavaClass javaClass : model.getClasses())
         {
-            getParser().addSourceTree( new File(sourceRoot));
-        }
-
-        for (Connector c : getConnectors())
-        {
-
-            String suffix = determineNamespaceIdentifierSuffixFromSchemaFilename(c.getSchemaFilename());
-            String schemaVersion = determineSchemaVersionFromMuleVersion();
-
-            JavaClass javaClass = parseCloudConnectorClass(c.getCloudConnectorClass());
-
-            SchemaGenerator generator = new SchemaGenerator();
-            generator.setJavaClass(javaClass);
-            generator.setNamespaceIdentifierSuffix(suffix);
-            generator.setSchemaVersion(schemaVersion);
-
-            SpringSchemaGenerator springSchemaGenerator = new SpringSchemaGenerator();
-            springSchemaGenerator.setNamespaceIdentifierSuffix(suffix);
-
-            OutputStream output = null;
-            try
+            if (javaClass.isConnector())
             {
-                output = openSchemaFileStream(c.getSchemaFilename());
-                generator.generate(output);
-            }
-            catch (IOException iox)
-            {
-                throw new MojoExecutionException("Error while generating schema", iox);
-            }
-            finally
-            {
-                IOUtil.close(output);
-            }
 
-            try
-            {
-                output = openSpringSchemaFileStream();
-                springSchemaGenerator.generate(output);
-            }
-            catch (IOException iox)
-            {
-                throw new MojoExecutionException("Error while generating schema", iox);
-            }
-            finally
-            {
-                IOUtil.close(output);
+                SchemaGenerator generator = new SchemaGenerator();
+                generator.setJavaClass(javaClass);
+
+                OutputStream output = null;
+                try
+                {
+                    output = openSchemaFileStream("mule-" + javaClass.getNamespacePrefix() + ".xsd");
+                    generator.generate(output);
+                }
+                catch (IOException iox)
+                {
+                    throw new MojoExecutionException("Error while generating schema", iox);
+                }
+                finally
+                {
+                    IOUtil.close(output);
+                }
+
+                SpringSchemaGenerator springSchemaGenerator = new SpringSchemaGenerator();
+                springSchemaGenerator.setJavaClass(javaClass);
+
+                try
+                {
+                    output = openSpringSchemaFileStream();
+                    springSchemaGenerator.generate(output);
+                }
+                catch (IOException iox)
+                {
+                    throw new MojoExecutionException("Error while generating schema", iox);
+                }
+                finally
+                {
+                    IOUtil.close(output);
+                }
             }
         }
     }
-
-    private String determineSchemaVersionFromMuleVersion()
-    {
-        return muleVersion.substring(0, 3);
-    }
-
 
     private void createAndAttachGeneratedResourcesDirectory() throws MojoExecutionException
     {

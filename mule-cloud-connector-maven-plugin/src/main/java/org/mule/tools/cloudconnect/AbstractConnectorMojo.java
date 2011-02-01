@@ -10,6 +10,7 @@
 package org.mule.tools.cloudconnect;
 
 import org.mule.tools.cloudconnect.model.JavaClass;
+import org.mule.tools.cloudconnect.model.JavaModel;
 import org.mule.tools.cloudconnect.parser.ClassParseException;
 import org.mule.tools.cloudconnect.parser.ClassParser;
 import org.mule.tools.cloudconnect.parser.qdox.QDoxClassParser;
@@ -26,15 +27,6 @@ import org.codehaus.plexus.util.IOUtil;
 
 public abstract class AbstractConnectorMojo extends AbstractMojo
 {
-
-    /**
-     * List of connectors defined for this project
-     *
-     * @parameter
-     * @required
-     */
-    private List<Connector> connectors;
-
     /**
      * Directory containing the classes.
      *
@@ -81,11 +73,6 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         return targetDirectory;
     }
 
-    public List<Connector> getConnectors()
-    {
-        return connectors;
-    }
-
     protected void createDirectory(File directory) throws MojoExecutionException
     {
         if (directory.exists() == false)
@@ -97,7 +84,7 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         }
     }
 
-    protected JavaClass parseCloudConnectorClass(String cloudConnectorClass) throws MojoExecutionException
+    protected JavaModel parseModel() throws MojoExecutionException
     {
         for (String sourceRoot : (List<String>) project.getCompileSourceRoots())
         {
@@ -107,7 +94,7 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         InputStream input = null;
         try
         {
-            return parser.parse(cloudConnectorClass);
+            return parser.parse();
         }
         catch (ClassParseException cpe)
         {

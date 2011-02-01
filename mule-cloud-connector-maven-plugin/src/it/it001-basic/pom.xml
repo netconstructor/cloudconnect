@@ -19,17 +19,15 @@
                 <artifactId>mule-cloud-connector-maven-plugin</artifactId>
                 <version>2.0-SNAPSHOT</version>
                 <extensions>true</extensions>
-                <configuration>
-                    <muleVersion>3.1</muleVersion>
-                    <connectors>
-                        <connector>
-                            <cloudConnectorClass>org.mule.tools.cc.it001.BasicCloudConnector</cloudConnectorClass>
-                            <namespaceHandler>org/mule/tools/cc/it001/BasicNamespaceHandler.java</namespaceHandler>
-                            <schemaFilename>mule-basic.xsd</schemaFilename>
-                        </connector>
-                    </connectors>
-                </configuration>
             </plugin>
         </plugins>
     </build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.mule.tools</groupId>
+			<artifactId>mule-cloud-connector-annotations</artifactId>
+			<version>2.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 </project>

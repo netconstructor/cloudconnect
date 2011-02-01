@@ -9,30 +9,38 @@
  */
 package org.mule.tools.cloudconnect.parser.qdox;
 
+import org.mule.tools.cloudconnect.model.AbstractJavaClass;
+import org.mule.tools.cloudconnect.model.JavaAnnotation;
 import org.mule.tools.cloudconnect.model.JavaEnum;
 import org.mule.tools.cloudconnect.model.JavaMethod;
+import org.mule.tools.cloudconnect.model.JavaModel;
 import org.mule.tools.cloudconnect.model.JavaProperty;
 
+import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.BeanProperty;
 import com.thoughtworks.qdox.model.JavaClass;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class QDoxClassAdapter implements org.mule.tools.cloudconnect.model.JavaClass
+public class QDoxClassAdapter extends AbstractJavaClass
 {
 
     private static final String CLASS_PROPERTY_NAME = "class";
     private JavaClass javaClass;
+    private WeakReference<JavaModel> parentModel;
     private List<JavaProperty> properties;
     private List<JavaMethod> methods;
     private Set<JavaEnum> enums;
+    private List<JavaAnnotation> annotations;
 
-    protected QDoxClassAdapter(JavaClass javaClass)
+    protected QDoxClassAdapter(JavaClass javaClass, JavaModel parentModel)
     {
         this.javaClass = javaClass;
+        this.parentModel = new WeakReference<JavaModel>(parentModel);
 
         buildPropertyCollection();
         buildMethodCollection();
@@ -108,6 +116,37 @@ public class QDoxClassAdapter implements org.mule.tools.cloudconnect.model.JavaC
         return this.enums;
     }
 
+    public void buildAnnotationCollection()
+    {
+        this.annotations = new ArrayList<JavaAnnotation>();
+
+        Annotation[] annotations = javaClass.getAnnotations();
+        for (int i = 0; i < annotations.length; i++)
+        {
+            this.annotations.add(new QDoxAnnotationAdapter(annotations[i]));
+        }
+    }
+
+    public List<JavaAnnotation> getAnnotations()
+    {
+        if (annotations == null)
+        {
+            buildAnnotationCollection();
+        }
+
+        return annotations;
+    }
+
+    public JavaModel getParentModel()
+    {
+        return parentModel.get();
+    }
+
+    public String getFullyQualifiedName()
+    {
+        return javaClass.getFullyQualifiedName();
+    }
+
     private void buildMethodCollection()
     {
         this.methods = new ArrayList<JavaMethod>();
@@ -115,7 +154,7 @@ public class QDoxClassAdapter implements org.mule.tools.cloudconnect.model.JavaC
         com.thoughtworks.qdox.model.JavaMethod[] methods = javaClass.getMethods(true);
         for (int i = 0; i < methods.length; i++)
         {
-            this.methods.add(new QDoxMethodAdapter(methods[i]));
+            this.methods.add(new QDoxMethodAdapter(methods[i], this));
         }
 
     }

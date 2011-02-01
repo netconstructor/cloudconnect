@@ -113,21 +113,8 @@
             <plugin>
                 <groupId>org.mule.tools</groupId>
                 <artifactId>mule-cloud-connector-maven-plugin</artifactId>
-                <version>1.1-SNAPSHOT</version>
+                <version>2.0-SNAPSHOT</version>
                 <extensions>true</extensions>
-                <configuration>
-                    <muleVersion>${D}{mule.version}</muleVersion>
-                    <connectors>
-                        <connector>
-                            <cloudConnectorClass>
-                                ${package}.${cloudService}CloudConnector
-                            </cloudConnectorClass>
-                            <schemaFilename>mule-${cloudServiceLower}.xsd</schemaFilename>
-                            <namespaceHandler>${PackagePath}/config/${cloudService}NamespaceHandler.java
-                            </namespaceHandler>
-                        </connector>
-                    </connectors>
-                </configuration>
             </plugin>
 
             <!-- The release distribution for this project -->
@@ -257,6 +244,11 @@
             <groupId>org.mule.tests</groupId>
             <artifactId>mule-tests-functional</artifactId>
             <version>${D}{mule.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.tools</groupId>
+            <artifactId>mule-cloud-connector-annotations</artifactId>
+            <version>2.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

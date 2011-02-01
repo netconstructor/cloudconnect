@@ -9,7 +9,7 @@
  */
 package org.mule.tools.cloudconnect.parser.qdox;
 
-import org.mule.tools.cloudconnect.model.JavaClass;
+import org.mule.tools.cloudconnect.model.JavaModel;
 import org.mule.tools.cloudconnect.parser.ClassParseException;
 import org.mule.tools.cloudconnect.parser.ClassParser;
 import org.mule.tools.cloudconnect.parser.ClassParserLog;
@@ -19,10 +19,9 @@ import com.thoughtworks.qdox.parser.ParseException;
 
 import java.io.File;
 
-import org.apache.commons.io.FilenameUtils;
-
 public class QDoxClassParser implements ClassParser
 {
+
     private ClassParserLog log;
     private JavaDocBuilder javaDocBuilder;
 
@@ -46,32 +45,27 @@ public class QDoxClassParser implements ClassParser
         javaDocBuilder.addSourceTree(sourceTree);
     }
 
-    public JavaClass parse(String fullClassName) throws ClassParseException
+    public JavaModel parse() throws ClassParseException
     {
+        JavaModel model = new JavaModel();
+
         try
         {
             if (javaDocBuilder.getClasses() == null)
             {
-                throw new ClassParseException("Source file does not contain a Java class");
+                throw new ClassParseException("Sources does not contain any class");
             }
 
-            String classPath = fullClassName.replace(".", File.separator);
-            String className = FilenameUtils.getBaseName(classPath);
-            String packageName = FilenameUtils.getPathNoEndSeparator(classPath).replace(File.separator, ".");
             for (int i = 0; i < javaDocBuilder.getClasses().length; i++)
             {
-                if (javaDocBuilder.getClasses()[i].getName().equals(className)
-                    && javaDocBuilder.getClasses()[i].getPackage().getName().equals(packageName))
-                {
-                    return new QDoxClassAdapter(javaDocBuilder.getClasses()[i]);
-                }
+                model.addClass(new QDoxClassAdapter(javaDocBuilder.getClasses()[i], model));
             }
-
-            throw new ClassParseException("Cannot find class " + fullClassName);
         }
         catch (ParseException pe)
         {
             throw new ClassParseException("Cannot parse", pe);
         }
+
+        return model;
     }
 }

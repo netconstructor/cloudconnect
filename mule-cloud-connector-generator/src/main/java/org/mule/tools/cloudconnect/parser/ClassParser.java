@@ -9,15 +9,16 @@
  */
 package org.mule.tools.cloudconnect.parser;
 
-import org.mule.tools.cloudconnect.model.JavaClass;
+import org.mule.tools.cloudconnect.model.JavaModel;
 
 import java.io.File;
 
 public interface ClassParser
 {
+
     void setLog(ClassParserLog log);
 
     void addSourceTree(File sourceTree);
 
-    JavaClass parse(String sourceFile) throws ClassParseException;
+    JavaModel parse() throws ClassParseException;
 }

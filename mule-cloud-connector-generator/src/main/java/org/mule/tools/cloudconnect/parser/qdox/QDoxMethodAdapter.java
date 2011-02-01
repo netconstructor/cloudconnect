@@ -16,6 +16,7 @@ import org.mule.tools.cloudconnect.model.JavaParameter;
 
 import com.thoughtworks.qdox.model.Annotation;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +24,14 @@ public class QDoxMethodAdapter extends AbstractJavaMethod
 {
 
     private com.thoughtworks.qdox.model.JavaMethod javaMethod;
+    private WeakReference<JavaClass> javaClass;
     private List<JavaParameter> parameters;
     private List<JavaAnnotation> annotations;
 
-    public QDoxMethodAdapter(com.thoughtworks.qdox.model.JavaMethod javaMethod)
+    public QDoxMethodAdapter(com.thoughtworks.qdox.model.JavaMethod javaMethod, JavaClass owner)
     {
         this.javaMethod = javaMethod;
+        this.javaClass = new WeakReference<JavaClass>(owner);
     }
 
     public String getName()
@@ -110,6 +113,6 @@ public class QDoxMethodAdapter extends AbstractJavaMethod
 
     public JavaClass getParentClass()
     {
-        return new QDoxClassAdapter(javaMethod.getParentClass());
+        return this.javaClass.get();
     }
 }

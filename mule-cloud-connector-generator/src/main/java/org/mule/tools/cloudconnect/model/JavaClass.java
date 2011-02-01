@@ -28,4 +28,20 @@ public interface JavaClass
     List<JavaMethod> getMethods();
 
     Set<JavaEnum> getEnums();
+
+    List<JavaAnnotation> getAnnotations();
+
+    boolean isConnector();
+
+    String getNamespacePrefix();
+
+    String getNamespaceUri();
+
+    String getMuleVersion();
+
+    JavaClass getFactory();
+
+    JavaModel getParentModel();
+
+    String getFullyQualifiedName();
 }

@@ -28,13 +28,11 @@ public class SpringSchemaGenerator extends AbstractTemplateGenerator
 
     private static final String SCHEMA_TEMPLATE = "springschema.ftl";
 
-    private String namespaceIdentifierSuffix;
-
     @Override
     protected Map<String, Object> createModel()
     {
         Map<String, Object> root = new HashMap<String, Object>();
-        root.put("namespaceIdentifierSuffix", namespaceIdentifierSuffix);
+        root.put("class", getJavaClass());
         return root;
     }
 
@@ -42,15 +40,5 @@ public class SpringSchemaGenerator extends AbstractTemplateGenerator
     protected String getTemplate()
     {
         return SCHEMA_TEMPLATE;
-    }
-
-    public String getNamespaceIdentifierSuffix()
-    {
-        return namespaceIdentifierSuffix;
-    }
-
-    public void setNamespaceIdentifierSuffix(String namespaceIdentifierSuffix)
-    {
-        this.namespaceIdentifierSuffix = namespaceIdentifierSuffix;
     }
 }
