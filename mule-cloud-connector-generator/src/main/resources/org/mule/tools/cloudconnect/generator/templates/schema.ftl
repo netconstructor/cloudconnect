@@ -31,9 +31,9 @@
             <#if class.getFactory()?has_content>
             <#list class.getFactory().getProperties() as property>
                 <#if property.isEnum()>
-                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getEnumName()}Enum">
+                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getEnumName()}Enum" use="required">
                 <#else>
-                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="<@typeMap>${property.getType()}</@typeMap>">
+                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="<@typeMap>${property.getType()}</@typeMap>" use="required">
                 </#if>
                     <#if property.getDescription()?has_content>
                     <xsd:annotation>
