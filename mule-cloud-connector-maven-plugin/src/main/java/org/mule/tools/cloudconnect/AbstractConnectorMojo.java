@@ -112,11 +112,6 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         return parser;
     }
 
-    protected File generatedResourcesDirectory()
-    {
-        return new File(getTargetDirectory(), "generated-resources/mule");
-    }
-
     protected String determineNamespaceIdentifierSuffixFromSchemaFilename(String schemaFilename) throws MojoExecutionException
     {
         if (schemaFilename.startsWith("mule-") == false)
@@ -131,5 +126,17 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         String suffix = schemaFilename.replace("mule-", "");
         suffix = suffix.replace(".xsd", "");
         return suffix;
+    }
+
+    protected void createAndAttachGeneratedSourcesDirectory() throws MojoExecutionException
+    {
+        File sourceDirectory = generatedSourcesDirectory();
+        createDirectory(sourceDirectory);
+        getProject().addCompileSourceRoot(sourceDirectory.getAbsolutePath());
+    }
+
+    protected File generatedSourcesDirectory()
+    {
+        return new File(getTargetDirectory(), "generated-sources/mule");
     }
 }

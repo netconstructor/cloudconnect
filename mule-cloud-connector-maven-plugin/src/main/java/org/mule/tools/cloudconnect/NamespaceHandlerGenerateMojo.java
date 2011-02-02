@@ -86,18 +86,6 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
         }
     }
 
-    private void createAndAttachGeneratedSourcesDirectory() throws MojoExecutionException
-    {
-        File sourceDirectory = generatedSourcesDirectory();
-        createDirectory(sourceDirectory);
-        getProject().addCompileSourceRoot(sourceDirectory.getAbsolutePath());
-    }
-
-    private File generatedSourcesDirectory()
-    {
-        return new File(getTargetDirectory(), "generated-sources/mule");
-    }
-
     private File namespaceHandlerProjectRelativeFile(File namespaceHandler)
     {
         String namespaceHandlerPath = namespaceHandler.getAbsolutePath();
@@ -124,7 +112,7 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
 
     private OutputStream openSpringNamespaceHandlerFileStream() throws IOException, MojoExecutionException
     {
-        File metaInfDirectory = new File(generatedResourcesDirectory(), "META-INF");
+        File metaInfDirectory = new File(generatedSourcesDirectory(), "META-INF");
         createDirectory(metaInfDirectory);
 
         File springSchemaFile = new File(metaInfDirectory, "spring.handlers");

@@ -32,7 +32,7 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
 {
     public void execute() throws MojoExecutionException, MojoFailureException
     {
-        createAndAttachGeneratedResourcesDirectory();
+        createAndAttachGeneratedSourcesDirectory();
 
         JavaModel model = parseModel();
         for (JavaClass javaClass : model.getClasses())
@@ -78,13 +78,6 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
         }
     }
 
-    private void createAndAttachGeneratedResourcesDirectory() throws MojoExecutionException
-    {
-        File resourceDirectory = generatedResourcesDirectory();
-        createDirectory(resourceDirectory);
-        getProjectHelper().addResource(project, resourceDirectory.getAbsolutePath(), null, null);
-    }
-
     private OutputStream openSchemaFileStream(String schemaFilename) throws IOException, MojoExecutionException
     {
         File metaInfDirectory = getResourcesMetaInf();
@@ -104,7 +97,7 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
     private File getResourcesMetaInf()
             throws MojoExecutionException
     {
-        File metaInfDirectory = new File(generatedResourcesDirectory(), "META-INF");
+        File metaInfDirectory = new File(generatedSourcesDirectory(), "META-INF");
         createDirectory(metaInfDirectory);
         return metaInfDirectory;
     }
