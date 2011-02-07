@@ -9,11 +9,12 @@
  */
 package org.mule.tools.cloudconnect.parser.qdox;
 
+import org.mule.tools.cloudconnect.model.AbstractJavaElement;
 import org.mule.tools.cloudconnect.model.JavaParameter;
 
 import com.thoughtworks.qdox.model.DocletTag;
 
-public class QDoxParameterAdapter implements JavaParameter
+public class QDoxParameterAdapter extends AbstractJavaElement implements JavaParameter
 {
 
     private com.thoughtworks.qdox.model.JavaParameter javaParameter;

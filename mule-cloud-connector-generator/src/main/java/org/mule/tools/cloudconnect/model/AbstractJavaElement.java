@@ -9,28 +9,15 @@
  */
 package org.mule.tools.cloudconnect.model;
 
-import java.util.List;
-
-public interface JavaMethod extends JavaElement
+public abstract class AbstractJavaElement implements JavaElement
 {
 
-    String getDescription();
+    public abstract String getName();
 
-    List<JavaParameter> getParameters();
+    public String getElementName()
+    {
 
-    List<JavaAnnotation> getAnnotations();
+        return getName();
 
-    boolean isOperation();
-
-    boolean isPublic();
-
-    boolean isPropertyAccessor();
-
-    boolean isPropertyMutator();
-
-    boolean isConstructor();
-
-    boolean isStatic();
-
-    JavaClass getParentClass();
+    }
 }

@@ -102,9 +102,9 @@ public abstract class AbstractTemplateGenerator
     {
         Configuration cfg = new Configuration();
         cfg.setClassForTemplateLoading(getClass(), TEMPLATES_DIRECTORY);
-        cfg.setSharedVariable("splitCamelCase", new SplitCamelCaseDirective());
         cfg.setSharedVariable("uncapitalize", new UncapitalizeDirective());
         cfg.setSharedVariable("typeMap", new TypeMapDirective());
+        cfg.setSharedVariable("splitCamelCase", new SplitCamelCaseDirective());
 
         cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
         BeansWrapper bw = (BeansWrapper) cfg.getObjectWrapper();

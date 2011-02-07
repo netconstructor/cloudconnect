@@ -9,6 +9,7 @@
  */
 package org.mule.tools.cloudconnect.parser.qdox;
 
+import org.mule.tools.cloudconnect.model.AbstractJavaElement;
 import org.mule.tools.cloudconnect.model.JavaEnum;
 
 import com.thoughtworks.qdox.model.JavaField;
@@ -17,7 +18,7 @@ import com.thoughtworks.qdox.model.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QDoxEnumAdapter implements JavaEnum
+public class QDoxEnumAdapter extends AbstractJavaElement implements JavaEnum
 {
 
     private Type javaType;

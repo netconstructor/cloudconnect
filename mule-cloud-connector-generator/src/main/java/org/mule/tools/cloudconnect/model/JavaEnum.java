@@ -11,10 +11,7 @@ package org.mule.tools.cloudconnect.model;
 
 import java.util.List;
 
-public interface JavaEnum
+public interface JavaEnum extends JavaElement
 {
-
-    String getName();
-
     List<String> getValues();
 }

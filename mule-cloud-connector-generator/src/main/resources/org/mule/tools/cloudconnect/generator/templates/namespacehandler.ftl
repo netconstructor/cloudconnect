@@ -28,7 +28,7 @@ public class ${className} extends AbstractPojoNamespaceHandler
 
         parser = new InvokerMessageProcessorDefinitionParser("messageProcessor",
             ${class.getName()}.class, "${method.getName()}", new String[] {<#list method.getParameters() as parameter> "${parameter.getName()}"<#if parameter_has_next>,</#if></#list> });
-        registerMuleBeanDefinitionParser("<@splitCamelCase>${method.getName()}</@splitCamelCase>", parser);
+        registerMuleBeanDefinitionParser("<@splitCamelCase>${method.getElementName()}</@splitCamelCase>", parser);
         </#if>
         </#list>
     }

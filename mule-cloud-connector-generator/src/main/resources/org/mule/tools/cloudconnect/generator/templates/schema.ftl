@@ -69,7 +69,7 @@
     <!-- Operations -->
     <#list class.getMethods() as method>
     <#if method.isOperation()>
-    <xsd:element name="<@splitCamelCase>${method.getName()}</@splitCamelCase>" type="${method.getName()}Type" substitutionGroup="mule:abstract-message-processor">
+    <xsd:element name="<@splitCamelCase>${method.getElementName()}</@splitCamelCase>" type="${method.getElementName()}Type" substitutionGroup="mule:abstract-message-processor">
         <#if method.getDescription()?has_content>
         <xsd:annotation>
             <xsd:documentation><![CDATA[
@@ -78,14 +78,14 @@
         </xsd:annotation>
         </#if>
     </xsd:element>
-    <xsd:complexType name="${method.getName()}Type">
+    <xsd:complexType name="${method.getElementName()}Type">
         <xsd:complexContent>
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
                 <#list method.getParameters() as parameter>
                 <#if parameter.isEnum()>
-                <xsd:attribute name="${parameter.getName()}" type="${parameter.getEnumName()}Enum">
+                <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="${parameter.getName()}Enum">
                 <#else>
-                <xsd:attribute name="${parameter.getName()}" type="<@typeMap>${parameter.getType()}</@typeMap>">
+                <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="<@typeMap>${parameter.getType()}</@typeMap>">
                 </#if>
                     <#if parameter.getDescription()?has_content>
                     <xsd:annotation>

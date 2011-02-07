@@ -9,11 +9,12 @@
  */
 package org.mule.tools.cloudconnect.parser.qdox;
 
+import org.mule.tools.cloudconnect.model.AbstractJavaElement;
 import org.mule.tools.cloudconnect.model.JavaProperty;
 
 import com.thoughtworks.qdox.model.BeanProperty;
 
-public class QDoxPropertyAdapter implements JavaProperty
+public class QDoxPropertyAdapter extends AbstractJavaElement implements JavaProperty
 {
 
     private BeanProperty javaProperty;

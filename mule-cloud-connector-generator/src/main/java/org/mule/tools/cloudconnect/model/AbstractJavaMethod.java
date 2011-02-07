@@ -9,7 +9,7 @@
  */
 package org.mule.tools.cloudconnect.model;
 
-public abstract class AbstractJavaMethod implements JavaMethod
+public abstract class AbstractJavaMethod extends AbstractJavaElement implements JavaMethod
 {
 
     private static final String OBJECT_CLASS_NAME = "Object";
@@ -37,5 +37,22 @@ public abstract class AbstractJavaMethod implements JavaMethod
         }
 
         return false;
+    }
+
+    @Override
+    public String getElementName()
+    {
+        for (JavaAnnotation annotation : getAnnotations())
+        {
+            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Operation"))
+            {
+                if (annotation.getNamedParameter("name") != null)
+                {
+                    return ((String) annotation.getNamedParameter("name")).replace("\"", "");
+                }
+            }
+        }
+
+        return super.getElementName();
     }
 }
