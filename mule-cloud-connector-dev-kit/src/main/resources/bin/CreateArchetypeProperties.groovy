@@ -10,7 +10,7 @@ def createDefaultProperties()
     Properties defaultProperties = new Properties()
 
     // version of the mule-cloud-connector-archetype to use
-    defaultProperties.archetypeVersion = "2.0"
+    defaultProperties.archetypeVersion = "2.0-SNAPSHOT"
 
     // which Mule version should be used?
     defaultProperties.muleVersion = "3.1.0"
