@@ -73,14 +73,14 @@
 
     <distributionManagement>
         <repository>
-            <id>mule-releases</id>
-            <name>Codehaus Repository</name>
-            <url>dav:https://dav.codehaus.org/repository/mule</url>
+            <id>muleforge-releases</id>
+            <name>MuleForge Snapshot Repository</name>
+            <url>dav:https://repository.muleforge.org/release/</url>
         </repository>
         <snapshotRepository>
-            <id>mule-snapshots</id>
-            <name>Mule Snapshot Repository</name>
-            <url>dav:https://dav.codehaus.org/snapshots.repository/mule</url>
+            <id>muleforge-snapshots</id>
+            <name>MuleForge Repository</name>
+            <url>dav:https://repository.muleforge.org/snapshot/</url>
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
