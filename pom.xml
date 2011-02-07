@@ -19,9 +19,9 @@
         <module>mule-cloud-connector-build-tools</module>
         <module>mule-cloud-connector-archetype</module>
         <module>mule-cloud-connector-generator</module>
-        <module>mule-cloud-connector-maven-plugin</module>
 		<module>mule-cloud-connector-annotations</module>
 		<module>mule-cloud-connector-ibeans</module>
+        <module>mule-cloud-connector-maven-plugin</module>
         <module>mule-cloud-connector-dev-kit</module>
     </modules>
 
