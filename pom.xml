@@ -19,8 +19,8 @@
         <module>mule-cloud-connector-build-tools</module>
         <module>mule-cloud-connector-archetype</module>
         <module>mule-cloud-connector-generator</module>
-		<module>mule-cloud-connector-annotations</module>
-		<module>mule-cloud-connector-ibeans</module>
+        <module>mule-cloud-connector-annotations</module>
+        <module>mule-cloud-connector-ibeans</module>
         <module>mule-cloud-connector-maven-plugin</module>
         <module>mule-cloud-connector-dev-kit</module>
     </modules>
@@ -68,26 +68,26 @@
                     <configLocation>org/mule/tools/cc/checkstyle/checkstyle.xml</configLocation>
                 </configuration>
             </plugin>
-	        <plugin>
-	            <groupId>com.mycila.maven-license-plugin</groupId>
-	            <artifactId>maven-license-plugin</artifactId>
-	            <configuration>
-	                <header>LICENSE_HEADER.txt</header>
-					<excludes>
-	                    <exclude>target/**</exclude>
-	                    <exclude>.gitignore</exclude>
-						<exclude>LICENSE.txt</exclude>
-						<exclude>**/*.ftl</exclude>
-	                </excludes>
-	            </configuration>
-	            <executions>
-	                <execution>
-	                    <goals>
-	                        <goal>check</goal>
-	                    </goals>
-	                </execution>
-	            </executions>
-	        </plugin>
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <configuration>
+                    <header>LICENSE_HEADER.txt</header>
+                    <excludes>
+                        <exclude>target/**</exclude>
+                        <exclude>.gitignore</exclude>
+                        <exclude>LICENSE.txt</exclude>
+                        <exclude>**/*.ftl</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
