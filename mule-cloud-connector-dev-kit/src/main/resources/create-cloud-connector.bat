@@ -2,9 +2,17 @@
 @REM Mule Cloud Connector Development Kit
 @REM Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
 @REM
-@REM The software in this package is published under the terms of the CPAL v1.0
-@REM license, a copy of which has been included with this distribution in the
-@REM LICENSE.txt file.
+@REM Licensed under the Apache License, Version 2.0 (the "License");
+@REM you may not use this file except in compliance with the License.
+@REM You may obtain a copy of the License at
+@REM
+@REM     http://www.apache.org/licenses/LICENSE-2.0
+@REM
+@REM Unless required by applicable law or agreed to in writing, software
+@REM distributed under the License is distributed on an "AS IS" BASIS,
+@REM WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+@REM See the License for the specific language governing permissions and
+@REM limitations under the License.
 @REM
 
 @echo off
