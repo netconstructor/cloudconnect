@@ -1,3 +1,12 @@
+@REM
+@REM Mule Cloud Connector Development Kit
+@REM Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
+@REM
+@REM The software in this package is published under the terms of the CPAL v1.0
+@REM license, a copy of which has been included with this distribution in the
+@REM LICENSE.txt file.
+@REM
+
 @echo off
 setlocal enabledelayedexpansion
 

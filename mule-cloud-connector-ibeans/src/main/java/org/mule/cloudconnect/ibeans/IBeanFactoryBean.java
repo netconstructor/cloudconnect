@@ -1,12 +1,12 @@
-/*
- * $Id: TwitterIBeanFactoryBean.java 269 2010-12-27 12:51:03Z dfeist $
- * --------------------------------------------------------------------------------------
+/**
+ * Mule Cloud Connector Development Kit
  * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
  *
  * The software in this package is published under the terms of the CPAL v1.0
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
+
 package org.mule.cloudconnect.ibeans;
 
 import org.mule.api.MuleContext;
