@@ -78,6 +78,7 @@
                         <exclude>.gitignore</exclude>
                         <exclude>LICENSE.txt</exclude>
                         <exclude>**/*.ftl</exclude>
+						<exclude>**/build-number.txt</exclude> <!-- bamboo -->
                     </excludes>
                 </configuration>
                 <executions>
