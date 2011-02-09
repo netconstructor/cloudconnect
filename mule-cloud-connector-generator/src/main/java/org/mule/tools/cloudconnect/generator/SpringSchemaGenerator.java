@@ -44,12 +44,14 @@ public class SpringSchemaGenerator extends AbstractTemplateGenerator
 {
 
     private static final String SCHEMA_TEMPLATE = "springschema.ftl";
+    private String schemaVersion;
 
     @Override
     protected Map<String, Object> createModel()
     {
         Map<String, Object> root = new HashMap<String, Object>();
         root.put("class", getJavaClass());
+        root.put("schemaVersion", schemaVersion);
         return root;
     }
 
@@ -57,5 +59,15 @@ public class SpringSchemaGenerator extends AbstractTemplateGenerator
     protected String getTemplate()
     {
         return SCHEMA_TEMPLATE;
+    }
+
+    public String getSchemaVersion()
+    {
+        return schemaVersion;
+    }
+
+    public void setSchemaVersion(String schemaVersion)
+    {
+        this.schemaVersion = schemaVersion;
     }
 }

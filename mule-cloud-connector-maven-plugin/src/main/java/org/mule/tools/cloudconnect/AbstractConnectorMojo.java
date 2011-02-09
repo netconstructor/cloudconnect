@@ -56,6 +56,12 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
     protected MavenProject project;
 
     /**
+     * @parameter expression="${project.version}"
+     * @readonly
+     */
+    protected String schemaVersion;
+
+    /**
      *
      */
     private ClassParser parser;
@@ -146,5 +152,10 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
     protected File generatedSourcesDirectory()
     {
         return new File(getTargetDirectory(), "generated-sources/mule");
+    }
+
+    protected String getSchemaVersion()
+    {
+        return schemaVersion;
     }
 }

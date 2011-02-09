@@ -68,6 +68,7 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
 
                 SpringSchemaGenerator springSchemaGenerator = new SpringSchemaGenerator();
                 springSchemaGenerator.setJavaClass(javaClass);
+                springSchemaGenerator.setSchemaVersion(getSchemaVersion());
 
                 try
                 {
