@@ -26,7 +26,7 @@
       xmlns:${cloudServiceLower}="http://www.mulesoft.org/schema/mule/${cloudServiceLower}"
       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                           http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/${MuleMajorMinorVersion}/mule.xsd
-                          http://www.mulesoft.org/schema/mule/${cloudServiceLower} http://www.mulesoft.org/schema/mule/${cloudServiceLower}/${MuleMajorMinorVersion}/mule-${cloudServiceLower}.xsd">
+                          http://www.mulesoft.org/schema/mule/${cloudServiceLower} http://www.mulesoft.org/schema/mule/${cloudServiceLower}/${version}/mule-${cloudServiceLower}.xsd">
 
         <!--
            Declare one flow like this one per element you add in your schema.
