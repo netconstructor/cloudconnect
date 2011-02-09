@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.IOUtil;
@@ -120,10 +121,11 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
 
     private OutputStream openSpringNamespaceHandlerFileStream() throws IOException, MojoExecutionException
     {
-        File metaInfDirectory = new File(generatedSourcesDirectory(), "META-INF");
+        File metaInfDirectory = new File(generatedResourcesDirectory(), "META-INF");
         createDirectory(metaInfDirectory);
 
         File springSchemaFile = new File(metaInfDirectory, "spring.handlers");
+
         return new FileOutputStream(springSchemaFile);
     }
 

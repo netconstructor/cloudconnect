@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -147,11 +148,22 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         File sourceDirectory = generatedSourcesDirectory();
         createDirectory(sourceDirectory);
         getProject().addCompileSourceRoot(sourceDirectory.getAbsolutePath());
+
+        File resourceDirectory = generatedResourcesDirectory();
+        Resource testResource = new Resource();
+        testResource.setDirectory(resourceDirectory.getAbsolutePath());
+        getProject().addTestResource(testResource);
+
     }
 
     protected File generatedSourcesDirectory()
     {
         return new File(getTargetDirectory(), "generated-sources/mule");
+    }
+
+    protected File generatedResourcesDirectory()
+    {
+        return new File(getTargetDirectory(), "generated-resources/mule");
     }
 
     protected String getSchemaVersion()
