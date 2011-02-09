@@ -111,7 +111,7 @@
         <connection>scm:git:git://github.com:mulesoft/cloudconnect.git
         </connection>
         <developerConnection>
-            scm:git:git://github.com:mulesoft/cloudconnect.git
+            scm:git:git@github.com:mulesoft/cloudconnect.git
         </developerConnection>
         <url>http://github.com/mulesoft/cloudconnect</url>
     </scm>
