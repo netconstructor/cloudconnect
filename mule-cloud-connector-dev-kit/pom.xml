@@ -28,7 +28,7 @@
                             <goal>single</goal>
                         </goals>
                         <configuration>
-                            <finalName>cloud-connector-dev-kit-${version}</finalName>
+                            <finalName>cloud-connector-dev-kit-${project.version}</finalName>
                             <descriptors>
                                 <descriptor>assembly.xml</descriptor>
                             </descriptors>
