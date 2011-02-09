@@ -48,7 +48,10 @@ public class QDoxEnumAdapter extends AbstractJavaElement implements JavaEnum
         JavaField[] fields = javaType.getJavaClass().getFields();
         for (int i = 0; i < fields.length; i++)
         {
-            list.add(fields[i].getName());
+            if (!"value".equals(fields[i].getName()))
+            {
+                list.add(fields[i].getName());
+            }
         }
 
         return list;
