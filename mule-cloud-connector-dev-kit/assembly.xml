@@ -29,6 +29,7 @@
         <fileSet>
             <directory>src/main/resources</directory>
             <outputDirectory></outputDirectory>
+			<filtered>true</filtered>
         </fileSet>
     </fileSets>
 
@@ -37,4 +38,5 @@
             <outputDirectory>lib</outputDirectory>
         </dependencySet>
     </dependencySets>
+
 </assembly>

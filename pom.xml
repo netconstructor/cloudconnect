@@ -76,9 +76,15 @@
                     <excludes>
                         <exclude>target/**</exclude>
                         <exclude>.gitignore</exclude>
-                        <exclude>LICENSE.txt</exclude>
+                        <exclude>**/*.txt</exclude>
                         <exclude>**/*.ftl</exclude>
 						<exclude>**/build-number.txt</exclude> <!-- bamboo -->
+						<!-- exclude archetype templates -->
+						<exclude>**/CreateArchetypeProperties.groovy</exclude>
+						<exclude>**/__cloudService__CloudConnector.java</exclude>
+						<exclude>**/__cloudService__TestCase.java</exclude>
+						<exclude>**/__cloudService__NamespaceHandlerTestCase.java</exclude>
+						<exclude>**/__cloudServiceLower__-namespace-config.xml</exclude>												
                     </excludes>
                 </configuration>
                 <executions>

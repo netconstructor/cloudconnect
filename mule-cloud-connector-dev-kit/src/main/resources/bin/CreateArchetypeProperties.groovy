@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
- */
-
 stdinReader = new BufferedReader(new InputStreamReader(System.in))
 outputFilename = args[0]
 
@@ -29,7 +27,7 @@ def createDefaultProperties()
     Properties defaultProperties = new Properties()
 
     // version of the mule-cloud-connector-archetype to use
-    defaultProperties.archetypeVersion = "2.0-SNAPSHOT"
+    defaultProperties.archetypeVersion = "${pom.version}"
 
     // which Mule version should be used?
     defaultProperties.muleVersion = "3.1.0"
