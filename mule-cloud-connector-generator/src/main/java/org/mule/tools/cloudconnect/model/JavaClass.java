@@ -35,7 +35,7 @@ public interface JavaClass
 
     List<JavaMethod> getMethods();
 
-    Set<JavaEnum> getEnums();
+    Set<JavaType> getEnums();
 
     List<JavaAnnotation> getAnnotations();
 

@@ -16,6 +16,8 @@
  */
 package org.mule.tools.cloudconnect.model;
 
+import java.util.List;
+
 public interface JavaType
 {
     boolean isEnum();
@@ -25,4 +27,6 @@ public interface JavaType
     boolean isArray();
 
     String getXmlType();
+
+    List<String> getValues();
 }

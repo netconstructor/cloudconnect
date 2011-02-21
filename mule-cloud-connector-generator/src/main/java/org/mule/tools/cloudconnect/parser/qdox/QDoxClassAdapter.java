@@ -19,10 +19,10 @@ package org.mule.tools.cloudconnect.parser.qdox;
 
 import org.mule.tools.cloudconnect.model.AbstractJavaClass;
 import org.mule.tools.cloudconnect.model.JavaAnnotation;
-import org.mule.tools.cloudconnect.model.JavaEnum;
 import org.mule.tools.cloudconnect.model.JavaMethod;
 import org.mule.tools.cloudconnect.model.JavaModel;
 import org.mule.tools.cloudconnect.model.JavaProperty;
+import org.mule.tools.cloudconnect.model.JavaType;
 
 import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.BeanProperty;
@@ -42,7 +42,7 @@ public class QDoxClassAdapter extends AbstractJavaClass
     private WeakReference<JavaModel> parentModel;
     private List<JavaProperty> properties;
     private List<JavaMethod> methods;
-    private Set<JavaEnum> enums;
+    private Set<JavaType> enums;
     private List<JavaAnnotation> annotations;
 
     protected QDoxClassAdapter(JavaClass javaClass, JavaModel parentModel)
@@ -114,7 +114,7 @@ public class QDoxClassAdapter extends AbstractJavaClass
         return this.methods;
     }
 
-    public Set<JavaEnum> getEnums()
+    public Set<JavaType> getEnums()
     {
         if (this.enums == null)
         {
@@ -169,7 +169,7 @@ public class QDoxClassAdapter extends AbstractJavaClass
 
     private void buildEnumCollection()
     {
-        this.enums = new HashSet<JavaEnum>();
+        this.enums = new HashSet<JavaType>();
 
         BeanProperty[] properties = javaClass.getBeanProperties(true);
         for (int i = 0; i < properties.length; i++)
@@ -177,7 +177,7 @@ public class QDoxClassAdapter extends AbstractJavaClass
             if (isValidProperty(properties[i]) &&
                 properties[i].getType().getJavaClass().isEnum())
             {
-                this.enums.add(new QDoxEnumAdapter(properties[i].getType()));
+                this.enums.add(new QDoxTypeAdapter(properties[i].getType()));
             }
         }
 
@@ -189,7 +189,7 @@ public class QDoxClassAdapter extends AbstractJavaClass
             {
                 if (parameters[j].getType().getJavaClass().isEnum())
                 {
-                    this.enums.add(new QDoxEnumAdapter(parameters[j].getType()));
+                    this.enums.add(new QDoxTypeAdapter(parameters[j].getType()));
                 }
             }
         }

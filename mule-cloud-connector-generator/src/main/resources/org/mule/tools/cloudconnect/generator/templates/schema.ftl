@@ -75,7 +75,7 @@
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
                 <#list method.getParameters() as parameter>
                 <#if !parameter.getType().isArray()>
-                <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="${parameter.getType().getName()}Enum">
+                <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="${parameter.getType().getXmlType()}">
                     <#if parameter.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation><![CDATA[
@@ -107,7 +107,7 @@
 
     <!-- Enums -->
     <#list class.getEnums() as enum>
-    <xsd:simpleType name="${enum.getName()}Enum">
+    <xsd:simpleType name="${enum.getXmlType()}">
         <xsd:restriction base="xsd:string">
             <#list enum.getValues() as enumValue>
             <xsd:enumeration value="${enumValue}" />
