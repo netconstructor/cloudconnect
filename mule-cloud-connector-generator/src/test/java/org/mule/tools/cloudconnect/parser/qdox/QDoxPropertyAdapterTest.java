@@ -42,18 +42,4 @@ public class QDoxPropertyAdapterTest
 
         assertEquals(NAME, propertyAdapter.getName());
     }
-
-    @Test
-    public void type() throws Exception
-    {
-        Type type = mock(Type.class);
-        when(type.getValue()).thenReturn(TYPE);
-        BeanProperty property = mock(BeanProperty.class);
-        when(property.getType()).thenReturn(type);
-
-        QDoxPropertyAdapter propertyAdapter = new QDoxPropertyAdapter(property);
-
-        assertEquals(TYPE, propertyAdapter.getType());
-    }
-
 }

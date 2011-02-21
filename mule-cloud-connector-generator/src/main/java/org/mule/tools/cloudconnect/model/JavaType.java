@@ -14,13 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.mule.tools.cloudconnect.model;
 
-public interface JavaParameter extends JavaElement
+public interface JavaType
 {
+    boolean isEnum();
 
-    JavaType getType();
+    String getName();
 
-    String getDescription();
+    boolean isArray();
+
+    String getXmlType();
 }

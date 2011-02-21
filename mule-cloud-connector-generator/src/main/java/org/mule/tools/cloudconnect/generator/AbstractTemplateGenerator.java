@@ -19,7 +19,6 @@ package org.mule.tools.cloudconnect.generator;
 
 import org.mule.tools.cloudconnect.generator.directives.SingularizeDirective;
 import org.mule.tools.cloudconnect.generator.directives.SplitCamelCaseDirective;
-import org.mule.tools.cloudconnect.generator.directives.TypeMapDirective;
 import org.mule.tools.cloudconnect.generator.directives.UncapitalizeDirective;
 import org.mule.tools.cloudconnect.model.JavaClass;
 
@@ -113,7 +112,6 @@ public abstract class AbstractTemplateGenerator
         cfg.setClassForTemplateLoading(getClass(), TEMPLATES_DIRECTORY);
         cfg.setSharedVariable("uncapitalize", new UncapitalizeDirective());
         cfg.setSharedVariable("singularize", new SingularizeDirective());
-        cfg.setSharedVariable("typeMap", new TypeMapDirective());
         cfg.setSharedVariable("splitCamelCase", new SplitCamelCaseDirective());
 
         cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);

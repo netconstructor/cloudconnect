@@ -15,12 +15,36 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect.model;
+package org.mule.tools.cloudconnect.parser.qdox;
 
-public interface JavaParameter extends JavaElement
+import org.mule.tools.cloudconnect.model.AbstractJavaType;
+
+import com.thoughtworks.qdox.model.Type;
+
+public class QDoxTypeAdapter extends AbstractJavaType
 {
+    private Type javaType;
 
-    JavaType getType();
+    public QDoxTypeAdapter(Type javaType)
+    {
+        this.javaType = javaType;
+    }
 
-    String getDescription();
+    public boolean isEnum()
+    {
+        return javaType.getJavaClass().isEnum();
+    }
+
+    public String getName()
+    {
+        if( isEnum() )
+            return javaType.getJavaClass().getName();
+
+        return javaType.getFullyQualifiedName();
+    }
+
+    public boolean isArray()
+    {
+        return javaType.isArray();
+    }
 }

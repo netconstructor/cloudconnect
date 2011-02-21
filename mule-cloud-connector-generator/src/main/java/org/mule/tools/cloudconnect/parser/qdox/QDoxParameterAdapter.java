@@ -19,6 +19,7 @@ package org.mule.tools.cloudconnect.parser.qdox;
 
 import org.mule.tools.cloudconnect.model.AbstractJavaElement;
 import org.mule.tools.cloudconnect.model.JavaParameter;
+import org.mule.tools.cloudconnect.model.JavaType;
 
 import com.thoughtworks.qdox.model.DocletTag;
 
@@ -37,19 +38,9 @@ public class QDoxParameterAdapter extends AbstractJavaElement implements JavaPar
         return javaParameter.getName();
     }
 
-    public String getType()
+    public JavaType getType()
     {
-        return javaParameter.getType().getValue();
-    }
-
-    public boolean isEnum()
-    {
-        return javaParameter.getType().getJavaClass().isEnum();
-    }
-
-    public String getEnumName()
-    {
-        return javaParameter.getType().getJavaClass().getName();
+        return new QDoxTypeAdapter(this.javaParameter.getType());
     }
 
     public String getDescription()
@@ -71,10 +62,5 @@ public class QDoxParameterAdapter extends AbstractJavaElement implements JavaPar
         }
 
         return null;
-    }
-
-    public boolean isArray()
-    {
-        return javaParameter.getType().isArray();
     }
 }

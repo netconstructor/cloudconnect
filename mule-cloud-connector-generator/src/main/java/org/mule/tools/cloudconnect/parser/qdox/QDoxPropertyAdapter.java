@@ -19,6 +19,7 @@ package org.mule.tools.cloudconnect.parser.qdox;
 
 import org.mule.tools.cloudconnect.model.AbstractJavaElement;
 import org.mule.tools.cloudconnect.model.JavaProperty;
+import org.mule.tools.cloudconnect.model.JavaType;
 
 import com.thoughtworks.qdox.model.BeanProperty;
 
@@ -37,9 +38,9 @@ public class QDoxPropertyAdapter extends AbstractJavaElement implements JavaProp
         return this.javaProperty.getName();
     }
 
-    public String getType()
+    public JavaType getType()
     {
-        return this.javaProperty.getType().getValue();
+        return new QDoxTypeAdapter(this.javaProperty.getType());
     }
 
     public String getDescription()
@@ -50,15 +51,5 @@ public class QDoxPropertyAdapter extends AbstractJavaElement implements JavaProp
         }
 
         return null;
-    }
-
-    public boolean isEnum()
-    {
-        return javaProperty.getType().getJavaClass().isEnum();
-    }
-
-    public String getEnumName()
-    {
-        return javaProperty.getType().getJavaClass().getName();
     }
 }

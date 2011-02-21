@@ -20,11 +20,7 @@ package org.mule.tools.cloudconnect.model;
 public interface JavaProperty extends JavaElement
 {
 
-    String getType();
+    JavaType getType();
 
     String getDescription();
-
-    boolean isEnum();
-
-    String getEnumName();
 }

@@ -30,11 +30,7 @@
             <xsd:extension base="mule:abstractExtensionType">
             <#if class.getFactory()?has_content>
             <#list class.getFactory().getProperties() as property>
-                <#if property.isEnum()>
-                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getEnumName()}Enum" use="required">
-                <#else>
-                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="<@typeMap>${property.getType()}</@typeMap>" use="required">
-                </#if>
+                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getType().getXmlType()}" use="required">
                     <#if property.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation><![CDATA[
@@ -46,11 +42,7 @@
             </#list>
             <#else>
             <#list class.getProperties() as property>
-                <#if property.isEnum()>
-                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getEnumName()}Enum">
-                <#else>
-                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="<@typeMap>${property.getType()}</@typeMap>">
-                </#if>
+                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getType().getXmlType()}">
                     <#if property.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation><![CDATA[
@@ -82,12 +74,8 @@
         <xsd:complexContent>
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
                 <#list method.getParameters() as parameter>
-                <#if !parameter.isArray()>
-                <#if parameter.isEnum()>
-                <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="${parameter.getName()}Enum">
-                <#else>
-                <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="<@typeMap>${parameter.getType()}</@typeMap>">
-                </#if>
+                <#if !parameter.getType().isArray()>
+                <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="${parameter.getType().getName()}Enum">
                     <#if parameter.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation><![CDATA[
@@ -102,11 +90,7 @@
                         <xsd:sequence>
                             <xsd:element name="<@singularize>${parameter.getElementName()}</@singularize>" minOccurs="0" maxOccurs="unbounded">
                                 <xsd:complexType>
-                                    <#if parameter.isEnum()>
-                                    <xsd:extension base="${parameter.getName()}Enum"/>
-                                    <#else>
-                                    <xsd:extension base="<@typeMap>${parameter.getType()}</@typeMap>"/>
-                                    </#if>
+                                    <xsd:extension base="${parameter.getType().getXmlType()}"/>
                                 </xsd:complexType>
                             </xsd:element>
                         </xsd:sequence>
