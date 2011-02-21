@@ -96,8 +96,14 @@
                     </xsd:annotation>
                     </#if>
                 </xsd:attribute>
-                <#else> <!-- !isArray() -->
+                <#else>
                 <xsd:element name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="<@singularize>${parameter.getElementName()}</@singularize>" minOccurs="0" maxOccurs="unbounded">
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
                 </xsd:element>
                 </#if>
                 </#list>
