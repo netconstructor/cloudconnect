@@ -17,18 +17,19 @@
 
 package org.mule.tools.cloudconnect;
 
+import org.mule.tools.cloudconnect.generator.BeanDefinitionParserGenerator;
 import org.mule.tools.cloudconnect.generator.NamespaceHandlerGenerator;
 import org.mule.tools.cloudconnect.generator.SpringNamespaceHandlerGenerator;
 import org.mule.tools.cloudconnect.model.JavaClass;
+import org.mule.tools.cloudconnect.model.JavaMethod;
 import org.mule.tools.cloudconnect.model.JavaModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 
-import org.apache.maven.model.Resource;
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.IOUtil;
@@ -91,6 +92,33 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                 {
                     IOUtil.close(output);
                 }
+
+                BeanDefinitionParserGenerator beanDefinitionParserGenerator = new BeanDefinitionParserGenerator();
+                beanDefinitionParserGenerator.setJavaClass(javaClass);
+                beanDefinitionParserGenerator.setPackageName(namespaceHandlerPackage);
+
+                for (JavaMethod method : javaClass.getMethods())
+                {
+                    if( !method.isOperation() )
+                        continue;
+
+                    beanDefinitionParserGenerator.setJavaMethod(method);
+
+                    try
+                    {
+                        output = openNamespaceHandlerFileStream(namespaceHandlerPackage, method.getBeanDefinitionParserName());
+                        beanDefinitionParserGenerator.generate(output);
+                    }
+                    catch (IOException iox)
+                    {
+                        throw new MojoExecutionException("Error while generating schema", iox);
+                    }
+                    finally
+                    {
+                        IOUtil.close(output);
+                    }
+                }
+
             }
         }
     }

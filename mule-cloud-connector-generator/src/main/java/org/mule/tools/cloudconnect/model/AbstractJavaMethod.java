@@ -17,6 +17,8 @@
 
 package org.mule.tools.cloudconnect.model;
 
+import org.apache.commons.lang.StringUtils;
+
 public abstract class AbstractJavaMethod extends AbstractJavaElement implements JavaMethod
 {
 
@@ -63,4 +65,10 @@ public abstract class AbstractJavaMethod extends AbstractJavaElement implements 
 
         return super.getElementName();
     }
+
+    public String getBeanDefinitionParserName()
+    {
+        return StringUtils.capitalize(getElementName()) + "OperationDefinitionParser";
+    }
+
 }

@@ -22,13 +22,10 @@ public class ${className} extends AbstractPojoNamespaceHandler
         registerMuleBeanDefinitionParser("config",
             new OrphanDefinitionParser(${class.getFactory().getFullyQualifiedName()}.class, true)).addIgnored("name");
         </#if>
-        InvokerMessageProcessorDefinitionParser parser = null;
         <#list class.getMethods() as method>
         <#if method.isOperation()>
 
-        parser = new InvokerMessageProcessorDefinitionParser("messageProcessor",
-            ${class.getName()}.class, "${method.getName()}", new String[] {<#list method.getParameters() as parameter> "${parameter.getName()}"<#if parameter_has_next>,</#if></#list> });
-        registerMuleBeanDefinitionParser("<@splitCamelCase>${method.getElementName()}</@splitCamelCase>", parser);
+        registerMuleBeanDefinitionParser("<@splitCamelCase>${method.getElementName()}</@splitCamelCase>", new ${method.getBeanDefinitionParserName()}());
         </#if>
         </#list>
     }
