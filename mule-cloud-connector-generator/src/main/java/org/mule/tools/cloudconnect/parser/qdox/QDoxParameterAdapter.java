@@ -72,4 +72,9 @@ public class QDoxParameterAdapter extends AbstractJavaElement implements JavaPar
 
         return null;
     }
+
+    public boolean isArray()
+    {
+        return javaParameter.getType().isArray();
+    }
 }

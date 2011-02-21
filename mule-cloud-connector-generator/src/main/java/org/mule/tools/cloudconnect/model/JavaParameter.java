@@ -27,4 +27,6 @@ public interface JavaParameter extends JavaElement
     boolean isEnum();
 
     String getEnumName();
+
+    boolean isArray();
 }
