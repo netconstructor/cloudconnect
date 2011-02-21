@@ -101,6 +101,13 @@
                     <xsd:complexType>
                         <xsd:sequence>
                             <xsd:element name="<@singularize>${parameter.getElementName()}</@singularize>" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <#if parameter.isEnum()>
+                                    <xsd:extension base="${parameter.getName()}Enum"/>
+                                    <#else>
+                                    <xsd:extension base="<@typeMap>${parameter.getType()}</@typeMap>"/>
+                                    </#if>
+                                </xsd:complexType>
                             </xsd:element>
                         </xsd:sequence>
                     </xsd:complexType>
