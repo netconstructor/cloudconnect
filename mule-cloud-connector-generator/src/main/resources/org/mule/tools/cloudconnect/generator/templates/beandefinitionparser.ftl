@@ -22,7 +22,6 @@ public class ${method.getBeanDefinitionParserName()} extends ChildDefinitionPars
 {
     private final Class<?> objectType = ${method.getParentClass().getName()}.class;
     private final String methodName = "${method.getName()}";
-    private final String[] parameterNames = new String[] {<#list method.getParameters() as parameter> "${parameter.getName()}"<#if parameter_has_next>,</#if></#list> };
 
     public ${method.getBeanDefinitionParserName()}()
     {
@@ -50,25 +49,25 @@ public class ${method.getBeanDefinitionParserName()} extends ChildDefinitionPars
         }
 
         List<String> expressions = new ArrayList<String>();
-        if (parameterNames != null)
-        {
-            for (String parameterName : parameterNames)
-            {
-                if (!StringUtils.isEmpty(element.getAttribute(parameterName)))
-                {
-                    expressions.add(element.getAttribute(parameterName));
-                }
-                else
-                {
-                    expressions.add(null);
-                }
-            }
-        }
+        <#list method.getParameters() as parameter>
+        expressions.add(getAttributeValue(element, "${parameter.getName()}"));
+        </#list>
+
         builder.addPropertyValue("arguments", expressions);
         builder.addPropertyValue("methodName", methodName);
 
         BeanAssembler assembler = getBeanAssembler(element, builder);
         postProcess(getParserContext(), assembler, element);
+    }
+
+    private String getAttributeValue(Element element, String attributeName)
+    {
+        if (!StringUtils.isEmpty(element.getAttribute(attributeName)))
+        {
+            return element.getAttribute(attributeName);
+        }
+
+        return null;
     }
 
 }
