@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.ParserContext;
+import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
 import ${class.getPackage()}.${class.getName()};
@@ -48,9 +49,22 @@ public class ${method.getBeanDefinitionParserName()} extends ChildDefinitionPars
             builder.addPropertyValue("objectType", objectType);
         }
 
-        List<String> expressions = new ArrayList<String>();
+        List expressions = new ArrayList();
         <#list method.getParameters() as parameter>
+        <#if parameter.getType().isArray()>
+        Element <@uncapitalize>${parameter.getName()}</@uncapitalize>Element = DomUtils.getChildElementByTagName(element, "${parameter.getName()}");
+        List <@uncapitalize>${parameter.getName()}</@uncapitalize>Elements = DomUtils.getChildElementsByTagName(<@uncapitalize>${parameter.getName()}</@uncapitalize>Element, "<@singularize>${parameter.getName()}</@singularize>");
+        String[] <@uncapitalize>${parameter.getName()}</@uncapitalize>Array = new String[<@uncapitalize>${parameter.getName()}</@uncapitalize>Elements.size()];
+        int <@uncapitalize>${parameter.getName()}</@uncapitalize>Index = 0;
+        for( Element subElement : (List<Element>)<@uncapitalize>${parameter.getName()}</@uncapitalize>Elements )
+        {
+            <@uncapitalize>${parameter.getName()}</@uncapitalize>Array[<@uncapitalize>${parameter.getName()}</@uncapitalize>Index] = subElement.getTextContent();
+            <@uncapitalize>${parameter.getName()}</@uncapitalize>Index++;
+        }
+        expressions.add(<@uncapitalize>${parameter.getName()}</@uncapitalize>Array);
+        <#else>
         expressions.add(getAttributeValue(element, "${parameter.getName()}"));
+        </#if>
         </#list>
 
         builder.addPropertyValue("arguments", expressions);
