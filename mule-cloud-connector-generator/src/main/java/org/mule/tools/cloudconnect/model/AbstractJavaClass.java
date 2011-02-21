@@ -20,11 +20,18 @@ package org.mule.tools.cloudconnect.model;
 public abstract class AbstractJavaClass implements JavaClass
 {
 
+    private static final String CONNECTOR_ANNOTATION = "org.mule.tools.cloudconnect.annotations.Connector";
+    private static final String FACTORY_ARGUMENT = "factory";
+    private static final String NAMESPACE_PREFIX_ARGUMENT = "namespacePrefix";
+    private static final String NAMESPACE_URI_ARGUMENT = "namespaceUri";
+    private static final String DEFAULT_NAMESPACE = "http://www.mulesoft.org/schema/mule/";
+    private static final String MULE_VERSION_ARGUMENT = "muleVersion";
+
     public boolean isConnector()
     {
         for (JavaAnnotation annotation : getAnnotations())
         {
-            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Connector"))
+            if (annotation.getType().equals(CONNECTOR_ANNOTATION))
             {
                 return true;
             }
@@ -37,10 +44,10 @@ public abstract class AbstractJavaClass implements JavaClass
     {
         for (JavaAnnotation annotation : getAnnotations())
         {
-            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Connector") &&
-                annotation.getNamedParameter("namespacePrefix") != null)
+            if (annotation.getType().equals(CONNECTOR_ANNOTATION) &&
+                annotation.getNamedParameter(NAMESPACE_PREFIX_ARGUMENT) != null)
             {
-                return ((String)annotation.getNamedParameter("namespacePrefix")).replace("\"", "");
+                return ((String)annotation.getNamedParameter(NAMESPACE_PREFIX_ARGUMENT)).replace("\"", "");
             }
         }
 
@@ -51,16 +58,16 @@ public abstract class AbstractJavaClass implements JavaClass
     {
         for (JavaAnnotation annotation : getAnnotations())
         {
-            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Connector") &&
-                annotation.getNamedParameter("namespaceUri") != null)
+            if (annotation.getType().equals(CONNECTOR_ANNOTATION) &&
+                annotation.getNamedParameter(NAMESPACE_URI_ARGUMENT) != null)
             {
-                return ((String)annotation.getNamedParameter("namespaceUri")).replace("\"", "");
+                return ((String)annotation.getNamedParameter(NAMESPACE_URI_ARGUMENT)).replace("\"", "");
             }
         }
 
         if (getNamespacePrefix().length() > 0)
         {
-            return "http://www.mulesoft.org/schema/mule/" + getNamespacePrefix();
+            return DEFAULT_NAMESPACE + getNamespacePrefix();
         }
 
         return null;
@@ -70,10 +77,10 @@ public abstract class AbstractJavaClass implements JavaClass
     {
         for (JavaAnnotation annotation : getAnnotations())
         {
-            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Connector") &&
-                annotation.getNamedParameter("muleVersion") != null)
+            if (annotation.getType().equals(CONNECTOR_ANNOTATION) &&
+                annotation.getNamedParameter(MULE_VERSION_ARGUMENT) != null)
             {
-                return ((String)annotation.getNamedParameter("muleVersion")).replace("\"", "");
+                return ((String)annotation.getNamedParameter(MULE_VERSION_ARGUMENT)).replace("\"", "");
             }
         }
 
@@ -84,10 +91,10 @@ public abstract class AbstractJavaClass implements JavaClass
     {
         for (JavaAnnotation annotation : getAnnotations())
         {
-            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Connector") &&
-                annotation.getNamedParameter("factory") != null)
+            if (annotation.getType().equals(CONNECTOR_ANNOTATION) &&
+                annotation.getNamedParameter(FACTORY_ARGUMENT) != null)
             {
-                String fqClassName = ((String)annotation.getNamedParameter("factory")).replace("\"", "").replace(".class", "");
+                String fqClassName = ((String)annotation.getNamedParameter(FACTORY_ARGUMENT)).replace("\"", "").replace(".class", "");
                 for( JavaClass clazz : getParentModel().getClasses() )
                 {
                     if( clazz.getFullyQualifiedName().equals(fqClassName ))
