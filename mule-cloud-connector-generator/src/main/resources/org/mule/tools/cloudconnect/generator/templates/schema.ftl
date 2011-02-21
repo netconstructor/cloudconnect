@@ -82,6 +82,7 @@
         <xsd:complexContent>
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
                 <#list method.getParameters() as parameter>
+                <#if !parameter.isArray()>
                 <#if parameter.isEnum()>
                 <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="${parameter.getName()}Enum">
                 <#else>
@@ -95,6 +96,10 @@
                     </xsd:annotation>
                     </#if>
                 </xsd:attribute>
+                <#else> <!-- !isArray() -->
+                <xsd:element name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>">
+                </xsd:element>
+                </#if>
                 </#list>
             </xsd:extension>
         </xsd:complexContent>
