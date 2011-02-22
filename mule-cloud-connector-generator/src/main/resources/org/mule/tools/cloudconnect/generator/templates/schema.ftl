@@ -84,20 +84,23 @@
                     </xsd:annotation>
                     </#if>
                 </xsd:attribute>
-                <#else>
-                <xsd:element name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>">
-                    <xsd:complexType>
-                        <xsd:sequence>
-                            <xsd:element name="<@singularize>${parameter.getElementName()}</@singularize>" minOccurs="0" maxOccurs="unbounded">
-                                <xsd:complexType>
-                                    <xsd:extension base="${parameter.getType().getXmlType()}"/>
-                                </xsd:complexType>
-                            </xsd:element>
-                        </xsd:sequence>
-                    </xsd:complexType>
-                </xsd:element>
                 </#if>
                 </#list>
+
+                <xsd:all>
+                    <#list method.getParameters() as parameter>
+                    <#if parameter.getType().isArray()>
+                    <xsd:element name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="<@singularize>${parameter.getElementName()}</@singularize>" minOccurs="0" maxOccurs="unbounded"
+                                             type="${parameter.getType().getXmlType()}"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    </#if>
+                    </#list>
+                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>

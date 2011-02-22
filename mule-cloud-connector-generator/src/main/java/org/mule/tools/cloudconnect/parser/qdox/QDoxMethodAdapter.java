@@ -21,6 +21,7 @@ import org.mule.tools.cloudconnect.model.AbstractJavaMethod;
 import org.mule.tools.cloudconnect.model.JavaAnnotation;
 import org.mule.tools.cloudconnect.model.JavaClass;
 import org.mule.tools.cloudconnect.model.JavaParameter;
+import org.mule.tools.cloudconnect.model.JavaType;
 
 import com.thoughtworks.qdox.model.Annotation;
 
@@ -122,5 +123,10 @@ public class QDoxMethodAdapter extends AbstractJavaMethod
     public JavaClass getParentClass()
     {
         return this.javaClass.get();
+    }
+
+    public JavaType getReturnType()
+    {
+        return new QDoxTypeAdapter(javaMethod.getReturnType());
     }
 }

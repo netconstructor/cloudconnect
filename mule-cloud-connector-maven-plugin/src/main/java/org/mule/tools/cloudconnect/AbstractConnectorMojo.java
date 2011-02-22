@@ -17,7 +17,6 @@
 
 package org.mule.tools.cloudconnect;
 
-import org.mule.tools.cloudconnect.model.JavaClass;
 import org.mule.tools.cloudconnect.model.JavaModel;
 import org.mule.tools.cloudconnect.parser.ClassParseException;
 import org.mule.tools.cloudconnect.parser.ClassParser;
@@ -36,6 +35,7 @@ import org.codehaus.plexus.util.IOUtil;
 
 public abstract class AbstractConnectorMojo extends AbstractMojo
 {
+
     /**
      * Directory containing the classes.
      *

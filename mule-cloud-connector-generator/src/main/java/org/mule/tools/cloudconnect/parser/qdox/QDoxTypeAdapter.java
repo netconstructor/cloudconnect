@@ -86,4 +86,9 @@ public class QDoxTypeAdapter extends AbstractJavaType
         return (o instanceof QDoxTypeAdapter &&
                 ((QDoxTypeAdapter) o).getName().equals(getName()));
     }
+
+    public String getFullyQualifiedName()
+    {
+        return javaType.getFullyQualifiedName();
+    }
 }

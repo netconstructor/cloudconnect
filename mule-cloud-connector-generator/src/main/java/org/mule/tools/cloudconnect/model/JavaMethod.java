@@ -43,4 +43,8 @@ public interface JavaMethod extends JavaElement
     JavaClass getParentClass();
 
     String getBeanDefinitionParserName();
+
+    String getMessageProcessorName();
+
+    JavaType getReturnType();
 }

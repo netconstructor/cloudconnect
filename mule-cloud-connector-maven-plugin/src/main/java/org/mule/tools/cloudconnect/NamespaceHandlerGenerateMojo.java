@@ -18,6 +18,7 @@
 package org.mule.tools.cloudconnect;
 
 import org.mule.tools.cloudconnect.generator.BeanDefinitionParserGenerator;
+import org.mule.tools.cloudconnect.generator.MessageProcessorGenerator;
 import org.mule.tools.cloudconnect.generator.NamespaceHandlerGenerator;
 import org.mule.tools.cloudconnect.generator.SpringNamespaceHandlerGenerator;
 import org.mule.tools.cloudconnect.model.JavaClass;
@@ -96,6 +97,9 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                 BeanDefinitionParserGenerator beanDefinitionParserGenerator = new BeanDefinitionParserGenerator();
                 beanDefinitionParserGenerator.setJavaClass(javaClass);
                 beanDefinitionParserGenerator.setPackageName(namespaceHandlerPackage);
+                MessageProcessorGenerator messageProcessorGenerator = new MessageProcessorGenerator();
+                messageProcessorGenerator.setJavaClass(javaClass);
+                messageProcessorGenerator.setPackageName(namespaceHandlerPackage);
 
                 for (JavaMethod method : javaClass.getMethods())
                 {
@@ -108,6 +112,22 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                     {
                         output = openNamespaceHandlerFileStream(namespaceHandlerPackage, method.getBeanDefinitionParserName());
                         beanDefinitionParserGenerator.generate(output);
+                    }
+                    catch (IOException iox)
+                    {
+                        throw new MojoExecutionException("Error while generating schema", iox);
+                    }
+                    finally
+                    {
+                        IOUtil.close(output);
+                    }
+
+                    messageProcessorGenerator.setJavaMethod(method);
+
+                    try
+                    {
+                        output = openNamespaceHandlerFileStream(namespaceHandlerPackage, method.getMessageProcessorName());
+                        messageProcessorGenerator.generate(output);
                     }
                     catch (IOException iox)
                     {

@@ -62,7 +62,7 @@
                         <setupInclude>it001-basic/pom.xml</setupInclude>
                     </setupIncludes>
                     <pomIncludes>
-                        <pomInclude>**/pom.xml</pomInclude>
+                        <pomInclude>it006-arrays/pom.xml</pomInclude>
                     </pomIncludes>
                     <localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
                     <settingsFile>src/it/settings.xml</settingsFile>

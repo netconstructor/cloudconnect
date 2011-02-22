@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:spring="http://www.springframework.org/schema/beans"
+      xmlns:arrays="http://www.mulesoft.org/schema/mule/arrays"
+      xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.1/mule.xsd
+        http://www.mulesoft.org/schema/mule/arrays http://www.mulesoft.org/schema/mule/arrays/1.1-SNAPSHOT/mule-arrays.xsd">
+
+    <flow name="sumAllFlow">
+        <arrays:sum-all>
+            <arrays:numbers>
+                <arrays:number>4</arrays:number>
+                <arrays:number>2</arrays:number>
+                <arrays:number>3</arrays:number>
+                <arrays:number>6</arrays:number>
+            </arrays:numbers>
+        </arrays:sum-all>
+    </flow>
+</mule>

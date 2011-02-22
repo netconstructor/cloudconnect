@@ -29,4 +29,10 @@ public interface JavaType
     String getXmlType();
 
     List<String> getValues();
+
+    String getFullyQualifiedName(boolean includeArraySuffix);
+
+    String getFullyQualifiedName();
+
+    boolean isVoid();
 }
