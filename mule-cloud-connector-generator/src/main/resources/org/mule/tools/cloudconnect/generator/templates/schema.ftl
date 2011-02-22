@@ -22,7 +22,6 @@
         </xsd:documentation>
     </xsd:annotation>
 
-    <#if class.hasProperties()>
     <!-- Configuration -->
     <xsd:element name="config" type="configType" substitutionGroup="mule:abstract-extension"/>
     <xsd:complexType name="configType">
@@ -57,7 +56,6 @@
         </xsd:complexContent>
     </xsd:complexType>
 
-    </#if>
     <!-- Operations -->
     <#list class.getMethods() as method>
     <#if method.isOperation()>

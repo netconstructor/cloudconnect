@@ -26,7 +26,7 @@ public class ${method.getBeanDefinitionParserName()} extends ChildDefinitionPars
 
     public ${method.getBeanDefinitionParserName()}()
     {
-        super("${method.getName()}", ${method.getMessageProcessorName()}.class);
+        super("messageProcessor", ${method.getMessageProcessorName()}.class);
     }
 
     @Override

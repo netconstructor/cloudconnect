@@ -17,6 +17,7 @@
 
 package org.mule.tools.cloudconnect.generator;
 
+import org.mule.tools.cloudconnect.generator.directives.CapitalizeDirective;
 import org.mule.tools.cloudconnect.generator.directives.SingularizeDirective;
 import org.mule.tools.cloudconnect.generator.directives.SplitCamelCaseDirective;
 import org.mule.tools.cloudconnect.generator.directives.TypeClassDirective;
@@ -112,6 +113,7 @@ public abstract class AbstractTemplateGenerator
         Configuration cfg = new Configuration();
         cfg.setClassForTemplateLoading(getClass(), TEMPLATES_DIRECTORY);
         cfg.setSharedVariable("uncapitalize", new UncapitalizeDirective());
+        cfg.setSharedVariable("capitalize", new CapitalizeDirective());
         cfg.setSharedVariable("singularize", new SingularizeDirective());
         cfg.setSharedVariable("splitCamelCase", new SplitCamelCaseDirective());
         cfg.setSharedVariable("typeClass", new TypeClassDirective());
@@ -142,7 +144,7 @@ public abstract class AbstractTemplateGenerator
         }
         catch (TemplateException e)
         {
-            throw new RuntimeException("Unable to generate namespace handler template", e);
+            throw new RuntimeException("Unable to generate code", e);
         }
         out.flush();
     }

@@ -79,7 +79,7 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
 
         try
         {
-            object = muleContext.getRegistry().lookupObject(object.getClass());
+            object = muleContext.getRegistry().lookupObject(${class.getName()}.class);
         }
         catch (RegistrationException e)
         {
@@ -123,7 +123,7 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
         MuleMessage message = event.getMessage();
         try
         {
-            return transformArgument(evaluateExpressionCandidate(template, message), type);
+            return (V) transformArgument(evaluateExpressionCandidate(template, message), type);
         }
         catch (TransformerException e)
         {
@@ -135,6 +135,47 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
     protected <T> T evaluateExpressionCandidate(T expressionCandidate, MuleMessage message)
         throws TransformerException
     {
+        if (expressionCandidate.getClass().isArray())
+        {
+            Object[] collectionTemplate = (Object[])expressionCandidate;
+            Collection<Object> newCollection = new ArrayList<Object>();
+            for( int i = 0; i < collectionTemplate.length; i++ )
+            {
+                newCollection.add(evaluateExpressionCandidate(collectionTemplate[i], message));
+            }
+            return (T) newCollection.toArray();
+        }
+        else if (expressionCandidate instanceof Collection<?>)
+        {
+            Collection<Object> collectionTemplate = (Collection<Object>) expressionCandidate;
+            Collection<Object> newCollection = new ArrayList<Object>();
+            for (Object object : collectionTemplate)
+            {
+                newCollection.add(evaluateExpressionCandidate(object, message));
+            }
+            return (T)newCollection;
+        }
+        else if (expressionCandidate instanceof Map<?, ?>)
+        {
+            Map<Object, Object> mapTemplate = (Map<Object, Object>) expressionCandidate;
+            Map<Object, Object> newMap = new HashMap<Object, Object>();
+            for (Entry<Object, Object> entry : mapTemplate.entrySet())
+            {
+                newMap.put(evaluateExpressionCandidate(entry.getKey(), message), evaluateExpressionCandidate(
+                    entry.getValue(), message));
+            }
+            return (T)newMap;
+        }
+        else if (expressionCandidate instanceof String[])
+        {
+            String[] stringArrayTemplate = (String[]) expressionCandidate;
+            Object[] newArray = new String[stringArrayTemplate.length];
+            for (int j = 0; j < stringArrayTemplate.length; j++)
+            {
+                newArray[j] = evaluateExpressionCandidate(stringArrayTemplate[j], message);
+            }
+            return (T)newArray;
+        }
         if (expressionCandidate instanceof String)
         {
             T arg;
@@ -168,7 +209,18 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
 
     private <U,V> V transformArgument(U arg, Class<V> type) throws TransformerException
     {
-        if (!(type.isAssignableFrom(arg.getClass())))
+        if (arg.getClass().isArray())
+        {
+            Object[] collection = (Object[])arg;
+            Object newCollection = Array.newInstance(type.getComponentType(), collection.length);
+            for( int i = 0; i < collection.length; i++ )
+            {
+                Array.set(newCollection, i, transformArgument(collection[i], type.getComponentType()));
+            }
+
+            return (V)newCollection;
+        }
+        else if (!(type.getClass().isAssignableFrom(arg.getClass())))
         {
             DataType<?> source = DataTypeFactory.create(arg.getClass());
             DataType<?> target = DataTypeFactory.create(type);
@@ -177,6 +229,7 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
             V result = (V)t.transform(arg);
             return result;
         }
+
         return (V)arg;
     }
 
@@ -212,4 +265,13 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
     {
         this.muleContext = context;
     }
+
+    <#list method.getParameters() as parameter>
+    public void set<@capitalize>${parameter.getName()}</@capitalize>(Object<#if parameter.getType().isArray()>[]</#if> value)
+    {
+        this.${parameter.getName()} = value;
+    }
+
+    </#list>
+
 }
