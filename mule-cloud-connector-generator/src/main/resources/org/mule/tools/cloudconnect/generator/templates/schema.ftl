@@ -26,6 +26,13 @@
     <xsd:element name="config" type="configType" substitutionGroup="mule:abstract-extension"/>
     <xsd:complexType name="configType">
         <xsd:complexContent>
+            <xsd:attribute name="name" use="optional" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Give a name to this configuration so it can be later referenced by config-ref.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
             <xsd:extension base="mule:abstractExtensionType">
             <#if class.getFactory()?has_content>
             <#list class.getFactory().getProperties() as property>
@@ -71,6 +78,13 @@
     <xsd:complexType name="${method.getElementName()}Type">
         <xsd:complexContent>
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
                 <#list method.getParameters() as parameter>
                 <#if !parameter.getType().isArray()>
                 <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="${parameter.getType().getXmlType()}">
