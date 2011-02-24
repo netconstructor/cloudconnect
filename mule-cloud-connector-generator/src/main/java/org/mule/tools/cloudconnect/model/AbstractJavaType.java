@@ -28,25 +28,25 @@ public abstract class AbstractJavaType implements JavaType
     static
     {
         Map<String, String> mapping = new HashMap<String, String>();
-        mapping.put("boolean", "xsd:boolean");
-        mapping.put(Boolean.class.getName(), "xsd:boolean");
-        mapping.put("int", "xsd:integer");
-        mapping.put("long", "xsd:long");
-        mapping.put(Integer.class.getName(), "xsd:integer");
-        mapping.put(String.class.getName(), "xsd:string");
-        mapping.put("java.lang.Date", "xsd:date");
-        mapping.put("java.lang.Class", "xsd:string");
-        mapping.put("java.net.URL", "xsd:string");
-        mapping.put("java.util.Map", "xsd:string");
-        mapping.put("org.w3c.dom.Node", "xsd:string");
+        mapping.put("boolean", "mule:substitutableBoolean");
+        mapping.put(Boolean.class.getName(), "mule:substitutableBoolean");
+        mapping.put("int", "mule:substitutableInt");
+        mapping.put(Integer.class.getName(), "mule:substitutableInt");
+        mapping.put("long", "mule:substitutableLong");
+        mapping.put(Long.class.getName(), "mule:substitutableLong");
+        mapping.put(String.class.getName(), "mule:substitutableName");
+        mapping.put(Class.class.getName(), "mule:substitutableClass");
 
         TYPES_MAP = Collections.unmodifiableMap(mapping);
     }
 
-    public String getXmlType()
+    public String getXmlType(boolean isConfig)
     {
         if( isEnum() )
             return getName() + "Enum";
+
+        if( !isConfig )
+            return "xsd:string";
 
         return TYPES_MAP.get(getName());
     }

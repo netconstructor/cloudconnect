@@ -26,17 +26,17 @@
     <xsd:element name="config" type="configType" substitutionGroup="mule:abstract-extension"/>
     <xsd:complexType name="configType">
         <xsd:complexContent>
-            <xsd:attribute name="name" use="optional" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:documentation>
-                        Give a name to this configuration so it can be later referenced by config-ref.
-                    </xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
             <xsd:extension base="mule:abstractExtensionType">
+                <xsd:attribute name="name" use="optional" type="mule:substitutableName">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Give a name to this configuration so it can be later referenced by config-ref.
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
             <#if class.getFactory()?has_content>
             <#list class.getFactory().getProperties() as property>
-                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getType().getXmlType()}" use="required">
+                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getType().getXmlType(true)}" use="required">
                     <#if property.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation><![CDATA[
@@ -48,7 +48,7 @@
             </#list>
             <#else>
             <#list class.getProperties() as property>
-                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getType().getXmlType()}">
+                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getType().getXmlType(true)}">
                     <#if property.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation><![CDATA[
@@ -78,6 +78,21 @@
     <xsd:complexType name="${method.getElementName()}Type">
         <xsd:complexContent>
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                    <#list method.getParameters() as parameter>
+                    <#if parameter.getType().isArray()>
+                    <xsd:element name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="<@singularize>${parameter.getElementName()}</@singularize>" minOccurs="0" maxOccurs="unbounded"
+                                             type="${parameter.getType().getXmlType(false)}"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    </#if>
+                    </#list>
+                </xsd:all>
+
                 <xsd:attribute name="config-ref" use="optional" type="xsd:string">
                     <xsd:annotation>
                         <xsd:documentation>
@@ -87,7 +102,7 @@
                 </xsd:attribute>
                 <#list method.getParameters() as parameter>
                 <#if !parameter.getType().isArray()>
-                <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="${parameter.getType().getXmlType()}">
+                <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="${parameter.getType().getXmlType(false)}">
                     <#if parameter.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation><![CDATA[
@@ -98,21 +113,6 @@
                 </xsd:attribute>
                 </#if>
                 </#list>
-
-                <xsd:all>
-                    <#list method.getParameters() as parameter>
-                    <#if parameter.getType().isArray()>
-                    <xsd:element name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>">
-                        <xsd:complexType>
-                            <xsd:sequence>
-                                <xsd:element name="<@singularize>${parameter.getElementName()}</@singularize>" minOccurs="0" maxOccurs="unbounded"
-                                             type="${parameter.getType().getXmlType()}"/>
-                            </xsd:sequence>
-                        </xsd:complexType>
-                    </xsd:element>
-                    </#if>
-                    </#list>
-                </xsd:all>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>

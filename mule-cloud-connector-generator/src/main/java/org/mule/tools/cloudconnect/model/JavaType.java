@@ -26,7 +26,7 @@ public interface JavaType
 
     boolean isArray();
 
-    String getXmlType();
+    String getXmlType(boolean isConfig);
 
     List<String> getValues();
 
