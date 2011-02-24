@@ -30,18 +30,18 @@
     <arrays:config/>
 
     <flow name="sumAllFlow">
-        <arrays:sum-all>
+        <arrays:sum-all>    <!-- this operation receives an array of primitive integers -->
             <arrays:numbers>
                 <arrays:number>4</arrays:number>
                 <arrays:number>2</arrays:number>
-                <arrays:number>#[string:3]</arrays:number> <!-- made sure that the evaluator is being called for each element -->
+                <arrays:number>#[string:3]</arrays:number> <!-- make sure that the evaluator is being called for each element -->
                 <arrays:number>#[string:6]</arrays:number>
             </arrays:numbers>
         </arrays:sum-all>
     </flow>
 
     <flow name="sumAllFromGenericListFlow">
-        <arrays:sum-all-from-generic-list>
+        <arrays:sum-all-from-generic-list> <!-- this operation receives a List<Integer> -->
             <arrays:numbers>
                 <arrays:number>4</arrays:number>
                 <arrays:number>2</arrays:number>
@@ -52,12 +52,12 @@
     </flow>
 
     <flow name="sumAllColors">
-        <arrays:sum-all-colors>
+        <arrays:sum-all-colors> <!-- this operation receives a List<Color> where Color is an enumeration -->
             <arrays:colors>
                 <arrays:color>Red</arrays:color> <!-- this are actually enum values RED=2 GREEN=4 BLUE=8 -->
                 <arrays:color>Green</arrays:color>
                 <arrays:color>Blue</arrays:color>
-                <arrays:color>Blue</arrays:color>
+                <arrays:color>#[string:Blue]</arrays:color> <!-- we are auto-registering enum transformers so evaluators will work -->
                 <arrays:color>Red</arrays:color>
             </arrays:colors>
         </arrays:sum-all-colors>

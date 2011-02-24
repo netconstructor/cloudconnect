@@ -127,11 +127,20 @@
     <!-- Enums -->
     <#list class.getEnums() as enum>
     <xsd:simpleType name="${enum.getXmlType(false)}">
-        <xsd:restriction base="xsd:string">
-            <#list enum.getValues() as enumValue>
-            <xsd:enumeration value="${enumValue}" />
-            </#list>
-        </xsd:restriction>
+        <xsd:union>
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <#list enum.getValues() as enumValue>
+                    <xsd:enumeration value="${enumValue}" />
+                    </#list>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:pattern value="\#\[[^\]]+\]"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:union>
     </xsd:simpleType>
 
     </#list>
