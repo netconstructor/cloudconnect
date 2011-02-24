@@ -21,6 +21,7 @@ import org.mule.tools.cloudconnect.generator.BeanDefinitionParserGenerator;
 import org.mule.tools.cloudconnect.generator.EnumTransformerGenerator;
 import org.mule.tools.cloudconnect.generator.MessageProcessorGenerator;
 import org.mule.tools.cloudconnect.generator.NamespaceHandlerGenerator;
+import org.mule.tools.cloudconnect.generator.RegistryBootstrapGenerator;
 import org.mule.tools.cloudconnect.generator.SpringNamespaceHandlerGenerator;
 import org.mule.tools.cloudconnect.model.JavaClass;
 import org.mule.tools.cloudconnect.model.JavaMethod;
@@ -32,7 +33,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.IOUtil;
@@ -105,8 +105,10 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
 
                 for (JavaMethod method : javaClass.getMethods())
                 {
-                    if( !method.isOperation() )
+                    if (!method.isOperation())
+                    {
                         continue;
+                    }
 
                     beanDefinitionParserGenerator.setJavaMethod(method);
 
@@ -144,7 +146,7 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                 EnumTransformerGenerator enumTransformerGenerator = new EnumTransformerGenerator();
                 enumTransformerGenerator.setPackageName(namespaceHandlerPackage);
 
-                for(JavaType enumType : javaClass.getEnums() )
+                for (JavaType enumType : javaClass.getEnums())
                 {
                     enumTransformerGenerator.setJavaType(enumType);
 
@@ -161,6 +163,24 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                     {
                         IOUtil.close(output);
                     }
+                }
+
+                RegistryBootstrapGenerator registryBootstrapGenerator = new RegistryBootstrapGenerator();
+                registryBootstrapGenerator.setEnums(javaClass.getEnums());
+                registryBootstrapGenerator.setPackageName(namespaceHandlerPackage);
+
+                try
+                {
+                    output = openRegistryBootstrapFileStream();
+                    registryBootstrapGenerator.generate(output);
+                }
+                catch (IOException iox)
+                {
+                    throw new MojoExecutionException("Error while generating the registry bootstrap", iox);
+                }
+                finally
+                {
+                    IOUtil.close(output);
                 }
             }
         }
@@ -200,5 +220,16 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
         return new FileOutputStream(springSchemaFile);
     }
 
+
+    private OutputStream openRegistryBootstrapFileStream() throws IOException, MojoExecutionException
+    {
+        File metaInfDirectory = new File(generatedResourcesDirectory(), "META-INF");
+        File registryBootstrapDirectory = new File(metaInfDirectory, "services/org/mule/config");
+        createDirectory(registryBootstrapDirectory);
+
+        File registryBootstrapFile = new File(registryBootstrapDirectory, "registry-bootstrap.properties");
+
+        return new FileOutputStream(registryBootstrapFile);
+    }
 
 }
