@@ -21,8 +21,12 @@ import org.mule.api.MuleEvent;
 import org.mule.construct.SimpleFlowConstruct;
 import org.mule.tck.FunctionalTestCase;
 
+import java.lang.String;
+
 public class ArraysCloudConnectorTest extends FunctionalTestCase
 {
+
+    private static final String EMPTY_PAYLOAD = "";
 
     @Override
     protected String getConfigResources()
@@ -30,10 +34,20 @@ public class ArraysCloudConnectorTest extends FunctionalTestCase
         return "sum-all.xml";
     }
 
-    public void testSearchTags() throws Exception
+    public void testArray() throws Exception
     {
-        String payload = "";
+        String payload = EMPTY_PAYLOAD;
         SimpleFlowConstruct flow = lookupFlowConstruct("sumAllFlow");
+        MuleEvent event = getTestEvent(payload);
+        MuleEvent responseEvent = flow.process(event);
+
+        assertEquals(15, responseEvent.getMessage().getPayload());
+    }
+
+    public void testGenericList() throws Exception
+    {
+        String payload = EMPTY_PAYLOAD;
+        SimpleFlowConstruct flow = lookupFlowConstruct("sumAllFromGenericListFlow");
         MuleEvent event = getTestEvent(payload);
         MuleEvent responseEvent = flow.process(event);
 

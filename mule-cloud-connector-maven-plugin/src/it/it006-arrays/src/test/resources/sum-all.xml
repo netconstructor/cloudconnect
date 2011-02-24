@@ -34,9 +34,20 @@
             <arrays:numbers>
                 <arrays:number>4</arrays:number>
                 <arrays:number>2</arrays:number>
+                <arrays:number>#[string:3]</arrays:number> <!-- made sure that the evaluator is being called for each element -->
+                <arrays:number>#[string:6]</arrays:number>
+            </arrays:numbers>
+        </arrays:sum-all>
+    </flow>
+
+    <flow name="sumAllFromGenericListFlow">
+        <arrays:sum-all-from-generic-list>
+            <arrays:numbers>
+                <arrays:number>4</arrays:number>
+                <arrays:number>2</arrays:number>
                 <arrays:number>3</arrays:number>
                 <arrays:number>6</arrays:number>
             </arrays:numbers>
-        </arrays:sum-all>
+        </arrays:sum-all-from-generic-list>
     </flow>
 </mule>

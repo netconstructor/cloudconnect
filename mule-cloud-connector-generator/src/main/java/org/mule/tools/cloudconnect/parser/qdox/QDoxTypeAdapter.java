@@ -18,6 +18,7 @@
 package org.mule.tools.cloudconnect.parser.qdox;
 
 import org.mule.tools.cloudconnect.model.AbstractJavaType;
+import org.mule.tools.cloudconnect.model.JavaType;
 
 import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.Type;
@@ -28,6 +29,7 @@ import java.util.List;
 public class QDoxTypeAdapter extends AbstractJavaType
 {
 
+    private static final Type LIST_TYPE = new Type("java.util.List");
     private Type javaType;
 
     public QDoxTypeAdapter(Type javaType)
@@ -87,8 +89,42 @@ public class QDoxTypeAdapter extends AbstractJavaType
                 ((QDoxTypeAdapter) o).getName().equals(getName()));
     }
 
+    public String getFullyQualifiedName(boolean generic)
+    {
+        if( generic )
+            return javaType.getGenericValue();
+        else
+            return javaType.getValue();
+
+    }
+
     public String getFullyQualifiedName()
     {
-        return javaType.getFullyQualifiedName();
+        return javaType.getValue();
     }
+
+    public boolean isGeneric()
+    {
+        if( javaType.getActualTypeArguments() == null )
+            return false;
+
+        return javaType.getActualTypeArguments().length > 0;
+    }
+
+    public List<JavaType> getTypeArguments()
+    {
+        List<JavaType> javaTypes = new ArrayList<JavaType>();
+        for (int i = 0; i < javaType.getActualTypeArguments().length; i++)
+        {
+            javaTypes.add(new QDoxTypeAdapter(javaType.getActualTypeArguments()[i]));
+        }
+
+        return javaTypes;
+    }
+
+    public boolean isList()
+    {
+        return javaType.isA(LIST_TYPE);
+    }
+
 }

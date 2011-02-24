@@ -30,9 +30,15 @@ public interface JavaType
 
     List<String> getValues();
 
-    String getFullyQualifiedName(boolean includeArraySuffix);
+    String getFullyQualifiedName(boolean generic);
 
     String getFullyQualifiedName();
 
     boolean isVoid();
+
+    boolean isGeneric();
+
+    boolean isList();
+
+    List<JavaType> getTypeArguments();
 }

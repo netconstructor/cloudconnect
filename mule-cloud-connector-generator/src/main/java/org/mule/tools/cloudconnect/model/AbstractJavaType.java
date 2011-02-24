@@ -55,12 +55,4 @@ public abstract class AbstractJavaType implements JavaType
     {
         return "void".equals(getName());
     }
-
-    public String getFullyQualifiedName(boolean includeArraySuffix)
-    {
-        if( includeArraySuffix && isArray() )
-            return getFullyQualifiedName() + "[]";
-        else
-            return getFullyQualifiedName();
-    }
 }

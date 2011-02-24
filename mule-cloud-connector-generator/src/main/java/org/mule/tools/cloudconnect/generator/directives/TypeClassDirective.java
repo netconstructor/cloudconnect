@@ -71,17 +71,16 @@ public class TypeClassDirective implements TemplateDirectiveModel
         public void write(char[] cbuf, int off, int len) throws IOException
         {
             String type = new String(cbuf, off, len);
-            System.out.println("TYPE: " + type);
 
-            if (type.endsWith(ARRAY_SUFFIX))
-            {
-                String elementClassName = type.substring(0, type.length() - ARRAY_SUFFIX.length());
-                out.write("Array.newInstance(" + getClassName(elementClassName) + ", 0).getClass()");
-            }
-            else
-            {
+            //if (type.endsWith(ARRAY_SUFFIX))
+            //{
+            //    String elementClassName = type.substring(0, type.length() - ARRAY_SUFFIX.length());
+            //    out.write("Array.newInstance(" + getClassName(elementClassName) + ", 0).getClass()");
+            //}
+            //else
+            //{
                 out.write(getClassName(type));
-            }
+            //}
         }
 
         private String getClassName(String type)
@@ -124,7 +123,7 @@ public class TypeClassDirective implements TemplateDirectiveModel
             }
             else
             {
-                return "Class.forName(\"" + type + "\")";
+                return type + ".class";
             }
         }
 

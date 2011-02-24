@@ -20,6 +20,8 @@ package org.mule.tools.cc.it006;
 import org.mule.tools.cloudconnect.annotations.Connector;
 import org.mule.tools.cloudconnect.annotations.Operation;
 
+import java.util.List;
+
 @Connector(namespacePrefix="arrays")
 public class ArraysCloudConnector
 {
@@ -33,6 +35,19 @@ public class ArraysCloudConnector
 			result += numbers[i];
 		}
 		
+		return result;
+    }
+
+    @Operation(name="sumAllFromGenericList")
+    public int sumAll(List<Integer> numbers)
+    {
+        int result = 0;
+
+        for( Integer x : numbers )
+        {
+            result += x.intValue();
+        }
+
 		return result;
     }
 }

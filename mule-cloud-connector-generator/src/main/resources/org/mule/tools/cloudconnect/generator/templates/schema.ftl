@@ -80,7 +80,7 @@
             <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
                 <xsd:all>
                     <#list method.getParameters() as parameter>
-                    <#if parameter.getType().isArray()>
+                    <#if parameter.getType().isArray() || parameter.getType().isList()>
                     <xsd:element name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>">
                         <xsd:complexType>
                             <xsd:sequence>
@@ -101,7 +101,7 @@
                     </xsd:annotation>
                 </xsd:attribute>
                 <#list method.getParameters() as parameter>
-                <#if !parameter.getType().isArray()>
+                <#if !parameter.getType().isArray() || parameter.getType().isList()>
                 <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="${parameter.getType().getXmlType(false)}">
                     <#if parameter.getDescription()?has_content>
                     <xsd:annotation>

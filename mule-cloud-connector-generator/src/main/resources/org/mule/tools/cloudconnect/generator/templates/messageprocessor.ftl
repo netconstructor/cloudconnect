@@ -29,6 +29,7 @@ import org.mule.util.TemplateParser;
 import org.mule.util.TemplateParser.PatternInfo;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.lang.reflect.Array;
@@ -98,11 +99,34 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
 
     public MuleEvent process(MuleEvent event) throws MuleException
     {
+        MuleMessage message = event.getMessage();
         MuleEvent resultEvent = event;
-
         <#list method.getParameters() as parameter>
-        ${parameter.getType().getName()}<#if parameter.getType().isArray()>[]</#if> <@uncapitalize>${parameter.getName()}</@uncapitalize> = (${parameter.getType().getName()}<#if parameter.getType().isArray()>[]</#if>)evaluateArgument(event, this.${parameter.getName()}, <@typeClass>${parameter.getType().getFullyQualifiedName(true)}</@typeClass>);
+        ${parameter.getType().getFullyQualifiedName(true)} <@uncapitalize>${parameter.getName()}</@uncapitalize>;
         </#list>
+
+        try
+        {
+        <#list method.getParameters() as parameter>
+        <#if parameter.getType().isList()>
+            <@uncapitalize>${parameter.getName()}</@uncapitalize> = (${parameter.getType().getFullyQualifiedName(true)})transformList(evaluateExpressionCandidate(this.${parameter.getName()}, message), <@typeClass>${parameter.getType().getTypeArguments().get(0).getFullyQualifiedName()}</@typeClass>);
+        <#else>
+            <@uncapitalize>${parameter.getName()}</@uncapitalize> = (${parameter.getType().getFullyQualifiedName(true)})transformArgument(evaluateExpressionCandidate(this.${parameter.getName()}, message), <@typeClass>${parameter.getType().getFullyQualifiedName(true)}</@typeClass>);
+        </#if>
+        </#list>
+        }
+        catch (TransformerException e)
+        {
+            throw new MessagingException(event, e);
+        }
+        catch (IllegalAccessException e)
+        {
+            throw new MessagingException(event, e);
+        }
+        catch (InstantiationException e)
+        {
+            throw new MessagingException(event, e);
+        }
 
         try
         {
@@ -126,6 +150,14 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
             return (V) transformArgument(evaluateExpressionCandidate(template, message), type);
         }
         catch (TransformerException e)
+        {
+            throw new MessagingException(event, e);
+        }
+        catch (IllegalAccessException e)
+        {
+            throw new MessagingException(event, e);
+        }
+        catch (InstantiationException e)
         {
             throw new MessagingException(event, e);
         }
@@ -207,7 +239,7 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
         }
     }
 
-    private <U,V> V transformArgument(U arg, Class<V> type) throws TransformerException
+    private <U,V> V transformArgument(U arg, Class<V> type) throws TransformerException, IllegalAccessException, InstantiationException
     {
         if (arg.getClass().isArray())
         {
@@ -220,7 +252,7 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
 
             return (V)newCollection;
         }
-        else if (!(type.getClass().isAssignableFrom(arg.getClass())))
+        else if (!(type.isAssignableFrom(arg.getClass())))
         {
             DataType<?> source = DataTypeFactory.create(arg.getClass());
             DataType<?> target = DataTypeFactory.create(type);
@@ -231,6 +263,18 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
         }
 
         return (V)arg;
+    }
+
+    private <U,V> List<V> transformList(U arg, Class<V> generic) throws TransformerException, InstantiationException, IllegalAccessException
+    {
+        List<?> collection = (List<?>)arg;
+        List<V> newCollection = new ArrayList<V>();
+
+        for (Object object : collection)
+        {
+            newCollection.add(transformArgument(object, generic));
+        }
+        return (List<V>) newCollection;
     }
 
     protected MuleEvent createResultEvent(MuleEvent event, Object result) throws MuleException
