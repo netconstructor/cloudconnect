@@ -41,4 +41,6 @@ public interface JavaType
     boolean isList();
 
     List<JavaType> getTypeArguments();
+
+    String getTransformerName();
 }

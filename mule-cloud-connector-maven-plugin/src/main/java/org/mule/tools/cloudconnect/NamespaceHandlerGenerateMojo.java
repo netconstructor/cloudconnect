@@ -18,12 +18,14 @@
 package org.mule.tools.cloudconnect;
 
 import org.mule.tools.cloudconnect.generator.BeanDefinitionParserGenerator;
+import org.mule.tools.cloudconnect.generator.EnumTransformerGenerator;
 import org.mule.tools.cloudconnect.generator.MessageProcessorGenerator;
 import org.mule.tools.cloudconnect.generator.NamespaceHandlerGenerator;
 import org.mule.tools.cloudconnect.generator.SpringNamespaceHandlerGenerator;
 import org.mule.tools.cloudconnect.model.JavaClass;
 import org.mule.tools.cloudconnect.model.JavaMethod;
 import org.mule.tools.cloudconnect.model.JavaModel;
+import org.mule.tools.cloudconnect.model.JavaType;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -139,6 +141,27 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                     }
                 }
 
+                EnumTransformerGenerator enumTransformerGenerator = new EnumTransformerGenerator();
+                enumTransformerGenerator.setPackageName(namespaceHandlerPackage);
+
+                for(JavaType enumType : javaClass.getEnums() )
+                {
+                    enumTransformerGenerator.setJavaType(enumType);
+
+                    try
+                    {
+                        output = openNamespaceHandlerFileStream(namespaceHandlerPackage, enumType.getTransformerName());
+                        enumTransformerGenerator.generate(output);
+                    }
+                    catch (IOException iox)
+                    {
+                        throw new MojoExecutionException("Error while generating enum transformer", iox);
+                    }
+                    finally
+                    {
+                        IOUtil.close(output);
+                    }
+                }
             }
         }
     }

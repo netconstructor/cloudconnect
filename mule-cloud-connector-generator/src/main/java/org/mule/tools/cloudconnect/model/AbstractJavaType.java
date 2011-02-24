@@ -55,4 +55,9 @@ public abstract class AbstractJavaType implements JavaType
     {
         return "void".equals(getName());
     }
+
+    public String getTransformerName()
+    {
+        return "StringTo" + getName() + "Transformer";
+    }
 }
