@@ -20,11 +20,32 @@ package org.mule.tools.cc.it006;
 import org.mule.tools.cloudconnect.annotations.Connector;
 import org.mule.tools.cloudconnect.annotations.Operation;
 
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Redefinable;
+
 import java.util.List;
 
 @Connector(namespacePrefix="arrays")
 public class ArraysCloudConnector
 {
+    public enum Color
+    {
+        Red(2),
+        Green(4),
+        Blue(8);
+
+        private int value;
+
+        Color(int value)
+        {
+            this.value = value;
+        }
+
+        public int getValue()
+        {
+            return this.value;
+        }
+    };
+
 	@Operation
     public int sumAll(int[] numbers)
     {
@@ -46,6 +67,19 @@ public class ArraysCloudConnector
         for( Integer x : numbers )
         {
             result += x.intValue();
+        }
+
+		return result;
+    }
+
+    @Operation
+    public int sumAllColors(List<Color> colors)
+    {
+        int result = 0;
+
+        for( Color x : colors )
+        {
+            result += x.getValue();
         }
 
 		return result;

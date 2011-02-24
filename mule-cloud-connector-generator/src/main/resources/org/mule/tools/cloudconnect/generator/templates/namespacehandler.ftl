@@ -29,7 +29,7 @@ public class ${className} extends AbstractPojoNamespaceHandler
 
         registerMuleBeanDefinitionParser("<@splitCamelCase>${method.getElementName()}</@splitCamelCase>", new ${method.getBeanDefinitionParserName()}());
         <#list method.getParameters() as parameter>
-        <#if parameter.getType().isArray()>
+        <#if parameter.getType().isArray() || parameter.getType().isList()>
         registerMuleBeanDefinitionParser("${parameter.getName()}", new ChildDefinitionParser("${parameter.getName()}", ListFactoryBean.class));
         registerMuleBeanDefinitionParser("<@singularize>${parameter.getName()}</@singularize>", new ChildListEntryDefinitionParser("sourceList"));
         </#if>

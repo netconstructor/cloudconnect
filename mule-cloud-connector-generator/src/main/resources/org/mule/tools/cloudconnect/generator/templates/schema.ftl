@@ -85,7 +85,11 @@
                         <xsd:complexType>
                             <xsd:sequence>
                                 <xsd:element name="<@singularize>${parameter.getElementName()}</@singularize>" minOccurs="0" maxOccurs="unbounded"
+                                             <#if parameter.getType().isList()>
+                                             type="${parameter.getType().getTypeArguments().get(0).getXmlType(false)}"/>
+                                             <#else>
                                              type="${parameter.getType().getXmlType(false)}"/>
+                                             </#if>
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>
@@ -122,7 +126,7 @@
 
     <!-- Enums -->
     <#list class.getEnums() as enum>
-    <xsd:simpleType name="${enum.getXmlType()}">
+    <xsd:simpleType name="${enum.getXmlType(false)}">
         <xsd:restriction base="xsd:string">
             <#list enum.getValues() as enumValue>
             <xsd:enumeration value="${enumValue}" />

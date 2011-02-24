@@ -241,7 +241,8 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
 
     private <U,V> V transformArgument(U arg, Class<V> type) throws TransformerException, IllegalAccessException, InstantiationException
     {
-        if (arg.getClass().isArray())
+        if(
+        else if (arg.getClass().isArray())
         {
             Object[] collection = (Object[])arg;
             Object newCollection = Array.newInstance(type.getComponentType(), collection.length);

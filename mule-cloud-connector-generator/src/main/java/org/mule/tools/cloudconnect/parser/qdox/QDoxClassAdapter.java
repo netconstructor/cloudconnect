@@ -27,6 +27,7 @@ import org.mule.tools.cloudconnect.model.JavaType;
 import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.BeanProperty;
 import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.Type;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ import java.util.Set;
 
 public class QDoxClassAdapter extends AbstractJavaClass
 {
-
+private static final Type LIST_TYPE = new Type("java.util.List");
     private static final String CLASS_PROPERTY_NAME = "class";
     private JavaClass javaClass;
     private WeakReference<JavaModel> parentModel;
@@ -190,6 +191,12 @@ public class QDoxClassAdapter extends AbstractJavaClass
                 if (parameters[j].getType().getJavaClass().isEnum())
                 {
                     this.enums.add(new QDoxTypeAdapter(parameters[j].getType()));
+                }
+                else if(parameters[j].getType().isA(LIST_TYPE) &&
+                        parameters[j].getType().getActualTypeArguments() != null &&
+                        parameters[j].getType().getActualTypeArguments()[0].getJavaClass().isEnum() )
+                {
+                    this.enums.add(new QDoxTypeAdapter( parameters[j].getType().getActualTypeArguments()[0]));
                 }
             }
         }

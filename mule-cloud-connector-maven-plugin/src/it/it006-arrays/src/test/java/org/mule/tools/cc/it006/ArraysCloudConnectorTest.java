@@ -54,6 +54,16 @@ public class ArraysCloudConnectorTest extends FunctionalTestCase
         assertEquals(15, responseEvent.getMessage().getPayload());
     }
 
+    public void testGenericListWithEnums() throws Exception
+    {
+        String payload = EMPTY_PAYLOAD;
+        SimpleFlowConstruct flow = lookupFlowConstruct("sumAllColors");
+        MuleEvent event = getTestEvent(payload);
+        MuleEvent responseEvent = flow.process(event);
+
+        assertEquals(24, responseEvent.getMessage().getPayload());
+    }
+
     private SimpleFlowConstruct lookupFlowConstruct(String name)
     {
         return (SimpleFlowConstruct) muleContext.getRegistry().lookupFlowConstruct(name);

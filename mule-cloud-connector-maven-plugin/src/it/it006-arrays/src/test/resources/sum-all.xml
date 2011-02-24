@@ -50,4 +50,17 @@
             </arrays:numbers>
         </arrays:sum-all-from-generic-list>
     </flow>
+
+    <flow name="sumAllColors">
+        <arrays:sum-all-colors>
+            <arrays:colors>
+                <arrays:color>Red</arrays:color> <!-- this are actually enum values RED=2 GREEN=4 BLUE=8 -->
+                <arrays:color>Green</arrays:color>
+                <arrays:color>Blue</arrays:color>
+                <arrays:color>Blue</arrays:color>
+                <arrays:color>Red</arrays:color>
+            </arrays:colors>
+        </arrays:sum-all-colors>
+    </flow>
+
 </mule>
