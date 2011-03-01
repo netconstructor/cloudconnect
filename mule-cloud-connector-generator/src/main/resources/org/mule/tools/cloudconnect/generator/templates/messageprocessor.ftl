@@ -130,7 +130,7 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
 
         try
         {
-            Object result = object.${method.getName()}( <#list method.getParameters() as parameter>${parameter.getName()}<#if parameter_has_next>,</#if></#list>);
+            <#if !method.getReturnType().isVoid()>Object result = </#if>object.${method.getName()}( <#list method.getParameters() as parameter>${parameter.getName()}<#if parameter_has_next>,</#if></#list>);
             <#if !method.getReturnType().isVoid()>
             resultEvent = createResultEvent(event, result);
             </#if>

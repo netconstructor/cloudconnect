@@ -24,6 +24,7 @@ import org.mule.tools.cloudconnect.model.JavaParameter;
 import org.mule.tools.cloudconnect.model.JavaType;
 
 import com.thoughtworks.qdox.model.Annotation;
+import com.thoughtworks.qdox.model.Type;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
