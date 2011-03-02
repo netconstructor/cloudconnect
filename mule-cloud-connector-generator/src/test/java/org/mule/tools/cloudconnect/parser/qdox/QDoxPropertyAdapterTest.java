@@ -18,6 +18,7 @@
 package org.mule.tools.cloudconnect.parser.qdox;
 
 import com.thoughtworks.qdox.model.BeanProperty;
+import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.Type;
 
 import org.junit.Test;
@@ -36,9 +37,10 @@ public class QDoxPropertyAdapterTest
     public void name() throws Exception
     {
         BeanProperty property = mock(BeanProperty.class);
+        JavaField field = mock(JavaField.class);
         when(property.getName()).thenReturn(NAME);
 
-        QDoxPropertyAdapter propertyAdapter = new QDoxPropertyAdapter(property);
+        QDoxPropertyAdapter propertyAdapter = new QDoxPropertyAdapter(property, field);
 
         assertEquals(NAME, propertyAdapter.getName());
     }

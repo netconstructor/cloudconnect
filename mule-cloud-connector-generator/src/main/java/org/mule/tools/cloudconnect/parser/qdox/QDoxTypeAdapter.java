@@ -18,8 +18,10 @@
 package org.mule.tools.cloudconnect.parser.qdox;
 
 import org.mule.tools.cloudconnect.model.AbstractJavaType;
+import org.mule.tools.cloudconnect.model.JavaAnnotation;
 import org.mule.tools.cloudconnect.model.JavaType;
 
+import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.Type;
 
@@ -91,10 +93,14 @@ public class QDoxTypeAdapter extends AbstractJavaType
 
     public String getFullyQualifiedName(boolean generic)
     {
-        if( generic )
+        if (generic)
+        {
             return javaType.getGenericValue();
+        }
         else
+        {
             return javaType.getValue();
+        }
 
     }
 
@@ -105,8 +111,10 @@ public class QDoxTypeAdapter extends AbstractJavaType
 
     public boolean isGeneric()
     {
-        if( javaType.getActualTypeArguments() == null )
+        if (javaType.getActualTypeArguments() == null)
+        {
             return false;
+        }
 
         return javaType.getActualTypeArguments().length > 0;
     }
@@ -126,5 +134,6 @@ public class QDoxTypeAdapter extends AbstractJavaType
     {
         return javaType.isA(LIST_TYPE);
     }
+
 
 }

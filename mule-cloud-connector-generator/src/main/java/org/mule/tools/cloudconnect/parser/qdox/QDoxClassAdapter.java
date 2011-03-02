@@ -27,6 +27,7 @@ import org.mule.tools.cloudconnect.model.JavaType;
 import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.BeanProperty;
 import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.Type;
 
 import java.lang.ref.WeakReference;
@@ -95,7 +96,8 @@ private static final Type LIST_TYPE = new Type("java.util.List");
         {
             if (isValidProperty(properties[i]))
             {
-                this.properties.add(new QDoxPropertyAdapter(properties[i]));
+                JavaField field = javaClass.getFieldByName(properties[i].getName());
+                this.properties.add(new QDoxPropertyAdapter(properties[i], field));
             }
         }
     }

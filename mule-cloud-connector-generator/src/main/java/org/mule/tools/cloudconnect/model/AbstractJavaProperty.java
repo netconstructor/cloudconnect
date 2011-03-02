@@ -17,16 +17,18 @@
 
 package org.mule.tools.cloudconnect.model;
 
-import java.util.List;
-
-public interface JavaProperty extends JavaElement
+public abstract class AbstractJavaProperty extends AbstractJavaElement implements JavaProperty
 {
+    public boolean isConfigurable()
+    {
+        for (JavaAnnotation annotation : getAnnotations())
+        {
+            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Operation"))
+            {
+                return true;
+            }
+        }
 
-    JavaType getType();
-
-    String getDescription();
-
-    boolean isConfigurable();
-
-    List<JavaAnnotation> getAnnotations();
+        return false;
+    }
 }

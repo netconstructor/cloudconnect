@@ -17,20 +17,29 @@
 
 package org.mule.tools.cloudconnect.parser.qdox;
 
-import org.mule.tools.cloudconnect.model.AbstractJavaElement;
-import org.mule.tools.cloudconnect.model.JavaProperty;
+import org.mule.tools.cloudconnect.model.AbstractJavaProperty;
+import org.mule.tools.cloudconnect.model.JavaAnnotation;
 import org.mule.tools.cloudconnect.model.JavaType;
 
+import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.BeanProperty;
+import com.thoughtworks.qdox.model.JavaField;
 
-public class QDoxPropertyAdapter extends AbstractJavaElement implements JavaProperty
+import java.util.ArrayList;
+import java.util.List;
+
+public class QDoxPropertyAdapter extends AbstractJavaProperty
 {
 
     private BeanProperty javaProperty;
+    private JavaField javaField;
+    private List<JavaAnnotation> annotations;
 
-    protected QDoxPropertyAdapter(BeanProperty javaProperty)
+
+    protected QDoxPropertyAdapter(BeanProperty javaProperty, JavaField javaField)
     {
         this.javaProperty = javaProperty;
+        this.javaField = javaField;
     }
 
     public String getName()
@@ -51,5 +60,29 @@ public class QDoxPropertyAdapter extends AbstractJavaElement implements JavaProp
         }
 
         return null;
+    }
+
+    public List<JavaAnnotation> getAnnotations()
+    {
+        if (annotations == null)
+        {
+            buildAnnotationCollection();
+        }
+
+        return annotations;
+    }
+
+    public void buildAnnotationCollection()
+    {
+        this.annotations = new ArrayList<JavaAnnotation>();
+
+        if( javaField != null )
+        {
+            Annotation[] annotations = javaField.getAnnotations();
+            for (int i = 0; i < annotations.length; i++)
+            {
+                this.annotations.add(new QDoxAnnotationAdapter(annotations[i]));
+            }
+        }
     }
 }
