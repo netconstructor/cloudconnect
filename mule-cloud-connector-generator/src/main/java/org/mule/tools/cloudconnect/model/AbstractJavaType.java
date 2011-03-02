@@ -23,6 +23,7 @@ import java.util.Map;
 
 public abstract class AbstractJavaType implements JavaType
 {
+
     private static final Map<String, String> TYPES_MAP;
 
     static
@@ -42,11 +43,20 @@ public abstract class AbstractJavaType implements JavaType
 
     public String getXmlType(boolean isConfig)
     {
-        if( isEnum() )
+        if (isEnum())
+        {
             return getName() + "Enum";
+        }
 
-        if( !isConfig )
+        if (!isConfig)
+        {
             return "xsd:string";
+        }
+
+        if (!TYPES_MAP.containsKey(getName()))
+        {
+            throw new RuntimeException("Type " + getName() + " is not supported as confiurable element");
+        }
 
         return TYPES_MAP.get(getName());
     }
