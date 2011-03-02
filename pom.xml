@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.mule.tools</groupId>
     <artifactId>mule-cloud-connector</artifactId>
-    <version>2.0.5</version>
+    <version>2.0.5-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Mule Cloud Connector</name>
     <url>http://www.mulesoft.org/documentation/display/MULE3USER/Mule+Cloud+Connect</url>
@@ -22,6 +22,7 @@
         <module>mule-cloud-connector-ibeans</module>
         <module>mule-cloud-connector-maven-plugin</module>
         <module>mule-cloud-connector-dev-kit</module>
+		<!--<module>mule-cloud-connector-integration-tests</module> -->
     </modules>
 
     <build>

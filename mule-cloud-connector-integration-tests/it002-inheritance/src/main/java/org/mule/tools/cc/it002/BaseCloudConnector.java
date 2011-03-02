@@ -22,7 +22,7 @@ import org.mule.tools.cloudconnect.annotations.Operation;
 public abstract class BaseCloudConnector
 {
     @Operation
-    public void sendMessage(String message)
+    public void sendMessage(String msg)
     {
     }
 }

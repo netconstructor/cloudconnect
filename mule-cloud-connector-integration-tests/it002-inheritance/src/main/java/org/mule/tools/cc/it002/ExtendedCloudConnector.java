@@ -24,7 +24,7 @@ import org.mule.tools.cloudconnect.annotations.Operation;
 public class ExtendedCloudConnector extends BaseCloudConnector
 {
     @Operation
-    public void sendSecondMessage(String message)
+    public void sendSecondMessage(String msg)
     {
 
     }
