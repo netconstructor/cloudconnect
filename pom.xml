@@ -22,7 +22,7 @@
         <module>mule-cloud-connector-ibeans</module>
         <module>mule-cloud-connector-maven-plugin</module>
         <module>mule-cloud-connector-dev-kit</module>
-		<!--<module>mule-cloud-connector-integration-tests</module> -->
+		<module>mule-cloud-connector-integration-tests</module>
     </modules>
 
     <build>
