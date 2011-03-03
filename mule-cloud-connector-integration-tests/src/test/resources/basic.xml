@@ -32,4 +32,26 @@
     <flow name="passthruCharFlow">
         <basic:passthru-char value="c"/>
     </flow>
+
+    <flow name="passthruStringFlow">
+        <basic:passthru-string value="mulesoft"/>
+    </flow>
+
+    <flow name="passthruIntegerFlow">
+        <basic:passthru-integer value="3"/>
+    </flow>
+
+    <flow name="passthruFloatFlow">
+        <basic:passthru-float value="3.14"/>
+    </flow>
+
+    <flow name="passthruBooleanFlow">
+        <basic:passthru-boolean value="true"/>
+    </flow>
+
+    <flow name="passthruLongFlow">
+        <basic:passthru-long value="3456443463342345734"/>
+    </flow>
+
+
 </mule>

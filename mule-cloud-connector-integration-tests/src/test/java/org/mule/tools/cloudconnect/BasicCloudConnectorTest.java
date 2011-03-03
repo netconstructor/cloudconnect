@@ -36,17 +36,47 @@ public class BasicCloudConnectorTest extends FunctionalTestCase
 
     public void testChar() throws Exception
     {
-        String payload = EMPTY_PAYLOAD;
-        SimpleFlowConstruct flow = lookupFlowConstruct("passthruCharFlow");
-        MuleEvent event = getTestEvent(payload);
-        MuleEvent responseEvent = flow.process(event);
+        runFlow("passthruCharFlow", 'c');
+    }
 
-        assertEquals('c', responseEvent.getMessage().getPayload());
+    public void testString() throws Exception
+    {
+        runFlow("passthruStringFlow", "mulesoft");
+    }
+
+    public void testInteger() throws Exception
+    {
+        runFlow("passthruIntegerFlow", 3);
+    }
+
+    public void testFloat() throws Exception
+    {
+        runFlow("passthruFloatFlow", 3.14f);
+    }
+
+    public void testBoolean() throws Exception
+    {
+        runFlow("passthruBooleanFlow", true);
+    }
+
+    public void testLong() throws Exception
+    {
+        runFlow("passthruLongFlow", 3456443463342345734L);
     }
 
     private SimpleFlowConstruct lookupFlowConstruct(String name)
     {
         return (SimpleFlowConstruct) muleContext.getRegistry().lookupFlowConstruct(name);
+    }
+
+    private <T> void runFlow(String flowName, T expect) throws Exception
+    {
+        String payload = EMPTY_PAYLOAD;
+        SimpleFlowConstruct flow = lookupFlowConstruct(flowName);
+        MuleEvent event = getTestEvent(payload);
+        MuleEvent responseEvent = flow.process(event);
+
+        assertEquals(expect, responseEvent.getMessage().getPayload());
     }
 
 }
