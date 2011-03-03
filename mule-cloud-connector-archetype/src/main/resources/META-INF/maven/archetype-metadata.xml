@@ -26,10 +26,15 @@
 
     <requiredProperties>
         <requiredProperty key="cloudService"/>
-        <requiredProperty key="cloudServiceLower"/>
-        <requiredProperty key="cloudServiceType"/>
-        <requiredProperty key="muleVersion"/>
-        <requiredProperty key="wsdl"/>
+        <requiredProperty key="cloudServiceType">
+            <defaultValue>HTTP</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="muleVersion">
+            <defaultValue>3.1</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="wsdl">
+            <defaultValue/>
+        </requiredProperty>
     </requiredProperties>
 
     <fileSets>
