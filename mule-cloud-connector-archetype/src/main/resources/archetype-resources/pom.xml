@@ -113,7 +113,7 @@
             <plugin>
                 <groupId>org.mule.tools</groupId>
                 <artifactId>mule-cloud-connector-maven-plugin</artifactId>
-                <version>2.0.6-SNAPSHOT</version>
+                <version>@project.version@</version>
                 <extensions>true</extensions>
             </plugin>
 
@@ -248,7 +248,7 @@
         <dependency>
             <groupId>org.mule.tools</groupId>
             <artifactId>mule-cloud-connector-annotations</artifactId>
-            <version>2.0.6-SNAPSHOT</version>
+            <version>@project.version@</version>
         </dependency>
     </dependencies>
 
