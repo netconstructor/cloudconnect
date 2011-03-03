@@ -24,6 +24,8 @@ public interface JavaMethod extends JavaElement
 
     String getDescription();
 
+    boolean hasParameters();
+
     List<JavaParameter> getParameters();
 
     List<JavaAnnotation> getAnnotations();

@@ -29,13 +29,11 @@ public class RegistryBootstrapGenerator extends AbstractTemplateGenerator
     private static final String REGISTRY_BOOTSTRAP_TEMPLATE = "registrybootstrap.ftl";
 
     private Set<JavaType> enums;
-    private String packageName;
 
     @Override
     protected Map<String, Object> createModel()
     {
         Map<String, Object> root = new HashMap<String, Object>();
-        root.put("packageName", packageName);
         root.put("enums", enums);
         return root;
     }
@@ -44,16 +42,6 @@ public class RegistryBootstrapGenerator extends AbstractTemplateGenerator
     protected String getTemplate()
     {
         return REGISTRY_BOOTSTRAP_TEMPLATE;
-    }
-
-    public String getPackageName()
-    {
-        return packageName;
-    }
-
-    public void setPackageName(String packageName)
-    {
-        this.packageName = packageName;
     }
 
     public Set<JavaType> getEnums()

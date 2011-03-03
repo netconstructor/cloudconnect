@@ -1,4 +1,4 @@
-package ${packageName};
+package ${type.getTransformerPackage()};
 
 import org.mule.api.transformer.DiscoverableTransformer;
 import org.mule.api.transformer.TransformerException;

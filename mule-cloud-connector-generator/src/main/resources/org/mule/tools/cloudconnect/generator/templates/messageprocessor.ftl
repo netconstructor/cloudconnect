@@ -2,7 +2,7 @@
 // THIS FILE WAS AUTO-GENERATED. DO NOT MANUALLY EDIT!
 //
 
-package ${packageName};
+package ${class.getNamespaceHandlerPackage()};
 
 import org.mule.DefaultMuleEvent;
 import org.mule.DefaultMuleMessage;
@@ -105,6 +105,7 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
         ${parameter.getType().getFullyQualifiedName(true)} <@uncapitalize>${parameter.getName()}</@uncapitalize>;
         </#list>
 
+        <#if method.hasParameters()>
         try
         {
         <#list method.getParameters() as parameter>
@@ -127,6 +128,7 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
         {
             throw new MessagingException(event, e);
         }
+        </#if>
 
         try
         {

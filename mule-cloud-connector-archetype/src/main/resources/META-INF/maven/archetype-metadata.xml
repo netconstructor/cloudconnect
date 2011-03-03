@@ -32,9 +32,6 @@
         <requiredProperty key="muleVersion">
             <defaultValue>3.1</defaultValue>
         </requiredProperty>
-        <requiredProperty key="wsdl">
-            <defaultValue/>
-        </requiredProperty>
     </requiredProperties>
 
     <fileSets>

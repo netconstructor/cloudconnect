@@ -107,4 +107,14 @@ public abstract class AbstractJavaClass implements JavaClass
 
         return null;
     }
+
+    public String getNamespaceHandlerName()
+    {
+        return getName() + "NamespaceHandler";
+    }
+
+    public String getNamespaceHandlerPackage()
+    {
+        return getPackage() + ".config";
+    }
 }

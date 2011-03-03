@@ -27,7 +27,6 @@ public class EnumTransformerGenerator extends AbstractTemplateGenerator
 
     private static final String ENUM_TRANSFORMER_TEMPLATE = "enumtransformer.ftl";
 
-    private String packageName;
     private JavaType javaType;
 
     @Override
@@ -35,7 +34,6 @@ public class EnumTransformerGenerator extends AbstractTemplateGenerator
     {
         Map<String, Object> root = new HashMap<String, Object>();
         root.put("type", javaType);
-        root.put("packageName", packageName);
         return root;
     }
 
@@ -43,16 +41,6 @@ public class EnumTransformerGenerator extends AbstractTemplateGenerator
     protected String getTemplate()
     {
         return ENUM_TRANSFORMER_TEMPLATE;
-    }
-
-    public String getPackageName()
-    {
-        return packageName;
-    }
-
-    public void setPackageName(String packageName)
-    {
-        this.packageName = packageName;
     }
 
     public JavaType getJavaType()

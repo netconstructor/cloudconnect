@@ -2,7 +2,7 @@
 // THIS FILE WAS AUTO-GENERATED. DO NOT MANUALLY EDIT!
 //
 
-package ${packageName};
+package ${class.getNamespaceHandlerPackage()};
 
 import org.mule.config.spring.parsers.assembly.BeanAssembler;
 import org.mule.config.spring.parsers.generic.ChildDefinitionParser;

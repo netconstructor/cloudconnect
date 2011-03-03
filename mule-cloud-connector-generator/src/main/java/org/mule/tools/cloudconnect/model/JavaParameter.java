@@ -20,6 +20,8 @@ package org.mule.tools.cloudconnect.model;
 public interface JavaParameter extends JavaElement
 {
 
+    JavaMethod getParentMethod();
+
     JavaType getType();
 
     String getDescription();

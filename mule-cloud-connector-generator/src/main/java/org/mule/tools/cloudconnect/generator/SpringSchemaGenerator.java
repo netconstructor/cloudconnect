@@ -17,7 +17,10 @@
 
 package org.mule.tools.cloudconnect.generator;
 
+import org.mule.tools.cloudconnect.model.JavaClass;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SpringSchemaGenerator extends AbstractTemplateGenerator
@@ -25,12 +28,13 @@ public class SpringSchemaGenerator extends AbstractTemplateGenerator
 
     private static final String SCHEMA_TEMPLATE = "springschema.ftl";
     private String schemaVersion;
+    private List<JavaClass> classes;
 
     @Override
     protected Map<String, Object> createModel()
     {
         Map<String, Object> root = new HashMap<String, Object>();
-        root.put("class", getJavaClass());
+        root.put("classes", classes);
         root.put("schemaVersion", schemaVersion);
         return root;
     }
@@ -49,5 +53,15 @@ public class SpringSchemaGenerator extends AbstractTemplateGenerator
     public void setSchemaVersion(String schemaVersion)
     {
         this.schemaVersion = schemaVersion;
+    }
+
+    public List<JavaClass> getClasses()
+    {
+        return classes;
+    }
+
+    public void setClasses(List<JavaClass> classes)
+    {
+        this.classes = classes;
     }
 }

@@ -32,6 +32,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -50,42 +54,23 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
         createAndAttachGeneratedSourcesDirectory();
 
         JavaModel model = parseModel();
+        List<JavaClass> classes = new ArrayList<JavaClass>();
+        Set<JavaType> enums = new HashSet<JavaType>();
         for (JavaClass javaClass : model.getClasses())
         {
             if (javaClass.isConnector())
             {
-                String namespaceHandlerPackage = javaClass.getPackage() + ".config";
-                String namesapceHandlerName = javaClass.getName() + "NamespaceHandler";
+                classes.add(javaClass);
+                enums.addAll(javaClass.getEnums());
 
                 NamespaceHandlerGenerator generator = new NamespaceHandlerGenerator();
                 generator.setJavaClass(javaClass);
-                generator.setPackageName(namespaceHandlerPackage);
-                generator.setClassName(namesapceHandlerName);
 
                 OutputStream output = null;
                 try
                 {
-                    output = openNamespaceHandlerFileStream(namespaceHandlerPackage, namesapceHandlerName);
+                    output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), javaClass.getNamespaceHandlerName());
                     generator.generate(output);
-                }
-                catch (IOException iox)
-                {
-                    throw new MojoExecutionException("Error while generating schema", iox);
-                }
-                finally
-                {
-                    IOUtil.close(output);
-                }
-
-                SpringNamespaceHandlerGenerator springNamespaceHandlerGenerator = new SpringNamespaceHandlerGenerator();
-                springNamespaceHandlerGenerator.setJavaClass(javaClass);
-                springNamespaceHandlerGenerator.setPackageName(namespaceHandlerPackage);
-                springNamespaceHandlerGenerator.setClassName(namesapceHandlerName);
-
-                try
-                {
-                    output = openSpringNamespaceHandlerFileStream();
-                    springNamespaceHandlerGenerator.generate(output);
                 }
                 catch (IOException iox)
                 {
@@ -98,10 +83,8 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
 
                 BeanDefinitionParserGenerator beanDefinitionParserGenerator = new BeanDefinitionParserGenerator();
                 beanDefinitionParserGenerator.setJavaClass(javaClass);
-                beanDefinitionParserGenerator.setPackageName(namespaceHandlerPackage);
                 MessageProcessorGenerator messageProcessorGenerator = new MessageProcessorGenerator();
                 messageProcessorGenerator.setJavaClass(javaClass);
-                messageProcessorGenerator.setPackageName(namespaceHandlerPackage);
 
                 for (JavaMethod method : javaClass.getMethods())
                 {
@@ -114,7 +97,7 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
 
                     try
                     {
-                        output = openNamespaceHandlerFileStream(namespaceHandlerPackage, method.getBeanDefinitionParserName());
+                        output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), method.getBeanDefinitionParserName());
                         beanDefinitionParserGenerator.generate(output);
                     }
                     catch (IOException iox)
@@ -130,7 +113,7 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
 
                     try
                     {
-                        output = openNamespaceHandlerFileStream(namespaceHandlerPackage, method.getMessageProcessorName());
+                        output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), method.getMessageProcessorName());
                         messageProcessorGenerator.generate(output);
                     }
                     catch (IOException iox)
@@ -144,7 +127,6 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                 }
 
                 EnumTransformerGenerator enumTransformerGenerator = new EnumTransformerGenerator();
-                enumTransformerGenerator.setPackageName(namespaceHandlerPackage);
 
                 for (JavaType enumType : javaClass.getEnums())
                 {
@@ -152,7 +134,7 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
 
                     try
                     {
-                        output = openNamespaceHandlerFileStream(namespaceHandlerPackage, enumType.getTransformerName());
+                        output = openNamespaceHandlerFileStream(enumType.getTransformerPackage(), enumType.getTransformerName());
                         enumTransformerGenerator.generate(output);
                     }
                     catch (IOException iox)
@@ -165,9 +147,25 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                     }
                 }
 
+                SpringNamespaceHandlerGenerator springNamespaceHandlerGenerator = new SpringNamespaceHandlerGenerator();
+                springNamespaceHandlerGenerator.setClasses(classes);
+
+                try
+                {
+                    output = openSpringNamespaceHandlerFileStream();
+                    springNamespaceHandlerGenerator.generate(output);
+                }
+                catch (IOException iox)
+                {
+                    throw new MojoExecutionException("Error while generating schema", iox);
+                }
+                finally
+                {
+                    IOUtil.close(output);
+                }
+
                 RegistryBootstrapGenerator registryBootstrapGenerator = new RegistryBootstrapGenerator();
-                registryBootstrapGenerator.setEnums(javaClass.getEnums());
-                registryBootstrapGenerator.setPackageName(namespaceHandlerPackage);
+                registryBootstrapGenerator.setEnums(enums);
 
                 try
                 {

@@ -17,7 +17,10 @@
 
 package org.mule.tools.cloudconnect.generator;
 
+import org.mule.tools.cloudconnect.model.JavaClass;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SpringNamespaceHandlerGenerator extends AbstractTemplateGenerator
@@ -25,16 +28,13 @@ public class SpringNamespaceHandlerGenerator extends AbstractTemplateGenerator
 
     private static final String NAMESPACE_HANDLER_TEMPLATE = "springnamespacehandler.ftl";
 
-    private String packageName;
-    private String className;
+    private List<JavaClass> classes;
 
     @Override
     protected Map<String, Object> createModel()
     {
         Map<String, Object> root = new HashMap<String, Object>();
-        root.put("packageName", packageName);
-        root.put("className", className);
-        root.put("class", getJavaClass());
+        root.put("classes", classes);
         return root;
     }
 
@@ -44,23 +44,13 @@ public class SpringNamespaceHandlerGenerator extends AbstractTemplateGenerator
         return NAMESPACE_HANDLER_TEMPLATE;
     }
 
-    public String getPackageName()
+    public List<JavaClass> getClasses()
     {
-        return packageName;
+        return classes;
     }
 
-    public void setPackageName(String packageName)
+    public void setClasses(List<JavaClass> classes)
     {
-        this.packageName = packageName;
-    }
-
-    public String getClassName()
-    {
-        return className;
-    }
-
-    public void setClassName(String className)
-    {
-        this.className = className;
+        this.classes = classes;
     }
 }

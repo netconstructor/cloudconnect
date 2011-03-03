@@ -26,15 +26,12 @@ public class BeanDefinitionParserGenerator extends AbstractTemplateGenerator
 {
 
     private static final String NAMESPACE_HANDLER_TEMPLATE = "beandefinitionparser.ftl";
-
-    private String packageName;
     private JavaMethod method;
 
     @Override
     protected Map<String, Object> createModel()
     {
         Map<String, Object> root = new HashMap<String, Object>();
-        root.put("packageName", packageName);
         root.put("method", getJavaMethod());
         root.put("class", getJavaClass());
         return root;
@@ -44,16 +41,6 @@ public class BeanDefinitionParserGenerator extends AbstractTemplateGenerator
     protected String getTemplate()
     {
         return NAMESPACE_HANDLER_TEMPLATE;
-    }
-
-    public String getPackageName()
-    {
-        return packageName;
-    }
-
-    public void setPackageName(String packageName)
-    {
-        this.packageName = packageName;
     }
 
     public JavaMethod getJavaMethod()

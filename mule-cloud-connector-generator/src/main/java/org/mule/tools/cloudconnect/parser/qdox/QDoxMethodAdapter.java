@@ -101,7 +101,7 @@ public class QDoxMethodAdapter extends AbstractJavaMethod
         com.thoughtworks.qdox.model.JavaParameter[] parameters = javaMethod.getParameters();
         for (int i = 0; i < parameters.length; i++)
         {
-            this.parameters.add(new QDoxParameterAdapter(parameters[i]));
+            this.parameters.add(new QDoxParameterAdapter(this, parameters[i]));
         }
     }
 

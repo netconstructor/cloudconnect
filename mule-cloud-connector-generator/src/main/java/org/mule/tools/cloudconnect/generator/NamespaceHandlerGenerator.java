@@ -25,15 +25,10 @@ public class NamespaceHandlerGenerator extends AbstractTemplateGenerator
 
     private static final String NAMESPACE_HANDLER_TEMPLATE = "namespacehandler.ftl";
 
-    private String packageName;
-    private String className;
-
     @Override
     protected Map<String, Object> createModel()
     {
         Map<String, Object> root = new HashMap<String, Object>();
-        root.put("packageName", packageName);
-        root.put("className", className);
         root.put("class", getJavaClass());
         return root;
     }
@@ -42,25 +37,5 @@ public class NamespaceHandlerGenerator extends AbstractTemplateGenerator
     protected String getTemplate()
     {
         return NAMESPACE_HANDLER_TEMPLATE;
-    }
-
-    public String getPackageName()
-    {
-        return packageName;
-    }
-
-    public void setPackageName(String packageName)
-    {
-        this.packageName = packageName;
-    }
-
-    public String getClassName()
-    {
-        return className;
-    }
-
-    public void setClassName(String className)
-    {
-        this.className = className;
     }
 }

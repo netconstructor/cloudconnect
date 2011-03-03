@@ -52,4 +52,8 @@ public interface JavaClass
     JavaModel getParentModel();
 
     String getFullyQualifiedName();
+
+    String getNamespaceHandlerName();
+
+    String getNamespaceHandlerPackage();
 }

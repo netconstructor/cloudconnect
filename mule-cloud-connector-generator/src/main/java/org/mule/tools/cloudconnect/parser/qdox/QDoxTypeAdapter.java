@@ -136,4 +136,8 @@ public class QDoxTypeAdapter extends AbstractJavaType
     }
 
 
+    public String getTransformerPackage()
+    {
+        return javaType.getJavaClass().getPackageName() + ".transformers";
+    }
 }

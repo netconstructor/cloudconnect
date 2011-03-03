@@ -2,7 +2,7 @@
 // THIS FILE WAS AUTO-GENERATED. DO NOT MANUALLY EDIT!
 //
 
-package ${packageName};
+package ${class.getNamespaceHandlerPackage()};
 
 import org.mule.config.spring.handlers.AbstractPojoNamespaceHandler;
 import org.mule.config.spring.parsers.specific.InvokerMessageProcessorDefinitionParser;
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.config.ListFactoryBean;
 
 import ${class.getPackage()}.${class.getName()};
 
-public class ${className} extends AbstractPojoNamespaceHandler
+public class ${class.getNamespaceHandlerName()} extends AbstractPojoNamespaceHandler
 {
     public void init()
     {

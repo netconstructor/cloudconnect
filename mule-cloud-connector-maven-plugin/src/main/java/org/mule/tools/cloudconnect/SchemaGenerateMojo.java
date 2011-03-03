@@ -26,6 +26,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -43,15 +45,17 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
         createAndAttachGeneratedSourcesDirectory();
 
         JavaModel model = parseModel();
+        List<JavaClass> classes = new ArrayList<JavaClass>();
+        OutputStream output = null;
         for (JavaClass javaClass : model.getClasses())
         {
             if (javaClass.isConnector())
             {
+                classes.add(javaClass);
 
                 SchemaGenerator generator = new SchemaGenerator();
                 generator.setJavaClass(javaClass);
 
-                OutputStream output = null;
                 try
                 {
                     output = openSchemaFileStream("mule-" + javaClass.getNamespacePrefix() + ".xsd");
@@ -66,23 +70,24 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
                     IOUtil.close(output);
                 }
 
-                SpringSchemaGenerator springSchemaGenerator = new SpringSchemaGenerator();
-                springSchemaGenerator.setJavaClass(javaClass);
-                springSchemaGenerator.setSchemaVersion(getSchemaVersion());
+            }
 
-                try
-                {
-                    output = openSpringSchemaFileStream();
-                    springSchemaGenerator.generate(output);
-                }
-                catch (IOException iox)
-                {
-                    throw new MojoExecutionException("Error while generating schema", iox);
-                }
-                finally
-                {
-                    IOUtil.close(output);
-                }
+            SpringSchemaGenerator springSchemaGenerator = new SpringSchemaGenerator();
+            springSchemaGenerator.setClasses(classes);
+            springSchemaGenerator.setSchemaVersion(getSchemaVersion());
+
+            try
+            {
+                output = openSpringSchemaFileStream();
+                springSchemaGenerator.generate(output);
+            }
+            catch (IOException iox)
+            {
+                throw new MojoExecutionException("Error while generating schema", iox);
+            }
+            finally
+            {
+                IOUtil.close(output);
             }
         }
     }

@@ -43,4 +43,6 @@ public interface JavaType
     List<JavaType> getTypeArguments();
 
     String getTransformerName();
+
+    String getTransformerPackage();
 }

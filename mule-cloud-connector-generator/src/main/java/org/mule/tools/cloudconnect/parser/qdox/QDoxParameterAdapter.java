@@ -18,6 +18,7 @@
 package org.mule.tools.cloudconnect.parser.qdox;
 
 import org.mule.tools.cloudconnect.model.AbstractJavaElement;
+import org.mule.tools.cloudconnect.model.JavaMethod;
 import org.mule.tools.cloudconnect.model.JavaParameter;
 import org.mule.tools.cloudconnect.model.JavaType;
 
@@ -27,10 +28,12 @@ public class QDoxParameterAdapter extends AbstractJavaElement implements JavaPar
 {
 
     private com.thoughtworks.qdox.model.JavaParameter javaParameter;
+    private JavaMethod parent;
 
-    public QDoxParameterAdapter(com.thoughtworks.qdox.model.JavaParameter javaParameter)
+    public QDoxParameterAdapter(JavaMethod parent, com.thoughtworks.qdox.model.JavaParameter javaParameter)
     {
         this.javaParameter = javaParameter;
+        this.parent = parent;
     }
 
     public String getName()
@@ -62,5 +65,10 @@ public class QDoxParameterAdapter extends AbstractJavaElement implements JavaPar
         }
 
         return null;
+    }
+
+    public JavaMethod getParentMethod()
+    {
+        return parent;
     }
 }

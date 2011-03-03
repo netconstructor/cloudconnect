@@ -76,4 +76,9 @@ public abstract class AbstractJavaMethod extends AbstractJavaElement implements 
         return StringUtils.capitalize(getElementName()) + "MessageProcessor";
     }
 
+    public boolean hasParameters()
+    {
+        return getParameters().size() > 0;
+    }
+
 }
