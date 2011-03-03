@@ -41,7 +41,7 @@ public class BasicCloudConnectorTest extends FunctionalTestCase
         MuleEvent event = getTestEvent(payload);
         MuleEvent responseEvent = flow.process(event);
 
-        assertEquals("c", responseEvent.getMessage().getPayload());
+        assertEquals('c', responseEvent.getMessage().getPayload());
     }
 
     private SimpleFlowConstruct lookupFlowConstruct(String name)
