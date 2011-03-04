@@ -23,42 +23,21 @@ import org.mule.tck.FunctionalTestCase;
 
 import java.lang.String;
 
-public class BasicCloudConnectorTest extends AbstractCloudConnectorTest
+public class OptionalCloudConnectorTest extends AbstractCloudConnectorTest
 {
-
     @Override
     protected String getConfigResources()
     {
-        return "basic.xml";
+        return "optional.xml";
     }
 
-    public void testChar() throws Exception
+    public void testWithOptional() throws Exception
     {
-        runFlow("passthruCharFlow", 'c');
+        runFlow("withOptional", 4);
     }
 
-    public void testString() throws Exception
+    public void testWithoutOptional() throws Exception
     {
-        runFlow("passthruStringFlow", "mulesoft");
-    }
-
-    public void testInteger() throws Exception
-    {
-        runFlow("passthruIntegerFlow", 3);
-    }
-
-    public void testFloat() throws Exception
-    {
-        runFlow("passthruFloatFlow", 3.14f);
-    }
-
-    public void testBoolean() throws Exception
-    {
-        runFlow("passthruBooleanFlow", true);
-    }
-
-    public void testLong() throws Exception
-    {
-        runFlow("passthruLongFlow", 3456443463342345734L);
+        runFlow("withoutOptional", 12);
     }
 }

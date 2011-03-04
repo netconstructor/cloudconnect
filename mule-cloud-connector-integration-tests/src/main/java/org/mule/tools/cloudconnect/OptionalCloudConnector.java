@@ -15,24 +15,19 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect.model;
+package org.mule.tools.cloudconnect;
 
-import java.util.List;
+import org.mule.tools.cloudconnect.annotations.Connector;
+import org.mule.tools.cloudconnect.annotations.Operation;
+import org.mule.tools.cloudconnect.annotations.Parameter;
 
-public interface JavaParameter extends JavaElement
+@Connector(namespacePrefix="opt")
+public class OptionalCloudConnector
 {
+    @Operation
+    public int sumAndMultiply(int a, int b, @Parameter(optional=true, defaultValue="1") int c)
+    {
+        return (a + b) * c;
+    }
 
-    JavaMethod getParentMethod();
-
-    JavaType getType();
-
-    String getDescription();
-
-    boolean isOptional();
-
-    String getDefaultValue();
-
-    boolean hasDefaultValue();
-
-    List<JavaAnnotation> getAnnotations();
 }

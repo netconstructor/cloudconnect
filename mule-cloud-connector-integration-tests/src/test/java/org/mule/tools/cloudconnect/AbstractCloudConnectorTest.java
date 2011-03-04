@@ -21,44 +21,22 @@ import org.mule.api.MuleEvent;
 import org.mule.construct.SimpleFlowConstruct;
 import org.mule.tck.FunctionalTestCase;
 
-import java.lang.String;
-
-public class BasicCloudConnectorTest extends AbstractCloudConnectorTest
+public abstract class AbstractCloudConnectorTest extends FunctionalTestCase
 {
+    private static final String EMPTY_PAYLOAD = "";
 
-    @Override
-    protected String getConfigResources()
+    protected SimpleFlowConstruct lookupFlowConstruct(String name)
     {
-        return "basic.xml";
+        return (SimpleFlowConstruct) muleContext.getRegistry().lookupFlowConstruct(name);
     }
 
-    public void testChar() throws Exception
+    protected <T> void runFlow(String flowName, T expect) throws Exception
     {
-        runFlow("passthruCharFlow", 'c');
-    }
+        String payload = EMPTY_PAYLOAD;
+        SimpleFlowConstruct flow = lookupFlowConstruct(flowName);
+        MuleEvent event = getTestEvent(payload);
+        MuleEvent responseEvent = flow.process(event);
 
-    public void testString() throws Exception
-    {
-        runFlow("passthruStringFlow", "mulesoft");
-    }
-
-    public void testInteger() throws Exception
-    {
-        runFlow("passthruIntegerFlow", 3);
-    }
-
-    public void testFloat() throws Exception
-    {
-        runFlow("passthruFloatFlow", 3.14f);
-    }
-
-    public void testBoolean() throws Exception
-    {
-        runFlow("passthruBooleanFlow", true);
-    }
-
-    public void testLong() throws Exception
-    {
-        runFlow("passthruLongFlow", 3456443463342345734L);
+        assertEquals(expect, responseEvent.getMessage().getPayload());
     }
 }

@@ -105,8 +105,8 @@
                     </xsd:annotation>
                 </xsd:attribute>
                 <#list method.getParameters() as parameter>
-                <#if !parameter.getType().isArray() || parameter.getType().isList()>
-                <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="${parameter.getType().getXmlType(false)}">
+                <#if !parameter.getType().isArray() && !parameter.getType().isList()>
+                <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="${parameter.getType().getXmlType(false)}" <#if !parameter.isOptional()>use="required" </#if><#if parameter.hasDefaultValue()>default="${parameter.getDefaultValue()}"</#if>>
                     <#if parameter.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation><![CDATA[

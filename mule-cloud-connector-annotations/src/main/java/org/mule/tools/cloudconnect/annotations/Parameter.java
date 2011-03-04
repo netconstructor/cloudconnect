@@ -15,24 +15,28 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect.model;
+package org.mule.tools.cloudconnect.annotations;
 
-import java.util.List;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface JavaParameter extends JavaElement
+/**
+ * This annotation will declare a method inside a cloud connector as accessible via a flow
+ */
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.SOURCE)
+@Documented
+public @interface Parameter
 {
 
-    JavaMethod getParentMethod();
+    String name() default EMPTY_STRING;
 
-    JavaType getType();
+    String defaultValue() default EMPTY_STRING;
 
-    String getDescription();
+    boolean optional() default false;
 
-    boolean isOptional();
-
-    String getDefaultValue();
-
-    boolean hasDefaultValue();
-
-    List<JavaAnnotation> getAnnotations();
+    public static final String EMPTY_STRING = "";
 }

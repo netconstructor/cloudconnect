@@ -17,18 +17,23 @@
 
 package org.mule.tools.cloudconnect.parser.qdox;
 
-import org.mule.tools.cloudconnect.model.AbstractJavaElement;
+import org.mule.tools.cloudconnect.model.AbstractJavaParameter;
+import org.mule.tools.cloudconnect.model.JavaAnnotation;
 import org.mule.tools.cloudconnect.model.JavaMethod;
-import org.mule.tools.cloudconnect.model.JavaParameter;
 import org.mule.tools.cloudconnect.model.JavaType;
 
+import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.DocletTag;
 
-public class QDoxParameterAdapter extends AbstractJavaElement implements JavaParameter
+import java.util.ArrayList;
+import java.util.List;
+
+public class QDoxParameterAdapter extends AbstractJavaParameter
 {
 
     private com.thoughtworks.qdox.model.JavaParameter javaParameter;
     private JavaMethod parent;
+    private List<JavaAnnotation> annotations;
 
     public QDoxParameterAdapter(JavaMethod parent, com.thoughtworks.qdox.model.JavaParameter javaParameter)
     {
@@ -70,5 +75,29 @@ public class QDoxParameterAdapter extends AbstractJavaElement implements JavaPar
     public JavaMethod getParentMethod()
     {
         return parent;
+    }
+
+    public void buildAnnotationCollection()
+    {
+        this.annotations = new ArrayList<JavaAnnotation>();
+
+        if (javaParameter != null)
+        {
+            Annotation[] annotations = javaParameter.getAnnotations();
+            for (int i = 0; i < annotations.length; i++)
+            {
+                this.annotations.add(new QDoxAnnotationAdapter(annotations[i]));
+            }
+        }
+    }
+
+    public List<JavaAnnotation> getAnnotations()
+    {
+        if (annotations == null)
+        {
+            buildAnnotationCollection();
+        }
+
+        return annotations;
     }
 }
