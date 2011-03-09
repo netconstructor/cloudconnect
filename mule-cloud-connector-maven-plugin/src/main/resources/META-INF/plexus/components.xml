@@ -37,7 +37,7 @@
             </implementation>
             <configuration>
                 <phases>
-                    <validate>org.mule.tools:mule-cloud-connector-maven-plugin:connector-validate</validate>
+                    <validate></validate>
                     <initialize></initialize>
                     <generate-sources>org.mule.tools:mule-cloud-connector-maven-plugin:namespace-handler-generate
                     </generate-sources>
