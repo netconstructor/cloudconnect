@@ -137,6 +137,22 @@
     </#if>
     </#list>
 
+    <!-- Transformers -->
+    <#list class.getMethods() as method>
+    <#if method.isTransformer()>
+    <xsd:element name="<@splitCamelCase>${method.getElementName()}</@splitCamelCase>" type="mule:abstractTransformerType"
+                 substitutionGroup="mule:abstract-transformer">
+        <#if method.getDescription()?has_content>
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                ${method.getDescription()}
+            ]]></xsd:documentation>
+        </xsd:annotation>
+        </#if>
+    </xsd:element>
+    </#if>
+    </#list>
+
     <!-- Enums -->
     <#list class.getEnums() as enum>
     <xsd:simpleType name="${enum.getXmlType(false)}">

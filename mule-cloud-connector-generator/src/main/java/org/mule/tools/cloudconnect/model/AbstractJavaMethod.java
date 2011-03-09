@@ -49,6 +49,31 @@ public abstract class AbstractJavaMethod extends AbstractJavaElement implements 
         return false;
     }
 
+    public boolean isTransformer()
+    {
+        for (JavaAnnotation annotation : getAnnotations())
+        {
+            if (annotation.getType().equals("org.mule.api.annotations.Transformer"))
+            {
+                if (isPublic()
+                    && !isStatic()
+                    && !isPropertyAccessor()
+                    && !isPropertyMutator()
+                    && !isConstructor()
+                    && !OBJECT_CLASS_NAME.equals(getParentClass().getName()))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public String getElementName()
     {

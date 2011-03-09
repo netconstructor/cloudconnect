@@ -57,4 +57,9 @@ public class BasicCloudConnectorTest extends AbstractCloudConnectorTest
     {
         runFlow("passthruLongFlow", 3456443463342345734L);
     }
+
+    public void testTransformer() throws Exception
+    {
+        runFlowWithPayload("transformerFlow", 'd', "d");
+    }
 }

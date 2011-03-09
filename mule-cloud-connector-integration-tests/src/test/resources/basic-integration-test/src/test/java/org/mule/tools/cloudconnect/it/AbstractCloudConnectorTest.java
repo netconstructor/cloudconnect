@@ -42,4 +42,13 @@ public abstract class AbstractCloudConnectorTest extends FunctionalTestCase
 
         assertEquals(expect, responseEvent.getMessage().getPayload());
     }
+
+    protected <T, U> void runFlowWithPayload(String flowName, T expect, U payload) throws Exception
+    {
+        SimpleFlowConstruct flow = lookupFlowConstruct(flowName);
+        MuleEvent event = AbstractMuleTestCase.getTestEvent(payload);
+        MuleEvent responseEvent = flow.process(event);
+
+        assertEquals(expect, responseEvent.getMessage().getPayload());
+    }
 }

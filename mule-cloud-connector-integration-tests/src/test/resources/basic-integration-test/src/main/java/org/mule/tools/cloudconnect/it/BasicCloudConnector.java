@@ -88,7 +88,7 @@ public class BasicCloudConnector
     }
 
     @Transformer(sourceTypes = {String.class})
-    public char transform(String str)
+    public char stringToCharTransformer(String str)
     {
         return str.charAt(0);
     }

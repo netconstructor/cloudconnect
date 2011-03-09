@@ -23,6 +23,7 @@ import org.mule.tools.cloudconnect.generator.MessageProcessorGenerator;
 import org.mule.tools.cloudconnect.generator.NamespaceHandlerGenerator;
 import org.mule.tools.cloudconnect.generator.RegistryBootstrapGenerator;
 import org.mule.tools.cloudconnect.generator.SpringNamespaceHandlerGenerator;
+import org.mule.tools.cloudconnect.generator.TransformerMessageProcessorGenerator;
 import org.mule.tools.cloudconnect.model.JavaClass;
 import org.mule.tools.cloudconnect.model.JavaMethod;
 import org.mule.tools.cloudconnect.model.JavaModel;
@@ -74,7 +75,7 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                 }
                 catch (IOException iox)
                 {
-                    throw new MojoExecutionException("Error while generating schema", iox);
+                    throw new MojoExecutionException("Error while generating namespace handler", iox);
                 }
                 finally
                 {
@@ -85,44 +86,62 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                 beanDefinitionParserGenerator.setJavaClass(javaClass);
                 MessageProcessorGenerator messageProcessorGenerator = new MessageProcessorGenerator();
                 messageProcessorGenerator.setJavaClass(javaClass);
+                TransformerMessageProcessorGenerator transformerMessageProcessorGenerator = new TransformerMessageProcessorGenerator();
+                transformerMessageProcessorGenerator.setJavaClass(javaClass);
 
                 for (JavaMethod method : javaClass.getMethods())
                 {
-                    if (!method.isOperation())
+                    if (method.isOperation())
                     {
-                        continue;
-                    }
+                        beanDefinitionParserGenerator.setJavaMethod(method);
 
-                    beanDefinitionParserGenerator.setJavaMethod(method);
+                        try
+                        {
+                            output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), method.getBeanDefinitionParserName());
+                            beanDefinitionParserGenerator.generate(output);
+                        }
+                        catch (IOException iox)
+                        {
+                            throw new MojoExecutionException("Error while generating bean definition parser", iox);
+                        }
+                        finally
+                        {
+                            IOUtil.close(output);
+                        }
 
-                    try
-                    {
-                        output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), method.getBeanDefinitionParserName());
-                        beanDefinitionParserGenerator.generate(output);
-                    }
-                    catch (IOException iox)
-                    {
-                        throw new MojoExecutionException("Error while generating schema", iox);
-                    }
-                    finally
-                    {
-                        IOUtil.close(output);
-                    }
+                        messageProcessorGenerator.setJavaMethod(method);
 
-                    messageProcessorGenerator.setJavaMethod(method);
+                        try
+                        {
+                            output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), method.getMessageProcessorName());
+                            messageProcessorGenerator.generate(output);
+                        }
+                        catch (IOException iox)
+                        {
+                            throw new MojoExecutionException("Error while generating message processor", iox);
+                        }
+                        finally
+                        {
+                            IOUtil.close(output);
+                        }
+                    }
+                    else if( method.isTransformer() )
+                    {
+                        transformerMessageProcessorGenerator.setJavaMethod(method);
 
-                    try
-                    {
-                        output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), method.getMessageProcessorName());
-                        messageProcessorGenerator.generate(output);
-                    }
-                    catch (IOException iox)
-                    {
-                        throw new MojoExecutionException("Error while generating schema", iox);
-                    }
-                    finally
-                    {
-                        IOUtil.close(output);
+                        try
+                        {
+                            output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), method.getMessageProcessorName());
+                            transformerMessageProcessorGenerator.generate(output);
+                        }
+                        catch (IOException iox)
+                        {
+                            throw new MojoExecutionException("Error while generating transformer message processor", iox);
+                        }
+                        finally
+                        {
+                            IOUtil.close(output);
+                        }
                     }
                 }
 
@@ -157,7 +176,7 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                 }
                 catch (IOException iox)
                 {
-                    throw new MojoExecutionException("Error while generating schema", iox);
+                    throw new MojoExecutionException("Error while generating spring schemas helper", iox);
                 }
                 finally
                 {

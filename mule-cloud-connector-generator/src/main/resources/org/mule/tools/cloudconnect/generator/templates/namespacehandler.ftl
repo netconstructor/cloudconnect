@@ -10,6 +10,7 @@ import org.mule.config.spring.parsers.collection.ChildListEntryDefinitionParser;
 import org.mule.config.spring.parsers.collection.ChildMapEntryDefinitionParser;
 import org.mule.config.spring.parsers.generic.ChildDefinitionParser;
 import org.mule.config.spring.parsers.generic.OrphanDefinitionParser;
+import org.mule.config.spring.parsers.specific.MessageProcessorDefinitionParser;
 
 import org.springframework.beans.factory.config.ListFactoryBean;
 import org.springframework.beans.factory.config.MapFactoryBean;
@@ -39,6 +40,8 @@ public class ${class.getNamespaceHandlerName()} extends AbstractPojoNamespaceHan
         registerMuleBeanDefinitionParser("<@singularize>${parameter.getName()}</@singularize>", new ChildMapEntryDefinitionParser("sourceMap"));
         </#if>
         </#list>
+        <#elseif method.isTransformer()>
+        registerBeanDefinitionParser("<@splitCamelCase>${method.getElementName()}</@splitCamelCase>", new MessageProcessorDefinitionParser(${method.getMessageProcessorName()}.class));
         </#if>
         </#list>
     }

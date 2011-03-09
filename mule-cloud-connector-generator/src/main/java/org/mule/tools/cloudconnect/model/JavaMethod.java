@@ -32,6 +32,8 @@ public interface JavaMethod extends JavaElement
 
     boolean isOperation();
 
+    boolean isTransformer();
+
     boolean isPublic();
 
     boolean isPropertyAccessor();
