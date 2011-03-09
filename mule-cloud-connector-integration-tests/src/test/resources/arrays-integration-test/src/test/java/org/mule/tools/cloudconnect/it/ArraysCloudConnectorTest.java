@@ -15,13 +15,16 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect;
+package org.mule.tools.cloudconnect.it;
 
 import org.mule.api.MuleEvent;
 import org.mule.construct.SimpleFlowConstruct;
 import org.mule.tck.FunctionalTestCase;
+import org.mule.tck.AbstractMuleTestCase;
 
 import java.lang.String;
+
+import junit.framework.Assert;
 
 public class ArraysCloudConnectorTest extends FunctionalTestCase
 {
@@ -38,7 +41,7 @@ public class ArraysCloudConnectorTest extends FunctionalTestCase
     {
         String payload = EMPTY_PAYLOAD;
         SimpleFlowConstruct flow = lookupFlowConstruct("sumAllFlow");
-        MuleEvent event = getTestEvent(payload);
+        MuleEvent event = AbstractMuleTestCase.getTestEvent(payload);
         MuleEvent responseEvent = flow.process(event);
 
         assertEquals(15, responseEvent.getMessage().getPayload());
@@ -48,7 +51,7 @@ public class ArraysCloudConnectorTest extends FunctionalTestCase
     {
         String payload = EMPTY_PAYLOAD;
         SimpleFlowConstruct flow = lookupFlowConstruct("sumAllFromGenericListFlow");
-        MuleEvent event = getTestEvent(payload);
+        MuleEvent event = AbstractMuleTestCase.getTestEvent(payload);
         MuleEvent responseEvent = flow.process(event);
 
         assertEquals(15, responseEvent.getMessage().getPayload());
@@ -58,7 +61,7 @@ public class ArraysCloudConnectorTest extends FunctionalTestCase
     {
         String payload = EMPTY_PAYLOAD;
         SimpleFlowConstruct flow = lookupFlowConstruct("sumAllColors");
-        MuleEvent event = getTestEvent(payload);
+        MuleEvent event = AbstractMuleTestCase.getTestEvent(payload);
         MuleEvent responseEvent = flow.process(event);
 
         assertEquals(24, responseEvent.getMessage().getPayload());
@@ -66,7 +69,7 @@ public class ArraysCloudConnectorTest extends FunctionalTestCase
 
     private SimpleFlowConstruct lookupFlowConstruct(String name)
     {
-        return (SimpleFlowConstruct) muleContext.getRegistry().lookupFlowConstruct(name);
+        return (SimpleFlowConstruct) AbstractMuleTestCase.muleContext.getRegistry().lookupFlowConstruct(name);
     }
 
 }

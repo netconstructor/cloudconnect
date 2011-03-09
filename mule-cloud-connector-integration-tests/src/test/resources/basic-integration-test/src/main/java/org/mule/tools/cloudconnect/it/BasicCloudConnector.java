@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect;
+package org.mule.tools.cloudconnect.it;
 
 import org.mule.api.annotations.ContainsTransformerMethods;
 import org.mule.api.annotations.Transformer;

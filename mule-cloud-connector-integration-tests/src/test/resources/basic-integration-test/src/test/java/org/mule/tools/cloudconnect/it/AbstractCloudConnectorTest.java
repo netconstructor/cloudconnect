@@ -15,11 +15,14 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect;
+package org.mule.tools.cloudconnect.it;
 
 import org.mule.api.MuleEvent;
 import org.mule.construct.SimpleFlowConstruct;
 import org.mule.tck.FunctionalTestCase;
+import org.mule.tck.AbstractMuleTestCase;
+
+import junit.framework.Assert;
 
 public abstract class AbstractCloudConnectorTest extends FunctionalTestCase
 {
@@ -27,14 +30,14 @@ public abstract class AbstractCloudConnectorTest extends FunctionalTestCase
 
     protected SimpleFlowConstruct lookupFlowConstruct(String name)
     {
-        return (SimpleFlowConstruct) muleContext.getRegistry().lookupFlowConstruct(name);
+        return (SimpleFlowConstruct) AbstractMuleTestCase.muleContext.getRegistry().lookupFlowConstruct(name);
     }
 
     protected <T> void runFlow(String flowName, T expect) throws Exception
     {
         String payload = EMPTY_PAYLOAD;
         SimpleFlowConstruct flow = lookupFlowConstruct(flowName);
-        MuleEvent event = getTestEvent(payload);
+        MuleEvent event = AbstractMuleTestCase.getTestEvent(payload);
         MuleEvent responseEvent = flow.process(event);
 
         assertEquals(expect, responseEvent.getMessage().getPayload());

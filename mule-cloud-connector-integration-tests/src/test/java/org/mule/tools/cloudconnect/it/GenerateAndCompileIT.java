@@ -14,8 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.mule.tools.cloudconnect;
+package org.mule.tools.cloudconnect.it;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +26,7 @@ import org.apache.maven.it.Verifier;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ArchetypeTest
+public class GenerateAndCompileIT
 {
 
     private static final File ROOT = new File("target/test-classes/");
@@ -44,7 +43,7 @@ public class ArchetypeTest
 
         Verifier verifier = new Verifier(ROOT.getAbsolutePath());
 
-        // deleting a former created artefact from the archetype to be tested
+        // deleting a former created artifact from the archetype to be tested
         verifier.deleteArtifact(getArchetypeGroupId(), getArchetypeArtifactId(), getArchetypeVersion(), null);
 
         // delete the created maven project
@@ -88,7 +87,7 @@ public class ArchetypeTest
 
         verifier.verifyErrorFreeLog();
 
-        verifier.verifyTextInLog("namespace-handler-generate"); // jasmine tests should be run
-        verifier.verifyTextInLog("schema-generate"); // compression should be run
+        verifier.verifyTextInLog("namespace-handler-generate");
+        verifier.verifyTextInLog("schema-generate");
     }
 }

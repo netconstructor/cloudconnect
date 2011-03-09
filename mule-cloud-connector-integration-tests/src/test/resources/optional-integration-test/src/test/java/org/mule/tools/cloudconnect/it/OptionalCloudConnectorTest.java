@@ -15,19 +15,25 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect;
+package org.mule.tools.cloudconnect.it;
 
-import org.mule.tools.cloudconnect.annotations.Connector;
-import org.mule.tools.cloudconnect.annotations.Operation;
-import org.mule.tools.cloudconnect.annotations.Parameter;
+import java.lang.String;
 
-@Connector(namespacePrefix="opt")
-public class OptionalCloudConnector
+public class OptionalCloudConnectorTest extends AbstractCloudConnectorTest
 {
-    @Operation
-    public int sumAndMultiply(int a, int b, @Parameter(optional=true, defaultValue="1") int c)
+    @Override
+    protected String getConfigResources()
     {
-        return (a + b) * c;
+        return "optional.xml";
     }
 
+    public void testWithOptional() throws Exception
+    {
+        runFlow("withOptional", 4);
+    }
+
+    public void testWithoutOptional() throws Exception
+    {
+        runFlow("withoutOptional", 12);
+    }
 }

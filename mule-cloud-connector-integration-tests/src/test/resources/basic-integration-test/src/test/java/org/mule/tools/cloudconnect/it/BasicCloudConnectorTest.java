@@ -15,11 +15,7 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect;
-
-import org.mule.api.MuleEvent;
-import org.mule.construct.SimpleFlowConstruct;
-import org.mule.tck.FunctionalTestCase;
+package org.mule.tools.cloudconnect.it;
 
 import java.lang.String;
 

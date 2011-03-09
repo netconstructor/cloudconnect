@@ -15,29 +15,31 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect;
+package org.mule.tools.cloudconnect.it;
 
 import org.mule.api.MuleEvent;
 import org.mule.construct.SimpleFlowConstruct;
 import org.mule.tck.FunctionalTestCase;
+import org.mule.tck.AbstractMuleTestCase;
 
-import java.lang.String;
+import junit.framework.Assert;
 
-public class OptionalCloudConnectorTest extends AbstractCloudConnectorTest
+public abstract class AbstractCloudConnectorTest extends FunctionalTestCase
 {
-    @Override
-    protected String getConfigResources()
+    private static final String EMPTY_PAYLOAD = "";
+
+    protected SimpleFlowConstruct lookupFlowConstruct(String name)
     {
-        return "optional.xml";
+        return (SimpleFlowConstruct) AbstractMuleTestCase.muleContext.getRegistry().lookupFlowConstruct(name);
     }
 
-    public void testWithOptional() throws Exception
+    protected <T> void runFlow(String flowName, T expect) throws Exception
     {
-        runFlow("withOptional", 4);
-    }
+        String payload = EMPTY_PAYLOAD;
+        SimpleFlowConstruct flow = lookupFlowConstruct(flowName);
+        MuleEvent event = AbstractMuleTestCase.getTestEvent(payload);
+        MuleEvent responseEvent = flow.process(event);
 
-    public void testWithoutOptional() throws Exception
-    {
-        runFlow("withoutOptional", 12);
+        assertEquals(expect, responseEvent.getMessage().getPayload());
     }
 }
