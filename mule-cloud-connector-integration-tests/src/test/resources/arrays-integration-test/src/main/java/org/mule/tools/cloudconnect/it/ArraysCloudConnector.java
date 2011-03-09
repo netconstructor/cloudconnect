@@ -20,8 +20,6 @@ package org.mule.tools.cloudconnect.it;
 import org.mule.tools.cloudconnect.annotations.Connector;
 import org.mule.tools.cloudconnect.annotations.Operation;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Redefinable;
-
 import java.util.List;
 
 @Connector(namespacePrefix="arrays")
