@@ -58,7 +58,6 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
 
     /**
      * @parameter expression="${project.version}"
-     * @readonly
      */
     protected String schemaVersion;
 
