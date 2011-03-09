@@ -32,6 +32,7 @@ public class QDoxTypeAdapter extends AbstractJavaType
 {
 
     private static final Type LIST_TYPE = new Type("java.util.List");
+    private static final Type MAP_TYPE = new Type("java.util.Map");
     private Type javaType;
 
     public QDoxTypeAdapter(Type javaType)
@@ -133,6 +134,11 @@ public class QDoxTypeAdapter extends AbstractJavaType
     public boolean isList()
     {
         return javaType.isA(LIST_TYPE);
+    }
+
+    public boolean isMap()
+    {
+        return javaType.isA(MAP_TYPE);
     }
 
 

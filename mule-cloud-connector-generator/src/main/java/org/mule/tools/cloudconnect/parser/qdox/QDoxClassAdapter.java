@@ -38,7 +38,8 @@ import java.util.Set;
 
 public class QDoxClassAdapter extends AbstractJavaClass
 {
-private static final Type LIST_TYPE = new Type("java.util.List");
+    private static final Type LIST_TYPE = new Type("java.util.List");
+    private static final Type MAP_TYPE = new Type("java.util.Map");
     private static final String CLASS_PROPERTY_NAME = "class";
     private JavaClass javaClass;
     private WeakReference<JavaModel> parentModel;
@@ -199,6 +200,18 @@ private static final Type LIST_TYPE = new Type("java.util.List");
                         parameters[j].getType().getActualTypeArguments()[0].getJavaClass().isEnum() )
                 {
                     this.enums.add(new QDoxTypeAdapter( parameters[j].getType().getActualTypeArguments()[0]));
+                }
+                else if(parameters[j].getType().isA(MAP_TYPE) &&
+                        parameters[j].getType().getActualTypeArguments() != null &&
+                        parameters[j].getType().getActualTypeArguments()[0].getJavaClass().isEnum() )
+                {
+                    this.enums.add(new QDoxTypeAdapter( parameters[j].getType().getActualTypeArguments()[0]));
+                }
+                else if(parameters[j].getType().isA(MAP_TYPE) &&
+                        parameters[j].getType().getActualTypeArguments() != null &&
+                        parameters[j].getType().getActualTypeArguments()[1].getJavaClass().isEnum() )
+                {
+                    this.enums.add(new QDoxTypeAdapter( parameters[j].getType().getActualTypeArguments()[1]));
                 }
             }
         }

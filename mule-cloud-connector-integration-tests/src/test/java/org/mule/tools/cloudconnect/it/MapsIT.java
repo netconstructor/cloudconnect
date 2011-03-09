@@ -14,37 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.mule.tools.cloudconnect.model;
 
-import java.util.List;
+package org.mule.tools.cloudconnect.it;
 
-public interface JavaType
+import java.io.File;
+
+public class MapsIT extends AbstractMavenIT
 {
-    boolean isEnum();
 
-    String getName();
+    protected String getArtifactVersion()
+    {
+        return "1.0";
+    }
 
-    boolean isArray();
+    protected String getArtifactId()
+    {
+        return "maps-integration-test";
+    }
 
-    String getXmlType(boolean isConfig);
+    protected String getGroupId()
+    {
+        return "org.mule.tools.cloudconnect.it";
+    }
 
-    List<String> getValues();
-
-    String getFullyQualifiedName(boolean generic);
-
-    String getFullyQualifiedName();
-
-    boolean isVoid();
-
-    boolean isGeneric();
-
-    boolean isList();
-
-    boolean isMap();
-
-    List<JavaType> getTypeArguments();
-
-    String getTransformerName();
-
-    String getTransformerPackage();
+    protected File getRoot()
+    {
+        return new File("target/test-classes/" + getArtifactId());
+    }
 }

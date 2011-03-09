@@ -7,10 +7,12 @@ package ${class.getNamespaceHandlerPackage()};
 import org.mule.config.spring.handlers.AbstractPojoNamespaceHandler;
 import org.mule.config.spring.parsers.specific.InvokerMessageProcessorDefinitionParser;
 import org.mule.config.spring.parsers.collection.ChildListEntryDefinitionParser;
+import org.mule.config.spring.parsers.collection.ChildMapEntryDefinitionParser;
 import org.mule.config.spring.parsers.generic.ChildDefinitionParser;
 import org.mule.config.spring.parsers.generic.OrphanDefinitionParser;
 
 import org.springframework.beans.factory.config.ListFactoryBean;
+import org.springframework.beans.factory.config.MapFactoryBean;
 
 import ${class.getPackage()}.${class.getName()};
 
@@ -32,6 +34,9 @@ public class ${class.getNamespaceHandlerName()} extends AbstractPojoNamespaceHan
         <#if parameter.getType().isArray() || parameter.getType().isList()>
         registerMuleBeanDefinitionParser("${parameter.getName()}", new ChildDefinitionParser("${parameter.getName()}", ListFactoryBean.class));
         registerMuleBeanDefinitionParser("<@singularize>${parameter.getName()}</@singularize>", new ChildListEntryDefinitionParser("sourceList"));
+        <#elseif parameter.getType().isMap()>
+        registerMuleBeanDefinitionParser("${parameter.getName()}", new ChildDefinitionParser("${parameter.getName()}", MapFactoryBean.class));
+        registerMuleBeanDefinitionParser("<@singularize>${parameter.getName()}</@singularize>", new ChildMapEntryDefinitionParser("sourceMap"));
         </#if>
         </#list>
         </#if>

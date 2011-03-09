@@ -111,6 +111,8 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
         <#list method.getParameters() as parameter>
         <#if parameter.getType().isList()>
             <@uncapitalize>${parameter.getName()}</@uncapitalize> = (${parameter.getType().getFullyQualifiedName(true)})transformList(evaluateExpressionCandidate(this.${parameter.getName()}, message), <@typeClass>${parameter.getType().getTypeArguments().get(0).getFullyQualifiedName()}</@typeClass>);
+        <#elseif parameter.getType().isMap()>
+            <@uncapitalize>${parameter.getName()}</@uncapitalize> = (${parameter.getType().getFullyQualifiedName(true)})transformMap(evaluateExpressionCandidate(this.${parameter.getName()}, message), <@typeClass>${parameter.getType().getTypeArguments().get(0).getFullyQualifiedName()}</@typeClass>, <@typeClass>${parameter.getType().getTypeArguments().get(1).getFullyQualifiedName()}</@typeClass>);
         <#else>
             <@uncapitalize>${parameter.getName()}</@uncapitalize> = (${parameter.getType().getFullyQualifiedName(true)})transformArgument(evaluateExpressionCandidate(this.${parameter.getName()}, message), <@typeClass>${parameter.getType().getFullyQualifiedName(true)}</@typeClass>);
         </#if>
@@ -277,6 +279,19 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
             newCollection.add(transformArgument(object, generic));
         }
         return (List<V>) newCollection;
+    }
+
+    private <U,K,V> Map<K,V> transformMap(U arg, Class<K> genericKey, Class<V> genericObj) throws TransformerException, InstantiationException, IllegalAccessException
+    {
+        Map<?,?> collection = (Map<?,?>)arg;
+        Map<K,V> newCollection = new HashMap<K,V>();
+
+        for (Object key : collection.keySet())
+        {
+            Object object = collection.get(key);
+            newCollection.put(transformArgument(key, genericKey), transformArgument(object, genericObj));
+        }
+        return (Map<K,V>) newCollection;
     }
 
     protected MuleEvent createResultEvent(MuleEvent event, Object result) throws MuleException

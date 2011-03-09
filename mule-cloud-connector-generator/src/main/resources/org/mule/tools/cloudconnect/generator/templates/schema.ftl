@@ -93,6 +93,19 @@
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>
+                    <#elseif parameter.getType().isMap()>
+                    <xsd:element name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="<@singularize>${parameter.getElementName()}</@singularize>" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:attribute name="key" type="${parameter.getType().getTypeArguments().get(0).getXmlType(false)}"/>
+                                        <xsd:attribute name="value" type="${parameter.getType().getTypeArguments().get(1).getXmlType(false)}"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
                     </#if>
                     </#list>
                 </xsd:all>
@@ -105,7 +118,7 @@
                     </xsd:annotation>
                 </xsd:attribute>
                 <#list method.getParameters() as parameter>
-                <#if !parameter.getType().isArray() && !parameter.getType().isList()>
+                <#if !parameter.getType().isArray() && !parameter.getType().isList() && !parameter.getType().isMap()>
                 <xsd:attribute name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" type="${parameter.getType().getXmlType(false)}" <#if !parameter.isOptional()>use="required" </#if><#if parameter.hasDefaultValue()>default="${parameter.getDefaultValue()}"</#if>>
                     <#if parameter.getDescription()?has_content>
                     <xsd:annotation>

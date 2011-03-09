@@ -46,7 +46,7 @@ public class ${method.getBeanDefinitionParserName()} extends ChildDefinitionPars
         }
 
         <#list method.getParameters() as parameter>
-        <#if !parameter.getType().isArray()>
+        <#if !parameter.getType().isArray() && !parameter.getType().isList() && !parameter.getType().isMap()>
         builder.addPropertyValue("${parameter.getName()}", getAttributeValue(element, "${parameter.getName()}"));
         </#if>
         </#list>
