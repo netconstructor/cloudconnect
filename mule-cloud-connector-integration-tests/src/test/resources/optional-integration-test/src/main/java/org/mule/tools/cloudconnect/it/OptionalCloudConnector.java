@@ -21,6 +21,8 @@ import org.mule.tools.cloudconnect.annotations.Connector;
 import org.mule.tools.cloudconnect.annotations.Operation;
 import org.mule.tools.cloudconnect.annotations.Parameter;
 
+import java.util.Map;
+
 @Connector(namespacePrefix="opt")
 public class OptionalCloudConnector
 {
@@ -28,6 +30,17 @@ public class OptionalCloudConnector
     public int sumAndMultiply(int a, int b, @Parameter(optional=true, defaultValue="1") int c)
     {
         return (a + b) * c;
+    }
+
+    @Operation
+    public int count(@Parameter(optional=true) Map<String, String> fields)
+    {
+        if( fields == null )
+        {
+            return 0;
+        }
+
+        return fields.size();
     }
 
 }

@@ -110,6 +110,11 @@ public class QDoxTypeAdapter extends AbstractJavaType
         return javaType.getValue();
     }
 
+    public boolean isPrimitive()
+    {
+        return javaType.isPrimitive();
+    }
+
     public boolean isGeneric()
     {
         if (javaType.getActualTypeArguments() == null)

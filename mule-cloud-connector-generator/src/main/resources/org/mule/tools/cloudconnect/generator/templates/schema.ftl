@@ -81,7 +81,7 @@
                 <xsd:all>
                     <#list method.getParameters() as parameter>
                     <#if parameter.getType().isArray() || parameter.getType().isList()>
-                    <xsd:element name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>">
+                    <xsd:element name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>"<#if parameter.isOptional()> minOccurs="0"</#if>>
                         <xsd:complexType>
                             <xsd:sequence>
                                 <xsd:element name="<@singularize>${parameter.getElementName()}</@singularize>" minOccurs="0" maxOccurs="unbounded"
@@ -94,7 +94,7 @@
                         </xsd:complexType>
                     </xsd:element>
                     <#elseif parameter.getType().isMap()>
-                    <xsd:element name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>">
+                    <xsd:element name="<@uncapitalize>${parameter.getElementName()}</@uncapitalize>" <#if parameter.isOptional()> minOccurs="0"</#if>>
                         <xsd:complexType>
                             <xsd:sequence>
                                 <xsd:element name="<@singularize>${parameter.getElementName()}</@singularize>" minOccurs="0" maxOccurs="unbounded">

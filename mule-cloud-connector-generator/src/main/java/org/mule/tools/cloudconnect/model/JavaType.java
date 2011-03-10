@@ -42,6 +42,8 @@ public interface JavaType
 
     boolean isMap();
 
+    boolean isPrimitive();
+
     List<JavaType> getTypeArguments();
 
     String getTransformerName();

@@ -102,19 +102,26 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
         MuleMessage message = event.getMessage();
         MuleEvent resultEvent = event;
         <#list method.getParameters() as parameter>
-        ${parameter.getType().getFullyQualifiedName(true)} <@uncapitalize>${parameter.getName()}</@uncapitalize>;
+        ${parameter.getType().getFullyQualifiedName(true)} <@uncapitalize>${parameter.getName()}</@uncapitalize><#if !parameter.getType().isPrimitive()> = null</#if>;
         </#list>
 
         <#if method.hasParameters()>
         try
         {
         <#list method.getParameters() as parameter>
+        <#if !parameter.getType().isPrimitive()>
+            if( this.${parameter.getName()} != null )
+            {
+        </#if>
         <#if parameter.getType().isList()>
             <@uncapitalize>${parameter.getName()}</@uncapitalize> = (${parameter.getType().getFullyQualifiedName(true)})transformList(evaluateExpressionCandidate(this.${parameter.getName()}, message), <@typeClass>${parameter.getType().getTypeArguments().get(0).getFullyQualifiedName()}</@typeClass>);
         <#elseif parameter.getType().isMap()>
             <@uncapitalize>${parameter.getName()}</@uncapitalize> = (${parameter.getType().getFullyQualifiedName(true)})transformMap(evaluateExpressionCandidate(this.${parameter.getName()}, message), <@typeClass>${parameter.getType().getTypeArguments().get(0).getFullyQualifiedName()}</@typeClass>, <@typeClass>${parameter.getType().getTypeArguments().get(1).getFullyQualifiedName()}</@typeClass>);
         <#else>
             <@uncapitalize>${parameter.getName()}</@uncapitalize> = (${parameter.getType().getFullyQualifiedName(true)})transformArgument(evaluateExpressionCandidate(this.${parameter.getName()}, message), <@typeClass>${parameter.getType().getFullyQualifiedName(true)}</@typeClass>);
+        </#if>
+        <#if !parameter.getType().isPrimitive()>
+            }
         </#if>
         </#list>
         }

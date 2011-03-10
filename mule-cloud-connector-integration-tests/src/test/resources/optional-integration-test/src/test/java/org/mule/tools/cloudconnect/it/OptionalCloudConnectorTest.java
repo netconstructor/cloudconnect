@@ -36,4 +36,9 @@ public class OptionalCloudConnectorTest extends AbstractCloudConnectorTest
     {
         runFlow("withoutOptional", 12);
     }
+
+    public void testOptionalMaps() throws Exception
+    {
+        runFlow("optionalMaps", 0);
+    }
 }

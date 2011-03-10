@@ -37,4 +37,8 @@
         <opt:sum-and-multiply a="2" b="2" c="3"/>
     </flow>
 
+    <flow name="optionalMaps">
+        <opt:count/>
+    </flow>
+
 </mule>
