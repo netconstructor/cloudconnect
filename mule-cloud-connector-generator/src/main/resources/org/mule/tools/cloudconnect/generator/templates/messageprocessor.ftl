@@ -342,4 +342,8 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
 
     </#list>
 
+    public void setObject(${class.getName()} object)
+    {
+        this.object = object;
+    }
 }

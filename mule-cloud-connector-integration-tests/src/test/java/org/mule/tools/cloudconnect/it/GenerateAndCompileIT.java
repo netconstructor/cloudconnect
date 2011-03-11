@@ -39,7 +39,16 @@ public class GenerateAndCompileIT
     {
         InputStream stream = ClassLoader.getSystemResourceAsStream(ARCHETYPE_PROPERTIES);
         archetypeProperties = new Properties(System.getProperties());
-        archetypeProperties.load(stream);
+        archetypeProperties.setProperty("archetypeGroupId", "org.mule.tools");
+        archetypeProperties.setProperty("archetypeArtifactId", "mule-cloud-connector-archetype");
+        archetypeProperties.setProperty("archetypeCatalog", "local");
+        archetypeProperties.setProperty("groupId", "org.mule.test");
+        archetypeProperties.setProperty("artifactId", "mule-cloud-connector-archetype-test");
+        archetypeProperties.setProperty("version", "1.0-SNAPSHOT");
+        archetypeProperties.setProperty("interactiveMode", "false");
+        archetypeProperties.setProperty("muleVersion", "3.1.0");
+        archetypeProperties.setProperty("cloudService", "Test");
+        archetypeProperties.setProperty("cloudServiceType", "HTTP");
 
         Verifier verifier = new Verifier(ROOT.getAbsolutePath());
 
