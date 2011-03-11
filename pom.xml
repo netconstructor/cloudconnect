@@ -21,7 +21,6 @@
         <module>mule-cloud-connector-annotations</module>
         <module>mule-cloud-connector-ibeans</module>
         <module>mule-cloud-connector-maven-plugin</module>
-        <module>mule-cloud-connector-dev-kit</module>
 		<module>mule-cloud-connector-integration-tests</module>
     </modules>
 
