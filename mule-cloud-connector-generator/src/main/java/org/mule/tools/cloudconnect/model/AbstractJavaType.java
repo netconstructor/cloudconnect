@@ -23,24 +23,6 @@ import java.util.Map;
 
 public abstract class AbstractJavaType implements JavaType
 {
-
-    private static final Map<String, String> TYPES_MAP;
-
-    static
-    {
-        Map<String, String> mapping = new HashMap<String, String>();
-        mapping.put("boolean", "mule:substitutableBoolean");
-        mapping.put(Boolean.class.getName(), "mule:substitutableBoolean");
-        mapping.put("int", "mule:substitutableInt");
-        mapping.put(Integer.class.getName(), "mule:substitutableInt");
-        mapping.put("long", "mule:substitutableLong");
-        mapping.put(Long.class.getName(), "mule:substitutableLong");
-        mapping.put(String.class.getName(), "mule:substitutableName");
-        mapping.put(Class.class.getName(), "mule:substitutableClass");
-
-        TYPES_MAP = Collections.unmodifiableMap(mapping);
-    }
-
     public String getXmlType(boolean isConfig)
     {
         if (isEnum())
@@ -48,17 +30,7 @@ public abstract class AbstractJavaType implements JavaType
             return getName() + "Enum";
         }
 
-        if (!isConfig)
-        {
-            return "xsd:string";
-        }
-
-        if (!TYPES_MAP.containsKey(getName()))
-        {
-            throw new RuntimeException("Type " + getName() + " is not supported as confiurable element");
-        }
-
-        return TYPES_MAP.get(getName());
+        return "xsd:string";
     }
 
     public boolean isVoid()

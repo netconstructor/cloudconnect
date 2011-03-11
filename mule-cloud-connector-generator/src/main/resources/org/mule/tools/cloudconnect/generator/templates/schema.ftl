@@ -27,7 +27,7 @@
     <xsd:complexType name="configType">
         <xsd:complexContent>
             <xsd:extension base="mule:abstractExtensionType">
-                <xsd:attribute name="name" use="optional" type="mule:substitutableName">
+                <xsd:attribute name="name" use="optional" type="xsd:string">
                     <xsd:annotation>
                         <xsd:documentation>
                             Give a name to this configuration so it can be later referenced by config-ref.
