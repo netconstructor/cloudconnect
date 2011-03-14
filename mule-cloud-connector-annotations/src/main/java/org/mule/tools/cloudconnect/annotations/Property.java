@@ -33,7 +33,10 @@ public @interface Property
 {
 
     String name() default EMPTY_STRING;
+
     boolean optional() default false;
+
+    String defaultValue() default EMPTY_STRING;
 
     public static final String EMPTY_STRING = "";
 }

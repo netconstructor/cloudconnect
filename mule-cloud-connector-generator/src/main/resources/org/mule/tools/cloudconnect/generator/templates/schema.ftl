@@ -36,7 +36,7 @@
                 </xsd:attribute>
             <#if class.getFactory()?has_content>
             <#list class.getFactory().getProperties() as property>
-                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getType().getXmlType(true)}" use="<#if property.isOptional()>optional<#else>required</#if>">
+                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getType().getXmlType(true)}" use="<#if property.isOptional()>optional<#else>required</#if>"<#if property.hasDefaultValue()> default="${property.getDefaultValue()}"</#if>>
                     <#if property.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation><![CDATA[
@@ -49,7 +49,7 @@
             <#else>
             <#list class.getProperties() as property>
                 <#if property.isConfigurable()>
-                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getType().getXmlType(true)}">
+                <xsd:attribute name="<@uncapitalize>${property.getName()}</@uncapitalize>" type="${property.getType().getXmlType(true)}" use="<#if property.isOptional()>optional<#else>required</#if>"<#if property.hasDefaultValue()> default="${property.getDefaultValue()}"</#if>>
                     <#if property.getDescription()?has_content>
                     <xsd:annotation>
                         <xsd:documentation><![CDATA[

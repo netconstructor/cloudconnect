@@ -33,4 +33,8 @@ public interface JavaProperty extends JavaElement
     String getExample();
 
     boolean isOptional();
+
+    String getDefaultValue();
+
+    boolean hasDefaultValue();
 }

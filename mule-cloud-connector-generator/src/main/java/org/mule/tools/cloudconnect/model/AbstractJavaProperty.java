@@ -62,4 +62,23 @@ public abstract class AbstractJavaProperty extends AbstractJavaElement implement
 
         return false;
     }
+
+    public String getDefaultValue()
+    {
+        for (JavaAnnotation annotation : getAnnotations())
+        {
+            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Parameter") &&
+                annotation.getNamedParameter("defaultValue") != null)
+            {
+                return ((String) annotation.getNamedParameter("defaultValue")).replace("\"", "");
+            }
+        }
+
+        return "";
+    }
+
+    public boolean hasDefaultValue()
+    {
+        return getDefaultValue().length() != 0;
+    }
 }
