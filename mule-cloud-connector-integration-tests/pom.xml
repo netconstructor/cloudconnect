@@ -81,6 +81,8 @@
                 <configuration>
                     <excludes>
                         <exclude>**/it/*Test*</exclude>
+						<exclude>**/TestCloudConnector*</exclude>
+						<exclude>**/TestNamespaceHandlerTestCase*</exclude>
                     </excludes>
                 </configuration>
             </plugin>

@@ -51,6 +51,20 @@ public class ReadmeGenerateMojo extends AbstractConnectorMojo
         ReadmeGenerator readmeGenerator = new ReadmeGenerator();
         readmeGenerator.setName(project.getName());
         readmeGenerator.setDescription(project.getDescription());
+        readmeGenerator.setArtifactId(project.getArtifactId());
+        readmeGenerator.setGroupId(project.getGroupId());
+        readmeGenerator.setVersion(project.getVersion());
+
+        if( project.getDistributionManagement() == null ||
+            project.getDistributionManagement().getRepository() == null )
+        {
+            throw new MojoExecutionException("No distribution management section in POM");
+        }
+
+        readmeGenerator.setRepoId(project.getDistributionManagement().getRepository().getId());
+        readmeGenerator.setRepoName(project.getDistributionManagement().getRepository().getName());
+        readmeGenerator.setRepoUrl(project.getDistributionManagement().getRepository().getUrl().replace("dav:", ""));
+        readmeGenerator.setRepoLayout(project.getDistributionManagement().getRepository().getLayout());
 
         try
         {

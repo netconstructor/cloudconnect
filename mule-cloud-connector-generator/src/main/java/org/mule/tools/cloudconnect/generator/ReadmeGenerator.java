@@ -24,6 +24,13 @@ public class ReadmeGenerator extends AbstractTemplateGenerator
 {
     private String name;
     private String description;
+    private String groupId;
+    private String artifactId;
+    private String version;
+    private String repoId;
+    private String repoUrl;
+    private String repoName;
+    private String repoLayout;
     private static final String README_TEMPLATE = "readme.ftl";
 
     @Override
@@ -32,6 +39,14 @@ public class ReadmeGenerator extends AbstractTemplateGenerator
         Map<String, Object> root = new HashMap<String, Object>();
         root.put("name", name);
         root.put("description", description);
+        root.put("groupId", groupId);
+        root.put("artifactId", artifactId);
+        root.put("version", version);
+        root.put("repoId", repoId);
+        root.put("repoUrl", repoUrl);
+        root.put("repoName", repoName);
+        root.put("repoLayout", repoLayout);
+
         return root;
     }
 
@@ -59,5 +74,75 @@ public class ReadmeGenerator extends AbstractTemplateGenerator
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    public String getGroupId()
+    {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId)
+    {
+        this.groupId = groupId;
+    }
+
+    public String getArtifactId()
+    {
+        return artifactId;
+    }
+
+    public void setArtifactId(String artifactId)
+    {
+        this.artifactId = artifactId;
+    }
+
+    public String getVersion()
+    {
+        return version;
+    }
+
+    public void setVersion(String version)
+    {
+        this.version = version;
+    }
+
+    public String getRepoId()
+    {
+        return repoId;
+    }
+
+    public void setRepoId(String repoId)
+    {
+        this.repoId = repoId;
+    }
+
+    public String getRepoUrl()
+    {
+        return repoUrl;
+    }
+
+    public void setRepoUrl(String repoUrl)
+    {
+        this.repoUrl = repoUrl;
+    }
+
+    public String getRepoName()
+    {
+        return repoName;
+    }
+
+    public void setRepoName(String repoName)
+    {
+        this.repoName = repoName;
+    }
+
+    public String getRepoLayout()
+    {
+        return repoLayout;
+    }
+
+    public void setRepoLayout(String repoLayout)
+    {
+        this.repoLayout = repoLayout;
     }
 }
