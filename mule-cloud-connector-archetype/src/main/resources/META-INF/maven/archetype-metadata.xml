@@ -25,6 +25,9 @@
                       partial="false">
 
     <requiredProperties>
+        <requiredProperty key="groupId">
+            <defaultValue>org.mule.modules</defaultValue>
+        </requiredProperty>
         <requiredProperty key="cloudService"/>
         <requiredProperty key="cloudServiceType">
             <defaultValue>HTTP</defaultValue>
