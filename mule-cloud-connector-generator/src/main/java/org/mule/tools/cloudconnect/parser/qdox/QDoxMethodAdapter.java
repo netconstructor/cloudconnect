@@ -29,6 +29,8 @@ import com.thoughtworks.qdox.model.Type;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class QDoxMethodAdapter extends AbstractJavaMethod
 {
@@ -51,7 +53,18 @@ public class QDoxMethodAdapter extends AbstractJavaMethod
 
     public String getDescription()
     {
-        return javaMethod.getComment();
+        if( javaMethod.getComment() != null )
+        {
+            Pattern pattern = Pattern.compile("\\{@code(.*?)\\}", Pattern.MULTILINE | Pattern.DOTALL);
+            Matcher matcher = pattern.matcher(javaMethod.getComment());
+            if( matcher.find() )
+                return matcher.replaceAll("");
+            else
+                return javaMethod.getComment();
+        }
+
+        return null;
+
     }
 
     public List<JavaParameter> getParameters()
@@ -129,5 +142,18 @@ public class QDoxMethodAdapter extends AbstractJavaMethod
     public JavaType getReturnType()
     {
         return new QDoxTypeAdapter(javaMethod.getReturnType());
+    }
+
+    public String getExample()
+    {
+        if( javaMethod.getComment() != null )
+        {
+            Pattern pattern = Pattern.compile("\\{@code(.*?)\\}", Pattern.MULTILINE | Pattern.DOTALL);
+            Matcher matcher = pattern.matcher(javaMethod.getComment());
+            if( matcher.find() )
+                return matcher.group(0).substring(6, matcher.group(0).length() - 1);
+        }
+
+        return null;
     }
 }

@@ -40,3 +40,44 @@ application:
         <artifactId>mule-module-cmis</artifactId>
         <version>1.1-SNAPSHOT</version>
     </dependency>
+
+Configuration
+-------------
+
+You can configure the connector as follows:
+
+    <${class.getNamespacePrefix()}:config<#list class.getProperties() as property><#if property.isConfigurable()> <@uncapitalize>${property.getName()}</@uncapitalize>="<#if property.getExample()?has_content>${property.getExample()}<#else>value</#if>"</#if></#list>/>
+
+Here is detailed list of all the configuration attributes:
+
+| attribute | description | optional | default value |
+|:-----------|:-----------|:---------|:--------------|
+|name|Give a name to this configuration so it can be later referenced by config-ref.|yes|
+<#list class.getProperties() as property>
+<#if property.isConfigurable()>
+|<@uncapitalize>${property.getName()}</@uncapitalize>|<#if property.getDescription()?has_content>${property.getDescription()}</#if>|no|
+</#if>
+</#list>
+
+<#list class.getMethods() as method>
+<#if method.isOperation()>
+<@titleCamelCase>${method.getElementName()}</@titleCamelCase>
+<@subTitleFill><@titleCamelCase>${method.getElementName()}</@titleCamelCase></@subTitleFill>
+<#if method.getDescription()?has_content>
+
+${method.getDescription()}
+</#if>
+<#if method.getExample()?has_content>
+
+<@indent>${method.getExample()}</@indent>
+
+| attribute | description | optional | default value |
+|:-----------|:-----------|:---------|:--------------|
+|config-ref|Specify which configuration to use for this invocation|yes|
+<#list method.getParameters() as parameter>
+|<@uncapitalize>${parameter.getElementName()}</@uncapitalize>|<#if parameter.getDescription()?has_content>${parameter.getDescription()}</#if>|<#if parameter.isOptional()>yes<#else>no</#if>|${parameter.getDefaultValue()}
+</#list>
+</#if>
+
+</#if>
+</#list>

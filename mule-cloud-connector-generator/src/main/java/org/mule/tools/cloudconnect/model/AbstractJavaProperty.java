@@ -19,13 +19,44 @@ package org.mule.tools.cloudconnect.model;
 
 public abstract class AbstractJavaProperty extends AbstractJavaElement implements JavaProperty
 {
+
     public boolean isConfigurable()
     {
         for (JavaAnnotation annotation : getAnnotations())
         {
-            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Operation"))
+            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Property"))
             {
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    public String getExample()
+    {
+        for (JavaAnnotation annotation : getAnnotations())
+        {
+            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Property") &&
+                annotation.getNamedParameter("sample-value") != null)
+            {
+                return ((String) annotation.getNamedParameter("sample-value")).replace("\"", "");
+            }
+        }
+
+        return null;
+    }
+
+    public boolean isOptional()
+    {
+        for (JavaAnnotation annotation : getAnnotations())
+        {
+            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Property"))
+            {
+                if (annotation.getNamedParameter("optional") != null)
+                {
+                    return "true".equals(annotation.getNamedParameter("optional"));
+                }
             }
         }
 

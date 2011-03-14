@@ -56,7 +56,14 @@ public class QDoxPropertyAdapter extends AbstractJavaProperty
     {
         if (this.javaProperty.getMutator() != null)
         {
-            return this.javaProperty.getMutator().getComment();
+            if (this.javaProperty.getMutator().getComment() != null)
+            {
+                return this.javaProperty.getMutator().getComment();
+            }
+            else if (this.javaField.getComment() != null)
+            {
+                return this.javaField.getComment();
+            }
         }
 
         return null;
@@ -76,7 +83,7 @@ public class QDoxPropertyAdapter extends AbstractJavaProperty
     {
         this.annotations = new ArrayList<JavaAnnotation>();
 
-        if( javaField != null )
+        if (javaField != null)
         {
             Annotation[] annotations = javaField.getAnnotations();
             for (int i = 0; i < annotations.length; i++)

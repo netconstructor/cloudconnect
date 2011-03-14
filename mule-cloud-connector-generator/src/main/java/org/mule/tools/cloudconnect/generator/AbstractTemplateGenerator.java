@@ -18,9 +18,11 @@
 package org.mule.tools.cloudconnect.generator;
 
 import org.mule.tools.cloudconnect.generator.directives.CapitalizeDirective;
+import org.mule.tools.cloudconnect.generator.directives.IndentDirective;
 import org.mule.tools.cloudconnect.generator.directives.MarkdownFillDirective;
 import org.mule.tools.cloudconnect.generator.directives.SingularizeDirective;
 import org.mule.tools.cloudconnect.generator.directives.SplitCamelCaseDirective;
+import org.mule.tools.cloudconnect.generator.directives.TitleCamelCaseDirective;
 import org.mule.tools.cloudconnect.generator.directives.TypeClassDirective;
 import org.mule.tools.cloudconnect.generator.directives.UncapitalizeDirective;
 import org.mule.tools.cloudconnect.model.JavaClass;
@@ -117,9 +119,11 @@ public abstract class AbstractTemplateGenerator
         cfg.setSharedVariable("capitalize", new CapitalizeDirective());
         cfg.setSharedVariable("singularize", new SingularizeDirective());
         cfg.setSharedVariable("splitCamelCase", new SplitCamelCaseDirective());
+        cfg.setSharedVariable("titleCamelCase", new TitleCamelCaseDirective());
         cfg.setSharedVariable("typeClass", new TypeClassDirective());
         cfg.setSharedVariable("titleFill", new MarkdownFillDirective('='));
         cfg.setSharedVariable("subTitleFill", new MarkdownFillDirective('-'));
+        cfg.setSharedVariable("indent", new IndentDirective(4));
 
         cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
         BeansWrapper bw = (BeansWrapper) cfg.getObjectWrapper();

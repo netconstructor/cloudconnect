@@ -51,4 +51,6 @@ public interface JavaMethod extends JavaElement
     String getMessageProcessorName();
 
     JavaType getReturnType();
+
+    String getExample();
 }

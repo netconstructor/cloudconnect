@@ -20,12 +20,16 @@ package org.mule.tools.cloudconnect.it;
 import org.mule.tools.cloudconnect.annotations.Connector;
 import org.mule.tools.cloudconnect.annotations.Operation;
 import org.mule.tools.cloudconnect.annotations.Parameter;
+import org.mule.tools.cloudconnect.annotations.Property;
 
 import java.util.Map;
 
 @Connector(namespacePrefix="opt")
 public class OptionalCloudConnector
 {
+    @Property(optional=true)
+    private String url;
+
     @Operation
     public int sumAndMultiply(int a, int b, @Parameter(optional=true, defaultValue="1") int c)
     {
@@ -43,4 +47,9 @@ public class OptionalCloudConnector
         return fields.size();
     }
 
+
+    public void setUrl(String url)
+    {
+        this.url = url;
+    }
 }

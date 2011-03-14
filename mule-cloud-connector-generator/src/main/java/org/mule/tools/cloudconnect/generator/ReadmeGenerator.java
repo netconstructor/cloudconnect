@@ -46,6 +46,7 @@ public class ReadmeGenerator extends AbstractTemplateGenerator
         root.put("repoUrl", repoUrl);
         root.put("repoName", repoName);
         root.put("repoLayout", repoLayout);
+        root.put("class", getJavaClass());
 
         return root;
     }

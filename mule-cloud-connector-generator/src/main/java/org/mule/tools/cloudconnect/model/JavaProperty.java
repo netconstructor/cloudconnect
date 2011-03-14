@@ -29,4 +29,8 @@ public interface JavaProperty extends JavaElement
     boolean isConfigurable();
 
     List<JavaAnnotation> getAnnotations();
+
+    String getExample();
+
+    boolean isOptional();
 }

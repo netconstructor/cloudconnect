@@ -66,6 +66,15 @@ public class ReadmeGenerateMojo extends AbstractConnectorMojo
         readmeGenerator.setRepoUrl(project.getDistributionManagement().getRepository().getUrl().replace("dav:", ""));
         readmeGenerator.setRepoLayout(project.getDistributionManagement().getRepository().getLayout());
 
+        for (JavaClass javaClass : model.getClasses())
+        {
+            if (javaClass.isConnector())
+            {
+                readmeGenerator.setJavaClass(javaClass);
+                break;
+            }
+        }
+
         try
         {
             output = openReadmeFilestream("README.md");
