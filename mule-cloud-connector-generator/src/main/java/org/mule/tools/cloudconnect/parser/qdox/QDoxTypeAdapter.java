@@ -18,10 +18,8 @@
 package org.mule.tools.cloudconnect.parser.qdox;
 
 import org.mule.tools.cloudconnect.model.AbstractJavaType;
-import org.mule.tools.cloudconnect.model.JavaAnnotation;
 import org.mule.tools.cloudconnect.model.JavaType;
 
-import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.Type;
 
@@ -128,9 +126,13 @@ public class QDoxTypeAdapter extends AbstractJavaType
     public List<JavaType> getTypeArguments()
     {
         List<JavaType> javaTypes = new ArrayList<JavaType>();
-        for (int i = 0; i < javaType.getActualTypeArguments().length; i++)
+
+        if (javaType.getActualTypeArguments() != null)
         {
-            javaTypes.add(new QDoxTypeAdapter(javaType.getActualTypeArguments()[i]));
+            for (int i = 0; i < javaType.getActualTypeArguments().length; i++)
+            {
+                javaTypes.add(new QDoxTypeAdapter(javaType.getActualTypeArguments()[i]));
+            }
         }
 
         return javaTypes;

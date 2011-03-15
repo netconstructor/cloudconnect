@@ -184,7 +184,11 @@ def generateArchetypeScriptFile(String filename)
         // to run a snapshot version of the archetype we must declare repository to find it
         if (archetypeProperties.archetypeVersion.endsWith("SNAPSHOT"))
         {
-            writer.write(" -DarchetypeRepository=http://snapshots.repository.codehaus.org")
+            writer.write(" -DarchetypeRepository=\"http://repository.muleforge.org/snapshot/\"")
+        }
+        else
+        {
+            writer.write(" -DarchetypeRepository=\"http://repository.muleforge.org/release/\"")
         }
 
         writer.newLine()

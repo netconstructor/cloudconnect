@@ -36,9 +36,9 @@ the following under the <dependencies> element in the pom.xml file of the
 application:
 
     <dependency>
-        <groupId>org.mule.modules</groupId>
-        <artifactId>mule-module-cmis</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <groupId>${groupId}</groupId>
+        <artifactId>${artifactId}</artifactId>
+        <version>${version}</version>
     </dependency>
 
 Configuration
@@ -46,18 +46,25 @@ Configuration
 
 You can configure the connector as follows:
 
-    <${class.getNamespacePrefix()}:config<#list class.getProperties() as property><#if property.isConfigurable()> <@uncapitalize>${property.getName()}</@uncapitalize>="<#if property.getExample()?has_content>${property.getExample()}<#else>value</#if>"</#if></#list>/>
+    <${class.getNamespacePrefix()}:config<#if class.getFactory()?has_content><#list class.getFactory().getProperties() as property><#if property.isConfigurable()> <@uncapitalize>${property.getName()}</@uncapitalize>="<#if property.getExample()?has_content>${property.getExample()}<#else>value</#if>"</#if></#list><#else><#list class.getProperties() as property><#if property.isConfigurable()> <@uncapitalize>${property.getName()}</@uncapitalize>="<#if property.getExample()?has_content>${property.getExample()}<#else>value</#if>"</#if></#list></#if>/>
 
 Here is detailed list of all the configuration attributes:
 
 | attribute | description | optional | default value |
 |:-----------|:-----------|:---------|:--------------|
-|name|Give a name to this configuration so it can be later referenced by config-ref.|yes|
+|name|Give a name to this configuration so it can be later referenced by config-ref.|yes||
+<#if class.getFactory()?has_content>
+<#list class.getFactory().getProperties() as property>
+|<@uncapitalize>${property.getName()}</@uncapitalize>|<#if property.getDescription()?has_content>${property.getDescription()}</#if>|<#if property.isOptional()>yes<#else>no</#if>|${property.getDefaultValue()}
+</#list>
+<#else>
 <#list class.getProperties() as property>
 <#if property.isConfigurable()>
-|<@uncapitalize>${property.getName()}</@uncapitalize>|<#if property.getDescription()?has_content>${property.getDescription()}</#if>|no|
+|<@uncapitalize>${property.getName()}</@uncapitalize>|<#if property.getDescription()?has_content>${property.getDescription()}</#if>|<#if property.isOptional()>yes<#else>no</#if>|${property.getDefaultValue()}
 </#if>
 </#list>
+</#if>
+
 
 <#list class.getMethods() as method>
 <#if method.isOperation()>
@@ -70,14 +77,14 @@ ${method.getDescription()}
 <#if method.getExample()?has_content>
 
 <@indent>${method.getExample()}</@indent>
+</#if>
 
-| attribute | description | optional | default value |
-|:-----------|:-----------|:---------|:--------------|
-|config-ref|Specify which configuration to use for this invocation|yes|
+| attribute | description | optional | default value | possible values |
+|:-----------|:-----------|:---------|:--------------|:----------------|
+|config-ref|Specify which configuration to use for this invocation|yes||
 <#list method.getParameters() as parameter>
-|<@uncapitalize>${parameter.getElementName()}</@uncapitalize>|<#if parameter.getDescription()?has_content>${parameter.getDescription()}</#if>|<#if parameter.isOptional()>yes<#else>no</#if>|${parameter.getDefaultValue()}
+|<@uncapitalize>${parameter.getElementName()}</@uncapitalize>|<#if parameter.getDescription()?has_content>${parameter.getDescription()}</#if>|<#if parameter.isOptional()>yes<#else>no</#if>|${parameter.getDefaultValue()}|<#if parameter.getType().isEnum()><#list parameter.getType().getValues() as value>*${value}*<#if value_has_next>, </#if></#list></#if>
 </#list>
 </#if>
 
-</#if>
 </#list>
