@@ -279,20 +279,18 @@
         </repository>
         #end
     </repositories>
-    #if($ArchetypeIsSnapshot == true)
 
     <pluginRepositories>
         <pluginRepository>
-            <id>codehaus-plugin-snapshots</id>
-            <name>Codehaus Plugin Snapshot Repository</name>
-            <url>http://snapshots.repository.codehaus.org</url>
+            <id>muleforge-plugin-release</id>
+            <name>Muleforge Release Repository</name>
+            <url>http://repository.muleforge.org/release/</url>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-    #end
 </project>
