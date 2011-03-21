@@ -122,7 +122,7 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
     private File getSourceResourcesMetaInf()
             throws MojoExecutionException
     {
-        File metaInfDirectory = new File(schemaDirectory, "META-INF");
+        File metaInfDirectory = new File(generatedResourcesDirectory(), "META-INF");
         createDirectory(metaInfDirectory);
         return metaInfDirectory;
     }
