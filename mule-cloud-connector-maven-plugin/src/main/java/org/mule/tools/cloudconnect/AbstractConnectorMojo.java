@@ -152,7 +152,6 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         Resource testResource = new Resource();
         testResource.setDirectory(resourceDirectory.getAbsolutePath());
         getProject().addTestResource(testResource);
-
     }
 
     protected File generatedSourcesDirectory()

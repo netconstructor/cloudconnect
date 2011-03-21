@@ -39,6 +39,13 @@ import org.codehaus.plexus.util.IOUtil;
  */
 public class SchemaGenerateMojo extends AbstractConnectorMojo
 {
+    /**
+     * Directory under which the schema will be generated.
+     *
+     * @parameter expression="${basedir}/src/main/resources"
+     */
+    private File schemaDirectory;
+
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
@@ -94,7 +101,7 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
 
     private OutputStream openSchemaFileStream(String schemaFilename) throws IOException, MojoExecutionException
     {
-        File metaInfDirectory = getResourcesMetaInf();
+        File metaInfDirectory = getSourceResourcesMetaInf();
 
         File schemaFile = new File(metaInfDirectory, schemaFilename);
         return new FileOutputStream(schemaFile);
@@ -106,6 +113,14 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
 
         File springSchemaFile = new File(metaInfDirectory, "spring.schemas");
         return new FileOutputStream(springSchemaFile);
+    }
+
+    private File getSourceResourcesMetaInf()
+            throws MojoExecutionException
+    {
+        File metaInfDirectory = new File(schemaDirectory, "META-INF");
+        createDirectory(metaInfDirectory);
+        return metaInfDirectory;
     }
 
     private File getResourcesMetaInf()
