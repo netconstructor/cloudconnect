@@ -3,12 +3,12 @@
     <parent>
         <groupId>org.mule.tools</groupId>
         <artifactId>mule-cloud-connector</artifactId>
-        <version>2.0.12</version>
+        <version>2.0.13-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.mule.tools</groupId>
     <artifactId>mule-cloud-connector-integration-tests</artifactId>
-    <version>2.0.12</version>
+    <version>2.0.13-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Mule Cloud Connector Integration Tests</name>
 
