@@ -46,6 +46,10 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
      */
     private File schemaDirectory;
 
+    /**
+     * @parameter expression="${project.version}"
+     */
+    protected String schemaVersion;
 
     public void execute() throws MojoExecutionException, MojoFailureException
     {
@@ -131,4 +135,9 @@ public class SchemaGenerateMojo extends AbstractConnectorMojo
         return metaInfDirectory;
     }
 
+
+    protected String getSchemaVersion()
+    {
+        return schemaVersion;
+    }
 }

@@ -57,11 +57,6 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
     protected MavenProject project;
 
     /**
-     * @parameter expression="${project.version}"
-     */
-    protected String schemaVersion;
-
-    /**
      *
      */
     private ClassParser parser;
@@ -126,22 +121,6 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         return parser;
     }
 
-    protected String determineNamespaceIdentifierSuffixFromSchemaFilename(String schemaFilename) throws MojoExecutionException
-    {
-        if (schemaFilename.startsWith("mule-") == false)
-        {
-            throw new MojoExecutionException("schemaFilename must start with 'mule-'");
-        }
-        if (schemaFilename.endsWith(".xsd") == false)
-        {
-            throw new MojoExecutionException("schemaFilename must end with the .xsd extension");
-        }
-
-        String suffix = schemaFilename.replace("mule-", "");
-        suffix = suffix.replace(".xsd", "");
-        return suffix;
-    }
-
     protected void createAndAttachGeneratedSourcesDirectory() throws MojoExecutionException
     {
         File sourceDirectory = generatedSourcesDirectory();
@@ -149,9 +128,9 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         getProject().addCompileSourceRoot(sourceDirectory.getAbsolutePath());
 
         File resourceDirectory = generatedResourcesDirectory();
-        Resource testResource = new Resource();
-        testResource.setDirectory(resourceDirectory.getAbsolutePath());
-        getProject().addTestResource(testResource);
+        Resource generatedResources = new Resource();
+        generatedResources.setDirectory(resourceDirectory.getAbsolutePath());
+        getProject().addResource(generatedResources);
     }
 
     protected File generatedSourcesDirectory()
@@ -162,10 +141,5 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
     protected File generatedResourcesDirectory()
     {
         return new File(getTargetDirectory(), "generated-resources/mule");
-    }
-
-    protected String getSchemaVersion()
-    {
-        return schemaVersion;
     }
 }

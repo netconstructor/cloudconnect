@@ -203,20 +203,6 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
         }
     }
 
-    private File namespaceHandlerProjectRelativeFile(File namespaceHandler)
-    {
-        String namespaceHandlerPath = namespaceHandler.getAbsolutePath();
-
-        // cut off the absolute path to the project
-        String basedir = project.getBasedir().getAbsolutePath();
-        String relativeNamespaceHandlerPath = namespaceHandlerPath.replace(basedir, "");
-
-        // cut off the leading '/'
-        relativeNamespaceHandlerPath = relativeNamespaceHandlerPath.substring(1);
-
-        return new File(relativeNamespaceHandlerPath);
-    }
-
     private OutputStream openNamespaceHandlerFileStream(String namespaceHandlerPackage, String namesapceHandlerName) throws IOException, MojoExecutionException
     {
         String directory = namespaceHandlerPackage.replace('.', File.separatorChar);
