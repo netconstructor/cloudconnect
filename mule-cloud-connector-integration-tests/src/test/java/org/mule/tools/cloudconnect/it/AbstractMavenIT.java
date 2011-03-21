@@ -55,7 +55,7 @@ public abstract class AbstractMavenIT
         verifier.setAutoclean(false);
         verifier.setMavenDebug(true);
 
-        verifier.executeGoal("test");
+        verifier.executeGoal("package");
 
         verifier.verifyErrorFreeLog();
     }
