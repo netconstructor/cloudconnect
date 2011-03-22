@@ -20,6 +20,7 @@ package org.mule.tools.cloudconnect.model;
 public abstract class AbstractJavaClass implements JavaClass
 {
 
+    private static final String XML_TYPE_ANNOTATION = "javax.xml.bind.annotation.XmlType";
     private static final String CONNECTOR_ANNOTATION = "org.mule.tools.cloudconnect.annotations.Connector";
     private static final String FACTORY_ARGUMENT = "factory";
     private static final String NAMESPACE_PREFIX_ARGUMENT = "namespacePrefix";
@@ -40,6 +41,19 @@ public abstract class AbstractJavaClass implements JavaClass
         return false;
     }
 
+    public boolean isXmlType()
+    {
+        for (JavaAnnotation annotation : getAnnotations())
+        {
+            if (annotation.getType().equals(XML_TYPE_ANNOTATION))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public String getNamespacePrefix()
     {
         for (JavaAnnotation annotation : getAnnotations())
@@ -47,7 +61,7 @@ public abstract class AbstractJavaClass implements JavaClass
             if (annotation.getType().equals(CONNECTOR_ANNOTATION) &&
                 annotation.getNamedParameter(NAMESPACE_PREFIX_ARGUMENT) != null)
             {
-                return ((String)annotation.getNamedParameter(NAMESPACE_PREFIX_ARGUMENT)).replace("\"", "");
+                return ((String) annotation.getNamedParameter(NAMESPACE_PREFIX_ARGUMENT)).replace("\"", "");
             }
         }
 
@@ -61,7 +75,7 @@ public abstract class AbstractJavaClass implements JavaClass
             if (annotation.getType().equals(CONNECTOR_ANNOTATION) &&
                 annotation.getNamedParameter(NAMESPACE_URI_ARGUMENT) != null)
             {
-                return ((String)annotation.getNamedParameter(NAMESPACE_URI_ARGUMENT)).replace("\"", "");
+                return ((String) annotation.getNamedParameter(NAMESPACE_URI_ARGUMENT)).replace("\"", "");
             }
         }
 
@@ -80,7 +94,7 @@ public abstract class AbstractJavaClass implements JavaClass
             if (annotation.getType().equals(CONNECTOR_ANNOTATION) &&
                 annotation.getNamedParameter(MULE_VERSION_ARGUMENT) != null)
             {
-                return ((String)annotation.getNamedParameter(MULE_VERSION_ARGUMENT)).replace("\"", "");
+                return ((String) annotation.getNamedParameter(MULE_VERSION_ARGUMENT)).replace("\"", "");
             }
         }
 
@@ -94,10 +108,10 @@ public abstract class AbstractJavaClass implements JavaClass
             if (annotation.getType().equals(CONNECTOR_ANNOTATION) &&
                 annotation.getNamedParameter(FACTORY_ARGUMENT) != null)
             {
-                String fqClassName = ((String)annotation.getNamedParameter(FACTORY_ARGUMENT)).replace("\"", "").replace(".class", "");
-                for( JavaClass clazz : getParentModel().getClasses() )
+                String fqClassName = ((String) annotation.getNamedParameter(FACTORY_ARGUMENT)).replace("\"", "").replace(".class", "");
+                for (JavaClass clazz : getParentModel().getClasses())
                 {
-                    if( clazz.getFullyQualifiedName().equals(fqClassName ))
+                    if (clazz.getFullyQualifiedName().equals(fqClassName))
                     {
                         return clazz;
                     }

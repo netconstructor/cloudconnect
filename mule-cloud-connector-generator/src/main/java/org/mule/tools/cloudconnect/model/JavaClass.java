@@ -35,7 +35,11 @@ public interface JavaClass
 
     List<JavaMethod> getMethods();
 
+    List<JavaField> getFields();
+
     Set<JavaType> getEnums();
+
+    Set<JavaType> getXmlTypes();
 
     List<JavaAnnotation> getAnnotations();
 
@@ -56,4 +60,22 @@ public interface JavaClass
     String getNamespaceHandlerName();
 
     String getNamespaceHandlerPackage();
+
+    boolean isXmlType();
+
+    JavaClass getSuperClass();
+
+    boolean isInterface();
+
+    boolean isInnerClass();
+
+    boolean isFinal();
+
+    boolean isAbstract();
+
+    boolean isEnum();
+
+    boolean hasDefaultConstructor();
+
+    JavaMethod getMethodBySignature(String name, List<JavaParameter> types);
 }

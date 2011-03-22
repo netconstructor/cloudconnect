@@ -17,10 +17,11 @@
 
 package org.mule.tools.cloudconnect.model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JavaModel
+public abstract class JavaModel
 {
     private List<JavaClass> classes;
 
@@ -38,4 +39,12 @@ public class JavaModel
     {
         return classes;
     }
+
+    public abstract JavaType getVoidType();
+
+    public abstract void parse(List<File> sourceTrees);
+
+    public abstract JavaType getType(Class cls);
+
+    public abstract JavaClass getClass(String name);
 }

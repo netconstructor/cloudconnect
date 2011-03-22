@@ -20,8 +20,6 @@ import java.util.List;
 
 public interface JavaType
 {
-    boolean isEnum();
-
     String getName();
 
     boolean isArray();
@@ -49,4 +47,10 @@ public interface JavaType
     String getTransformerName();
 
     String getTransformerPackage();
+
+    JavaClass getJavaClass();
+
+    boolean isA(JavaType type);
+
+    JavaType erasure();
 }

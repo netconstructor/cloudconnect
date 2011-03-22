@@ -17,17 +17,18 @@
 
 package org.mule.tools.cloudconnect.model;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 public abstract class AbstractJavaType implements JavaType
 {
+
     public String getXmlType(boolean isConfig)
     {
-        if (isEnum())
+        if (getJavaClass().isEnum())
         {
-            return getName() + "Enum";
+            return getJavaClass().getName() + "Enum";
+        }
+        else if (getJavaClass().isXmlType())
+        {
+            return getJavaClass().getName() + "Xml";
         }
 
         return "xsd:string";
@@ -40,6 +41,6 @@ public abstract class AbstractJavaType implements JavaType
 
     public String getTransformerName()
     {
-        return "StringTo" + getName() + "Transformer";
+        return "StringTo" + getJavaClass().getName() + "Transformer";
     }
 }

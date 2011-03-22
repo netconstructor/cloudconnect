@@ -175,4 +175,10 @@
     </xsd:simpleType>
 
     </#list>
+
+    <!-- XML Types -->
+    <#list class.getXmlTypes() as xmlType>
+    ${xmlType.getJavaClass().getXmlComplexType()}
+
+    </#list>
 </xsd:schema>

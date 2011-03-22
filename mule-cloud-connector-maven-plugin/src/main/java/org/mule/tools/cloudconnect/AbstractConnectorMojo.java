@@ -18,12 +18,11 @@
 package org.mule.tools.cloudconnect;
 
 import org.mule.tools.cloudconnect.model.JavaModel;
-import org.mule.tools.cloudconnect.parser.ClassParseException;
-import org.mule.tools.cloudconnect.parser.ClassParser;
-import org.mule.tools.cloudconnect.parser.qdox.QDoxClassParser;
+import org.mule.tools.cloudconnect.parser.qdox.QDoxModel;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.maven.model.Resource;
@@ -56,17 +55,6 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
      */
     protected MavenProject project;
 
-    /**
-     *
-     */
-    private ClassParser parser;
-
-    public AbstractConnectorMojo()
-    {
-        parser = new QDoxClassParser();
-        parser.setLog(new MavenClassParserLog(getLog()));
-    }
-
     public MavenProjectHelper getProjectHelper()
     {
         return projectHelper;
@@ -95,30 +83,18 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
 
     protected JavaModel parseModel() throws MojoExecutionException
     {
+        QDoxModel model = new QDoxModel();
+        List<File> sourceRoots = new ArrayList<File>();
         for (String sourceRoot : (List<String>) project.getCompileSourceRoots())
         {
-            parser.addSourceTree(new File(sourceRoot));
+            sourceRoots.add(new File(sourceRoot));
         }
 
         InputStream input = null;
-        try
-        {
-            return parser.parse();
-        }
-        catch (ClassParseException cpe)
-        {
-            throw new MojoExecutionException(
-                    "Error while parsing ", cpe);
-        }
-        finally
-        {
-            IOUtil.close(input);
-        }
-    }
+        model.parse(sourceRoots);
+        IOUtil.close(input);
 
-    public ClassParser getParser()
-    {
-        return parser;
+        return model;
     }
 
     protected void createAndAttachGeneratedSourcesDirectory() throws MojoExecutionException

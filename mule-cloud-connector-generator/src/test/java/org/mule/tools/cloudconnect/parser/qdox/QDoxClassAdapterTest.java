@@ -53,7 +53,7 @@ public class QDoxClassAdapterTest
     @Test
     public void name() throws Exception
     {
-        JavaModel model = new JavaModel();
+        JavaModel model = new QDoxModel();
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getName()).thenReturn(NAME);
         when(classMock.getMethods(true)).thenReturn(new JavaMethod[] { });
@@ -67,7 +67,7 @@ public class QDoxClassAdapterTest
     @Test
     public void pkg() throws Exception
     {
-        JavaModel model = new JavaModel();
+        JavaModel model = new QDoxModel();
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getMethods(true)).thenReturn(new JavaMethod[] { });
         when(classMock.getBeanProperties(true)).thenReturn(new BeanProperty[] { });
@@ -83,7 +83,7 @@ public class QDoxClassAdapterTest
     @Test
     public void description() throws Exception
     {
-        JavaModel model = new JavaModel();
+        JavaModel model = new QDoxModel();
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getComment()).thenReturn(COMMENT);
         when(classMock.getMethods(true)).thenReturn(new JavaMethod[] { });
@@ -97,7 +97,7 @@ public class QDoxClassAdapterTest
     @Test
     public void properties() throws Exception
     {
-        JavaModel model = new JavaModel();
+        JavaModel model = new QDoxModel();
         JavaClass typeClassMock = mock(JavaClass.class);
         when(typeClassMock.isEnum()).thenReturn(false);
         Type typeMock = mock(Type.class);
@@ -127,7 +127,7 @@ public class QDoxClassAdapterTest
     @Test
     public void classBeanPropertyNotAvailable() throws Exception
     {
-        JavaModel model = new JavaModel();
+        JavaModel model = new QDoxModel();
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getMethods(true)).thenReturn(new JavaMethod[] { });
         when(classMock.getBeanProperties(true)).thenReturn(new BeanProperty[] { });
@@ -144,7 +144,7 @@ public class QDoxClassAdapterTest
     @Test
     public void hasProperties() throws Exception
     {
-        JavaModel model = new JavaModel();
+        JavaModel model = new QDoxModel();
         JavaClass typeClassMock = mock(JavaClass.class);
         when(typeClassMock.isEnum()).thenReturn(false);
         Type typeMock = mock(Type.class);
@@ -164,7 +164,7 @@ public class QDoxClassAdapterTest
     @Test
     public void doesntHaveProperties() throws Exception
     {
-        JavaModel model = new JavaModel();
+        JavaModel model = new QDoxModel();
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getMethods(true)).thenReturn(new JavaMethod[] { });
         BeanProperty[] properties = new BeanProperty[] {};
@@ -178,7 +178,7 @@ public class QDoxClassAdapterTest
     @Test
     public void operations() throws Exception
     {
-        JavaModel model = new JavaModel();
+        JavaModel model = new QDoxModel();
         JavaClass classMock = mock(JavaClass.class);
         when(classMock.getBeanProperties(true)).thenReturn(new BeanProperty[] { });
         when(classMock.getName()).thenReturn(NAME);

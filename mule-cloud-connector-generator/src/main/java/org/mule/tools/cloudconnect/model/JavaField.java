@@ -15,12 +15,19 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect.parser;
+package org.mule.tools.cloudconnect.model;
 
-public interface ClassParserLog
+public interface JavaField
 {
-    void debug(String content);
-    void error(String content);
-    void warn(String content);
-    void info(String content);
+    String getName();
+
+    JavaType getType();
+
+    JavaClass getParentClass();
+
+    boolean isTransient();
+
+    boolean isPublic();
+
+    boolean isStatic();
 }

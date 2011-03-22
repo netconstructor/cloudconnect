@@ -44,6 +44,8 @@ public interface JavaMethod extends JavaElement
 
     boolean isStatic();
 
+    boolean isVolatile();
+
     JavaClass getParentClass();
 
     String getBeanDefinitionParserName();

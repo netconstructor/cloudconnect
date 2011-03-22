@@ -18,6 +18,7 @@
 package org.mule.tools.cloudconnect.parser.qdox;
 
 import org.mule.tools.cloudconnect.model.AbstractJavaType;
+import org.mule.tools.cloudconnect.model.JavaClass;
 import org.mule.tools.cloudconnect.model.JavaType;
 
 import com.thoughtworks.qdox.model.JavaField;
@@ -31,25 +32,15 @@ public class QDoxTypeAdapter extends AbstractJavaType
 
     private static final Type LIST_TYPE = new Type("java.util.List");
     private static final Type MAP_TYPE = new Type("java.util.Map");
-    private Type javaType;
+    Type javaType;
 
     public QDoxTypeAdapter(Type javaType)
     {
         this.javaType = javaType;
     }
 
-    public boolean isEnum()
-    {
-        return javaType.getJavaClass().isEnum();
-    }
-
     public String getName()
     {
-        if (isEnum())
-        {
-            return javaType.getJavaClass().getName();
-        }
-
         return javaType.getFullyQualifiedName();
     }
 
@@ -152,5 +143,20 @@ public class QDoxTypeAdapter extends AbstractJavaType
     public String getTransformerPackage()
     {
         return javaType.getJavaClass().getPackageName() + ".transformers";
+    }
+
+    public JavaClass getJavaClass()
+    {
+        return new QDoxClassAdapter(javaType.getJavaClass(), null);
+    }
+
+    public boolean isA(org.mule.tools.cloudconnect.model.JavaType type)
+    {
+        return this.javaType.isA(((QDoxTypeAdapter)type).javaType);
+    }
+
+    public JavaType erasure()
+    {
+        return new QDoxTypeAdapter( new Type(this.javaType.getFullyQualifiedName(), 0) );
     }
 }

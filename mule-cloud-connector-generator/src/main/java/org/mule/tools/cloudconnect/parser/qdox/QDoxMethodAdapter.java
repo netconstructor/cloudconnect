@@ -156,4 +156,9 @@ public class QDoxMethodAdapter extends AbstractJavaMethod
 
         return null;
     }
+
+    public boolean isVolatile()
+    {
+        return this.javaMethod.isVolatile();
+    }
 }
