@@ -20,10 +20,8 @@ package org.mule.tools.cloudconnect.model;
 import java.util.List;
 import java.util.Set;
 
-public interface JavaClass
+public interface JavaClass extends JavaAnnotatedElement
 {
-
-    String getName();
 
     String getPackage();
 
@@ -40,8 +38,6 @@ public interface JavaClass
     Set<JavaType> getEnums();
 
     Set<JavaType> getXmlTypes();
-
-    List<JavaAnnotation> getAnnotations();
 
     boolean isConnector();
 

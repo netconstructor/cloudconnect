@@ -18,18 +18,35 @@
 package org.mule.tools.cloudconnect.parser.qdox;
 
 import org.mule.tools.cloudconnect.model.AbstractJavaField;
+import org.mule.tools.cloudconnect.model.JavaAnnotation;
 import org.mule.tools.cloudconnect.model.JavaClass;
 import org.mule.tools.cloudconnect.model.JavaType;
 
+import com.thoughtworks.qdox.model.Annotation;
 import com.thoughtworks.qdox.model.JavaField;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QDoxFieldAdapter extends AbstractJavaField
 {
     private JavaField javaField;
+    private List<JavaAnnotation> annotations;
 
     public QDoxFieldAdapter(JavaField field)
     {
         this.javaField = field;
+    }
+
+    public void buildAnnotationCollection()
+    {
+        this.annotations = new ArrayList<JavaAnnotation>();
+
+        Annotation[] annotations = javaField.getAnnotations();
+        for (int i = 0; i < annotations.length; i++)
+        {
+            this.annotations.add(new QDoxAnnotationAdapter(annotations[i]));
+        }
     }
 
     public String getName()
@@ -60,5 +77,15 @@ public class QDoxFieldAdapter extends AbstractJavaField
     public JavaClass getParentClass()
     {
         return new QDoxClassAdapter(this.javaField.getParentClass(), null);
+    }
+
+    public List<JavaAnnotation> getAnnotations()
+    {
+        if (annotations == null)
+        {
+            buildAnnotationCollection();
+        }
+
+        return annotations;
     }
 }

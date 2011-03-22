@@ -17,7 +17,10 @@
 
 package org.mule.tools.cloudconnect.model;
 
-public abstract class AbstractJavaField extends AbstractJavaAnnotatedElement implements JavaField
+public abstract class AbstractJavaAnnotatedElement extends AbstractJavaElement
 {
-
+    public <T> T getAnnotation(Class<T> c)
+    {
+        return null;
+    }
 }

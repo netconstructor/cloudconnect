@@ -68,6 +68,11 @@ public class QDoxClassAdapter extends AbstractJavaClass
         return javaClass.getName();
     }
 
+    public String getElementName()
+    {
+        return getName();
+    }
+
     public String getPackage()
     {
         return javaClass.getPackage().getName();
@@ -381,14 +386,16 @@ public class QDoxClassAdapter extends AbstractJavaClass
         int i = 0;
         for (JavaParameter parameter : parameters)
         {
-            types[i] = ((QDoxTypeAdapter)parameter.getType()).javaType;
+            types[i] = ((QDoxTypeAdapter) parameter.getType()).javaType;
             i++;
         }
 
         com.thoughtworks.qdox.model.JavaMethod method = this.javaClass.getMethodBySignature(name, types);
 
-        if( method != null )
+        if (method != null)
+        {
             return new QDoxMethodAdapter(this.javaClass.getMethodBySignature(name, types), this);
+        }
 
         return null;
     }

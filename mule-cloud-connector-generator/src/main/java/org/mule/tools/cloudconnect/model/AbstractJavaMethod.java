@@ -19,7 +19,7 @@ package org.mule.tools.cloudconnect.model;
 
 import org.apache.commons.lang.StringUtils;
 
-public abstract class AbstractJavaMethod extends AbstractJavaElement implements JavaMethod
+public abstract class AbstractJavaMethod extends AbstractJavaAnnotatedElement implements JavaMethod
 {
 
     private static final String OBJECT_CLASS_NAME = "Object";

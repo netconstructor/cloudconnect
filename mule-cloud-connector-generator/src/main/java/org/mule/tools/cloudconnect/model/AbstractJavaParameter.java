@@ -17,7 +17,7 @@
 
 package org.mule.tools.cloudconnect.model;
 
-public abstract class AbstractJavaParameter extends AbstractJavaElement implements JavaParameter
+public abstract class AbstractJavaParameter extends AbstractJavaAnnotatedElement implements JavaParameter
 {
 
     public boolean isOptional()

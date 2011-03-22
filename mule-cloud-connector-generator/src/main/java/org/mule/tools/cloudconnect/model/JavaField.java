@@ -17,10 +17,8 @@
 
 package org.mule.tools.cloudconnect.model;
 
-public interface JavaField
+public interface JavaField extends JavaAnnotatedElement
 {
-    String getName();
-
     JavaType getType();
 
     JavaClass getParentClass();

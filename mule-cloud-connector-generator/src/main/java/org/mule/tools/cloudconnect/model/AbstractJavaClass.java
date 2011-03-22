@@ -17,7 +17,7 @@
 
 package org.mule.tools.cloudconnect.model;
 
-public abstract class AbstractJavaClass implements JavaClass
+public abstract class AbstractJavaClass extends AbstractJavaAnnotatedElement implements JavaClass
 {
 
     private static final String XML_TYPE_ANNOTATION = "javax.xml.bind.annotation.XmlType";

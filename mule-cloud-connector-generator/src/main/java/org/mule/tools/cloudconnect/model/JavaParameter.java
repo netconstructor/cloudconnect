@@ -17,9 +17,7 @@
 
 package org.mule.tools.cloudconnect.model;
 
-import java.util.List;
-
-public interface JavaParameter extends JavaElement
+public interface JavaParameter extends JavaAnnotatedElement
 {
 
     JavaMethod getParentMethod();
@@ -33,6 +31,4 @@ public interface JavaParameter extends JavaElement
     String getDefaultValue();
 
     boolean hasDefaultValue();
-
-    List<JavaAnnotation> getAnnotations();
 }

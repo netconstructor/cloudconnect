@@ -19,7 +19,7 @@ package org.mule.tools.cloudconnect.model;
 
 import java.util.List;
 
-public interface JavaMethod extends JavaElement
+public interface JavaMethod extends JavaAnnotatedElement
 {
 
     String getDescription();
@@ -27,8 +27,6 @@ public interface JavaMethod extends JavaElement
     boolean hasParameters();
 
     List<JavaParameter> getParameters();
-
-    List<JavaAnnotation> getAnnotations();
 
     boolean isOperation();
 
