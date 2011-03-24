@@ -20,6 +20,21 @@ package org.mule.tools.cloudconnect.model;
 public abstract class AbstractJavaParameter extends AbstractJavaElement implements JavaParameter
 {
 
+    @Override
+    public String getElementName()
+    {
+        for (JavaAnnotation annotation : getAnnotations())
+        {
+            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Parameter") &&
+                annotation.getNamedParameter("name") != null)
+            {
+                return ((String) annotation.getNamedParameter("name")).replace("\"", "");
+            }
+        }
+
+        return super.getElementName();
+    }
+
     public boolean isOptional()
     {
         for (JavaAnnotation annotation : getAnnotations())
