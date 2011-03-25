@@ -63,7 +63,9 @@ public class QDoxParameterAdapter extends AbstractJavaParameter
                 {
                     if (doclets[i].getValue().indexOf(' ') != -1)
                     {
-                        return doclets[i].getValue().substring(doclets[i].getValue().indexOf(' '));
+                        return
+                        doclets[i].getValue().substring(doclets[i].getValue().indexOf(' '))
+                          .trim().replaceAll("\\s*\n\\s*", " ");
                     }
                 }
             }
