@@ -24,6 +24,7 @@ import org.mule.tools.cloudconnect.model.JavaParameter;
 import org.mule.tools.cloudconnect.model.JavaType;
 
 import com.thoughtworks.qdox.model.Annotation;
+import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.Type;
 
 import java.lang.ref.WeakReference;
@@ -67,6 +68,21 @@ public class QDoxMethodAdapter extends AbstractJavaMethod
 
     }
 
+    public String getReturn() {
+        String ret = null;
+        DocletTag[] doclets  = javaMethod.getTagsByName("return");
+        for (int i = 0; i < doclets.length; i++)
+        {
+            if (doclets[i].getValue().indexOf(' ') != -1)
+            {
+                ret = doclets[i].getValue().substring(doclets[i].getValue().indexOf(' '))
+                    .trim().replaceAll("\\s*\n\\s*", " ");
+                break;
+            }
+        }
+        return ret;
+    }
+    
     public List<JavaParameter> getParameters()
     {
         if (parameters == null)
