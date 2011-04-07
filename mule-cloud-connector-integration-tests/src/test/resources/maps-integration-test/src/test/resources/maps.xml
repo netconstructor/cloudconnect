@@ -27,8 +27,6 @@
         http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.1/mule.xsd
         http://www.mulesoft.org/schema/mule/maps http://www.mulesoft.org/schema/mule/maps/1.0/mule-maps.xsd">
 
-    <maps:config/>
-
     <flow name="countKeysFlow">
         <maps:count-keys>    <!-- this operation receives an array of primitive integers -->
             <maps:strings>

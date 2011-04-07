@@ -27,8 +27,6 @@
         http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.1/mule.xsd
         http://www.mulesoft.org/schema/mule/opt http://www.mulesoft.org/schema/mule/opt/1.0/mule-opt.xsd">
 
-    <opt:config/>
-
     <flow name="withOptional">
         <opt:sum-and-multiply a="2" b="2"/>
     </flow>

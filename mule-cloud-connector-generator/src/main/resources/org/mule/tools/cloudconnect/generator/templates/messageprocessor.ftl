@@ -91,9 +91,17 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
         }
         if (object == null)
         {
-            throw new InitialisationException(CoreMessages.initialisationFailure(String.format(
-                "No instance of '%s' was found in the registry", object.getClass())), this);
+            try
+            {
+                object = new ${class.getName()}();
 
+                muleContext.getRegistry().registerObject("${class.getFullyQualifiedName()}", object);
+            }
+            catch (RegistrationException e)
+            {
+                throw new InitialisationException(
+                    CoreMessages.initialisationFailure("Cannot create a new instance of '${class.getFullyQualifiedName()}'"), this);
+            }
         }
     }
 

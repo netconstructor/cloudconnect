@@ -27,8 +27,6 @@
         http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.1/mule.xsd
         http://www.mulesoft.org/schema/mule/arrays http://www.mulesoft.org/schema/mule/arrays/1.0/mule-arrays.xsd">
 
-    <arrays:config/>
-
     <flow name="sumAllFlow">
         <arrays:sum-all>    <!-- this operation receives an array of primitive integers -->
             <arrays:numbers>
