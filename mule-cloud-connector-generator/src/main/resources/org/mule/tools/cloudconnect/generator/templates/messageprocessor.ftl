@@ -72,13 +72,6 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
 
     protected void lookupObjectInstance() throws InitialisationException
     {
-        if (logger.isDebugEnabled())
-        {
-            logger.debug(String.format(
-                "No object instance specified.  Looking up single instance of type %s in mule registry",
-                object.getClass()));
-        }
-
         try
         {
             object = muleContext.getRegistry().lookupObject(${class.getName()}.class);
