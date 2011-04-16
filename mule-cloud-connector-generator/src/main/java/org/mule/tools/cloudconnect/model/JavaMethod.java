@@ -53,4 +53,6 @@ public interface JavaMethod extends JavaAnnotatedElement
     JavaType getReturnType();
 
     String getExample();
+
+    boolean returnAsProperty();
 }

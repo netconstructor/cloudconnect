@@ -17,24 +17,19 @@
 
 package org.mule.tools.cloudconnect.annotations;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
-/**
- * This annotation will declare a method inside a cloud connector as accessible via a flow
- */
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 @Documented
-public @interface Operation
-{
+public @interface OAuth {
+    OAuthVersion version();
 
-    String name() default EMPTY_STRING;
+    String accessTokenUrl();
 
-    Return returnAs() default Return.Payload;
+    String authorizeUrl();
 
-    public static final String EMPTY_STRING = "";
+    String requestTokenUrl() default EMPTY_STRING;
+
+    static final String EMPTY_STRING = "";
 }

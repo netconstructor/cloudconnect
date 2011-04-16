@@ -15,26 +15,28 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect.annotations;
+package org.mule.tools.cloudconnect.it;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.mule.tools.cloudconnect.annotations.Connector;
+import org.mule.tools.cloudconnect.annotations.Operation;
+import org.mule.tools.cloudconnect.annotations.Parameter;
+import org.mule.tools.cloudconnect.annotations.Property;
+import org.mule.tools.cloudconnect.annotations.Return;
 
-/**
- * This annotation will declare a method inside a cloud connector as accessible via a flow
- */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.SOURCE)
-@Documented
-public @interface Operation
+import java.util.Map;
+
+@Connector(namespacePrefix="return")
+public class ReturnAsCloudConnector
 {
+    @Operation
+    public String empty()
+    {
+        return "empty";
+    }
 
-    String name() default EMPTY_STRING;
-
-    Return returnAs() default Return.Payload;
-
-    public static final String EMPTY_STRING = "";
+    @Operation(returnAs=Return.MessageProperty)
+    public String zero()
+    {
+		return "zero";
+    }
 }

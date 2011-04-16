@@ -15,26 +15,30 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect.annotations;
+package org.mule.tools.cloudconnect.it;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.io.File;
 
-/**
- * This annotation will declare a method inside a cloud connector as accessible via a flow
- */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.SOURCE)
-@Documented
-public @interface Operation
+public class ReturnAsIT extends AbstractMavenIT
 {
 
-    String name() default EMPTY_STRING;
+    protected String getArtifactVersion()
+    {
+        return "1.0";
+    }
 
-    Return returnAs() default Return.Payload;
+    protected String getArtifactId()
+    {
+        return "returnas-integration-test";
+    }
 
-    public static final String EMPTY_STRING = "";
+    protected String getGroupId()
+    {
+        return "org.mule.tools.cloudconnect.it";
+    }
+
+    protected File getRoot()
+    {
+        return new File("target/test-classes/" + getArtifactId());
+    }
 }

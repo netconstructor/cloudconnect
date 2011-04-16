@@ -20,6 +20,7 @@ import org.mule.api.registry.RegistrationException;
 import org.mule.api.transformer.DataType;
 import org.mule.api.transformer.Transformer;
 import org.mule.api.transformer.TransformerException;
+import org.mule.api.transport.PropertyScope;
 import org.mule.config.i18n.CoreMessages;
 import org.mule.transformer.TransformerTemplate;
 import org.mule.transformer.types.DataTypeFactory;
@@ -317,11 +318,16 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
         }
         else if (result != null)
         {
+            <#if !method.returnAsProperty()>
             event.getMessage().applyTransformers(
                 event,
                 Collections.<Transformer> singletonList(new TransformerTemplate(
                     new TransformerTemplate.OverwitePayloadCallback(result))));
             return event;
+            <#else>
+            event.getMessage().setProperty("${method.getElementName()}", result, PropertyScope.OUTBOUND);
+            return event;
+            </#if>
         }
         else
         {

@@ -40,9 +40,9 @@ public @interface Connector
 
     String muleVersion() default MULE_VERSION;
 
-    public static final String EMPTY_STRING = "";
+    static final String EMPTY_STRING = "";
 
-    public static final String MULE_VERSION = "3.1";
+    static final String MULE_VERSION = "3.1";
 
     static final class NO_FACTORY { };
 }

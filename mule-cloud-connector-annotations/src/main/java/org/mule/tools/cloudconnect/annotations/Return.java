@@ -17,24 +17,7 @@
 
 package org.mule.tools.cloudconnect.annotations;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-/**
- * This annotation will declare a method inside a cloud connector as accessible via a flow
- */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.SOURCE)
-@Documented
-public @interface Operation
-{
-
-    String name() default EMPTY_STRING;
-
-    Return returnAs() default Return.Payload;
-
-    public static final String EMPTY_STRING = "";
+public enum Return {
+    Payload,
+    MessageProperty;
 }

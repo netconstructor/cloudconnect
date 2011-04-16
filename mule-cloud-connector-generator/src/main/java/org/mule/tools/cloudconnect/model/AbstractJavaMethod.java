@@ -32,8 +32,6 @@ public abstract class AbstractJavaMethod extends AbstractJavaAnnotatedElement im
             {
                 if (isPublic()
                     && !isStatic()
-                    && !isPropertyAccessor()
-                    && !isPropertyMutator()
                     && !isConstructor()
                     && !OBJECT_CLASS_NAME.equals(getParentClass().getName()))
                 {
@@ -104,6 +102,22 @@ public abstract class AbstractJavaMethod extends AbstractJavaAnnotatedElement im
     public boolean hasParameters()
     {
         return getParameters().size() > 0;
+    }
+
+    public boolean returnAsProperty()
+    {
+        for (JavaAnnotation annotation : getAnnotations())
+        {
+            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Operation"))
+            {
+                if (annotation.getNamedParameter("returnAs") != null)
+                {
+                    return ((String) annotation.getNamedParameter("returnAs")).equals("Return.MessageProperty");
+                }
+            }
+        }
+
+        return false;
     }
 
 }
