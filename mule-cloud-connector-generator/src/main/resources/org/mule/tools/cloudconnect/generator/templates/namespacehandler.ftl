@@ -28,6 +28,11 @@ public class ${class.getNamespaceHandlerName()} extends AbstractPojoNamespaceHan
         registerMuleBeanDefinitionParser("config", new OrphanDefinitionParser(${class.getFactory().getFullyQualifiedName()}.class, true)).addIgnored("name");
         </#if>
         <#list class.getMethods() as method>
+
+        <#if class.hasOAuth()>
+        registerMuleBeanDefinitionParser("request-authorization", new RequestAuthorizationOperationDefinitionParser());
+        </#if>
+
         <#if method.isOperation()>
 
         registerMuleBeanDefinitionParser("<@splitCamelCase>${method.getElementName()}</@splitCamelCase>", new ${method.getBeanDefinitionParserName()}());

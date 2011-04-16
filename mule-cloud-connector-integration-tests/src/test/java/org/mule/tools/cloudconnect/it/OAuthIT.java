@@ -15,21 +15,30 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect.annotations;
+package org.mule.tools.cloudconnect.it;
 
-import java.lang.annotation.*;
+import java.io.File;
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
-@Documented
-public @interface OAuth {
-    OAuthVersion version();
+public class OAuthIT extends AbstractMavenIT
+{
 
-    String accessTokenUrl();
+    protected String getArtifactVersion()
+    {
+        return "1.0";
+    }
 
-    String authorizationUrl();
+    protected String getArtifactId()
+    {
+        return "oauth-integration-test";
+    }
 
-    String requestTokenUrl() default EMPTY_STRING;
+    protected String getGroupId()
+    {
+        return "org.mule.tools.cloudconnect.it";
+    }
 
-    static final String EMPTY_STRING = "";
+    protected File getRoot()
+    {
+        return new File("target/test-classes/" + getArtifactId());
+    }
 }

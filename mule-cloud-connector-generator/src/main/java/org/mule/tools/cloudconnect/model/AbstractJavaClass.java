@@ -22,6 +22,7 @@ public abstract class AbstractJavaClass extends AbstractJavaAnnotatedElement imp
 
     private static final String XML_TYPE_ANNOTATION = "javax.xml.bind.annotation.XmlType";
     private static final String CONNECTOR_ANNOTATION = "org.mule.tools.cloudconnect.annotations.Connector";
+    private static final String OAUTH_ANNOTATION = "org.mule.tools.cloudconnect.annotations.OAuth";
     private static final String FACTORY_ARGUMENT = "factory";
     private static final String NAMESPACE_PREFIX_ARGUMENT = "namespacePrefix";
     private static final String NAMESPACE_URI_ARGUMENT = "namespaceUri";
@@ -122,6 +123,20 @@ public abstract class AbstractJavaClass extends AbstractJavaAnnotatedElement imp
         return null;
     }
 
+    public boolean hasOAuth()
+    {
+        for (JavaAnnotation annotation : getAnnotations())
+        {
+            if (annotation.getType().equals(OAUTH_ANNOTATION))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
     public String getNamespaceHandlerName()
     {
         return getName() + "NamespaceHandler";
@@ -130,5 +145,19 @@ public abstract class AbstractJavaClass extends AbstractJavaAnnotatedElement imp
     public String getNamespaceHandlerPackage()
     {
         return getPackage() + ".config";
+    }
+
+    public String getOAuthAuthorizationUrl()
+    {
+        for (JavaAnnotation annotation : getAnnotations())
+        {
+            if (annotation.getType().equals(OAUTH_ANNOTATION) &&
+                annotation.getNamedParameter("authorizationUrl") != null)
+            {
+                return ((String) annotation.getNamedParameter("authorizationUrl")).replace("\"", "");
+            }
+        }
+
+        return null;
     }
 }

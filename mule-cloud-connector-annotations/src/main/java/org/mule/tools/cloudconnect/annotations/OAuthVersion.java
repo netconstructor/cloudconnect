@@ -18,7 +18,5 @@
 package org.mule.tools.cloudconnect.annotations;
 
 public enum OAuthVersion {
-    OA10,
-    OA10a,
     OA20;
 }

@@ -15,21 +15,31 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect.annotations;
+package org.mule.tools.cloudconnect.generator;
 
-import java.lang.annotation.*;
+import org.mule.tools.cloudconnect.model.JavaMethod;
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
-@Documented
-public @interface OAuth {
-    OAuthVersion version();
+import java.util.HashMap;
+import java.util.Map;
 
-    String accessTokenUrl();
+public class RequestAuthorizationMessageProcessorGenerator extends AbstractTemplateGenerator
+{
 
-    String authorizationUrl();
+    private static final String NAMESPACE_HANDLER_TEMPLATE = "requestauthorizationmessageprocessor.ftl";
 
-    String requestTokenUrl() default EMPTY_STRING;
+    private JavaMethod method;
 
-    static final String EMPTY_STRING = "";
+    @Override
+    protected Map<String, Object> createModel()
+    {
+        Map<String, Object> root = new HashMap<String, Object>();
+        root.put("class", getJavaClass());
+        return root;
+    }
+
+    @Override
+    protected String getTemplate()
+    {
+        return NAMESPACE_HANDLER_TEMPLATE;
+    }
 }

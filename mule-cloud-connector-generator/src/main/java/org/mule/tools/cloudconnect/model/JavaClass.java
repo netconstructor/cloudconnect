@@ -74,4 +74,8 @@ public interface JavaClass extends JavaAnnotatedElement
     boolean hasDefaultConstructor();
 
     JavaMethod getMethodBySignature(String name, List<JavaParameter> types);
+
+    boolean hasOAuth();
+
+    String getOAuthAuthorizationUrl();
 }

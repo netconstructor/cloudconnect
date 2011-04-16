@@ -65,6 +65,107 @@
         </xsd:complexContent>
     </xsd:complexType>
 
+    <!-- OAuth Operations -->
+    <#if class.hasOAuth()>
+    <xsd:element name="request-authorization" type="requestAuthorizationType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Request OAuth authorization. This operation will set http.status and Location properties to redirect the user to the
+                authorization server.
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="requestAuthorizationType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                </xsd:all>
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="has-been-authorized" type="hasBeenAuthorizedType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Verifies if this connector has already been authorized. If it has not, then call request-authorization.
+                This operation does not modifies the payload of the message, instead it adds an "authorized" outbound
+                property.
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="hasBeenAuthorizedType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                </xsd:all>
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="request-access-token" type="requestAccessTokenType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Request an access token using the authorization code.
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="requestAccessTokenType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                </xsd:all>
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="set-authorization-code" type="setAuthorizationCodeType" substitutionGroup="mule:abstract-message-processor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Sets the autorization code received in the OAuth redirect URI.
+            ]]></xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="setAuthorizationCodeType">
+        <xsd:complexContent>
+            <xsd:extension base="mule:abstractInterceptingMessageProcessorType">
+                <xsd:all>
+                </xsd:all>
+
+                <xsd:attribute name="config-ref" use="optional" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Specify which configuration to use for this invocation
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="code" type="xsd:string" use="required" >
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    </#if>
+
     <!-- Operations -->
     <#list class.getMethods() as method>
     <#if method.isOperation()>
