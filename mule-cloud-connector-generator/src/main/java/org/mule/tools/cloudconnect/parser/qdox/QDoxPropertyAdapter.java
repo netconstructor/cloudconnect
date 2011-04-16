@@ -52,6 +52,11 @@ public class QDoxPropertyAdapter extends AbstractJavaProperty
         return new QDoxTypeAdapter(this.javaProperty.getType());
     }
 
+    public org.mule.tools.cloudconnect.model.JavaField getField()
+    {
+        return new QDoxFieldAdapter(this.javaField);
+    }
+
     public String getDescription()
     {
         if (this.javaProperty.getMutator() != null)
@@ -77,6 +82,11 @@ public class QDoxPropertyAdapter extends AbstractJavaProperty
         }
 
         return annotations;
+    }
+
+    public String getAccessorName()
+    {
+        return this.javaProperty.getAccessor().getName();
     }
 
     public void buildAnnotationCollection()

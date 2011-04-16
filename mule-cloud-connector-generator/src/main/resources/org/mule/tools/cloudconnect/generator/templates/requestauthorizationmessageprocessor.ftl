@@ -76,13 +76,11 @@ public class RequestAuthorizationMessageProcessor implements MessageProcessor, I
             StringBuffer authorizeUrl = new StringBuffer();
 
             authorizeUrl.append("${class.getOAuthAuthorizationUrl()}");
+            authorizeUrl.append("?client_id=" + object.${class.getOAuthClientIdProperty().getAccessorName()}());
+            authorizeUrl.append("&redirect_uri=" + object.${class.getOAuthRedirectUriProperty().getAccessorName()}());
 
-            /*
-            authorizeUrl.append("&redirect_uri=" + object.get);
-            authorizeUrl.append("&client_id=" + appId);
-            if (scope != null)
-                authorizeUrl.append("&scope=" + scope);
-            */
+            if( object.${class.getOAuthScopeProperty().getAccessorName()}() != null )
+                authorizeUrl.append("&scope=" + object.${class.getOAuthScopeProperty().getAccessorName()}());
 
             event.getMessage().setOutboundProperty("http.status", "302");
             event.getMessage().setOutboundProperty("Location", authorizeUrl.toString());

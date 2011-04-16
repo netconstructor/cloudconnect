@@ -245,7 +245,6 @@ public class QDoxClassAdapter extends AbstractJavaClass
                 {
                     this.xmlTypes.add(new QDoxTypeAdapter(parameters[j].getType().getActualTypeArguments()[1]));
                 }
-
             }
         }
     }

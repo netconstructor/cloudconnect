@@ -78,4 +78,12 @@ public interface JavaClass extends JavaAnnotatedElement
     boolean hasOAuth();
 
     String getOAuthAuthorizationUrl();
+
+    JavaProperty getOAuthClientIdProperty();
+
+    JavaProperty getOAuthClientSecretProperty();
+
+    JavaProperty getOAuthScopeProperty();
+
+    JavaProperty getOAuthRedirectUriProperty();
 }

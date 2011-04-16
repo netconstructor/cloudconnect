@@ -24,6 +24,8 @@ public interface JavaProperty extends JavaElement
 
     JavaType getType();
 
+    JavaField getField();
+
     String getDescription();
 
     boolean isConfigurable();
@@ -37,4 +39,6 @@ public interface JavaProperty extends JavaElement
     String getDefaultValue();
 
     boolean hasDefaultValue();
+
+    String getAccessorName();
 }

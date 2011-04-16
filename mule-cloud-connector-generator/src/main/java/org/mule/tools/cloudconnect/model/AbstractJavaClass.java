@@ -17,6 +17,8 @@
 
 package org.mule.tools.cloudconnect.model;
 
+import java.util.List;
+
 public abstract class AbstractJavaClass extends AbstractJavaAnnotatedElement implements JavaClass
 {
 
@@ -155,6 +157,49 @@ public abstract class AbstractJavaClass extends AbstractJavaAnnotatedElement imp
                 annotation.getNamedParameter("authorizationUrl") != null)
             {
                 return ((String) annotation.getNamedParameter("authorizationUrl")).replace("\"", "");
+            }
+        }
+
+        return null;
+    }
+
+    public JavaProperty getOAuthClientIdProperty()
+    {
+        return findOAuthProperty("OAuthClientId");
+    }
+
+    public JavaProperty getOAuthClientSecretProperty()
+    {
+        return findOAuthProperty("OAuthClientSecret");
+    }
+
+    public JavaProperty getOAuthScopeProperty()
+    {
+        return findOAuthProperty("OAuthScope");
+    }
+
+    public JavaProperty getOAuthRedirectUriProperty()
+    {
+        return findOAuthProperty("OAuthRedirectUri");
+    }
+
+    private JavaProperty findOAuthProperty(String name)
+    {
+                for( JavaField field : getFields() )
+        {
+            List<JavaAnnotation> annotations = field.getAnnotations();
+            for( JavaAnnotation annotation : annotations )
+            {
+                if( annotation.getType().equals("org.mule.tools.cloudconnect.annotations." + name))
+                {
+                    for( JavaProperty property : getProperties() )
+                    {
+                        if( property.getField().getName().equals(field.getName()))
+                        {
+                            return property;
+                        }
+                    }
+                }
             }
         }
 

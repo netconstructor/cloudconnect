@@ -82,7 +82,7 @@ public abstract class AbstractJavaProperty extends AbstractJavaElement implement
     {
         for (JavaAnnotation annotation : getAnnotations())
         {
-            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Parameter") &&
+            if (annotation.getType().equals("org.mule.tools.cloudconnect.annotations.Property") &&
                 annotation.getNamedParameter("defaultValue") != null)
             {
                 return ((String) annotation.getNamedParameter("defaultValue")).replace("\"", "");
