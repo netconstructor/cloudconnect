@@ -89,6 +89,11 @@ public class QDoxPropertyAdapter extends AbstractJavaProperty
         return this.javaProperty.getAccessor().getName();
     }
 
+    public String getMutatorName()
+    {
+        return this.javaProperty.getMutator().getName();
+    }
+
     public void buildAnnotationCollection()
     {
         this.annotations = new ArrayList<JavaAnnotation>();

@@ -37,4 +37,10 @@ public class OAuthCloudConnectorTest extends AbstractCloudConnectorTest
         assertEquals("302", responseEvent.getMessage().getOutboundProperty("http.status"));
         assertEquals("http://oauth.muleion.com/authorize?client_id=1234&redirect_uri=5678", responseEvent.getMessage().getOutboundProperty("Location"));
     }
+
+    public void testSetAuthorizationCode() throws Exception
+    {
+        MuleEvent responseEvent = runFlow("requestAuthorization", "1234");
+    }
+
 }

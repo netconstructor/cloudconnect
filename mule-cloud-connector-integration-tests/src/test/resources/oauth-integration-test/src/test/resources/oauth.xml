@@ -32,4 +32,8 @@
     <flow name="requestAuthorization">
         <oauth:request-authorization/>
     </flow>
+
+    <flow name="setAuthorizationCode">
+        <oauth:set-authorization-code code="#[payload]"/>
+    </flow>
 </mule>

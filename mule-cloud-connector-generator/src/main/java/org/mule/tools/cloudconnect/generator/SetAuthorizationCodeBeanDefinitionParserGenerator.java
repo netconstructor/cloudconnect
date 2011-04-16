@@ -15,32 +15,30 @@
  * limitations under the License.
  */
 
-package org.mule.tools.cloudconnect.model;
+package org.mule.tools.cloudconnect.generator;
 
-import java.util.List;
+import org.mule.tools.cloudconnect.model.JavaMethod;
 
-public interface JavaProperty extends JavaElement
+import java.util.HashMap;
+import java.util.Map;
+
+public class SetAuthorizationCodeBeanDefinitionParserGenerator extends AbstractTemplateGenerator
 {
 
-    JavaType getType();
+    private static final String NAMESPACE_HANDLER_TEMPLATE = "setauthcodedefinitionparser.ftl";
+    private JavaMethod method;
 
-    JavaField getField();
+    @Override
+    protected Map<String, Object> createModel()
+    {
+        Map<String, Object> root = new HashMap<String, Object>();
+        root.put("class", getJavaClass());
+        return root;
+    }
 
-    String getDescription();
-
-    boolean isConfigurable();
-
-    List<JavaAnnotation> getAnnotations();
-
-    String getExample();
-
-    boolean isOptional();
-
-    String getDefaultValue();
-
-    boolean hasDefaultValue();
-
-    String getAccessorName();
-
-    String getMutatorName();
+    @Override
+    protected String getTemplate()
+    {
+        return NAMESPACE_HANDLER_TEMPLATE;
+    }
 }

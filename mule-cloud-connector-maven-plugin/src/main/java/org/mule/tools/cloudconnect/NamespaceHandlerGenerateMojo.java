@@ -24,6 +24,8 @@ import org.mule.tools.cloudconnect.generator.NamespaceHandlerGenerator;
 import org.mule.tools.cloudconnect.generator.RegistryBootstrapGenerator;
 import org.mule.tools.cloudconnect.generator.RequestAuthorizationBeanDefinitionParserGenerator;
 import org.mule.tools.cloudconnect.generator.RequestAuthorizationMessageProcessorGenerator;
+import org.mule.tools.cloudconnect.generator.SetAuthorizationCodeBeanDefinitionParserGenerator;
+import org.mule.tools.cloudconnect.generator.SetAuthorizationCodeMessageProcessorGenerator;
 import org.mule.tools.cloudconnect.generator.SpringNamespaceHandlerGenerator;
 import org.mule.tools.cloudconnect.generator.TransformerMessageProcessorGenerator;
 import org.mule.tools.cloudconnect.model.JavaClass;
@@ -110,6 +112,40 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                     {
                         output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), "RequestAuthorizationMessageProcessor");
                         reqAuthMsgProcessorGenerator.generate(output);
+                    }
+                    catch (IOException iox)
+                    {
+                        throw new MojoExecutionException("Error while generating OAuth message processors", iox);
+                    }
+                    finally
+                    {
+                        IOUtil.close(output);
+                    }
+
+                    SetAuthorizationCodeBeanDefinitionParserGenerator setAuthorizationCodeBeanDefinitionParserGenerator = new SetAuthorizationCodeBeanDefinitionParserGenerator();
+                    setAuthorizationCodeBeanDefinitionParserGenerator.setJavaClass(javaClass);
+
+                    try
+                    {
+                        output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), "SetAuthorizationCodeOperationDefinitionParser");
+                        setAuthorizationCodeBeanDefinitionParserGenerator.generate(output);
+                    }
+                    catch (IOException iox)
+                    {
+                        throw new MojoExecutionException("Error while generating OAuth message processors", iox);
+                    }
+                    finally
+                    {
+                        IOUtil.close(output);
+                    }
+
+                    SetAuthorizationCodeMessageProcessorGenerator setAuthorizationCodeMessageProcessorGenerator = new SetAuthorizationCodeMessageProcessorGenerator();
+                    setAuthorizationCodeMessageProcessorGenerator.setJavaClass(javaClass);
+
+                    try
+                    {
+                        output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), "SetAuthorizationCodeMessageProcessor");
+                        setAuthorizationCodeMessageProcessorGenerator.generate(output);
                     }
                     catch (IOException iox)
                     {

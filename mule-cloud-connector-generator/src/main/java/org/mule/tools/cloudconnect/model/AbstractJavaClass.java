@@ -183,6 +183,11 @@ public abstract class AbstractJavaClass extends AbstractJavaAnnotatedElement imp
         return findOAuthProperty("OAuthRedirectUri");
     }
 
+    public JavaProperty getOAuthAuthorizationCodeProperty()
+    {
+        return findOAuthProperty("OAuthAuthorizationCode");
+    }
+
     private JavaProperty findOAuthProperty(String name)
     {
                 for( JavaField field : getFields() )

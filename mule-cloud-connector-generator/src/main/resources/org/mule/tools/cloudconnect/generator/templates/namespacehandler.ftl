@@ -31,6 +31,7 @@ public class ${class.getNamespaceHandlerName()} extends AbstractPojoNamespaceHan
 
         <#if class.hasOAuth()>
         registerMuleBeanDefinitionParser("request-authorization", new RequestAuthorizationOperationDefinitionParser());
+        registerMuleBeanDefinitionParser("set-authorization-code", new SetAuthorizationCodeOperationDefinitionParser());
         </#if>
 
         <#if method.isOperation()>

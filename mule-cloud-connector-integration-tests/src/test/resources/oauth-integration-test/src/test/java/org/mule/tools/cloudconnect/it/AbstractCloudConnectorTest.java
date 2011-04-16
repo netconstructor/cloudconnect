@@ -40,4 +40,11 @@ public abstract class AbstractCloudConnectorTest extends FunctionalTestCase
         MuleEvent event = AbstractMuleTestCase.getTestEvent(payload);
         return flow.process(event);
     }
+
+    protected MuleEvent runFlow(String flowName, String payload) throws Exception
+    {
+        SimpleFlowConstruct flow = lookupFlowConstruct(flowName);
+        MuleEvent event = AbstractMuleTestCase.getTestEvent(payload);
+        return flow.process(event);
+    }
 }
