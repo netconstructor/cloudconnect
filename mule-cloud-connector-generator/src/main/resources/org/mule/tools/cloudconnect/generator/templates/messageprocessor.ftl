@@ -29,17 +29,25 @@ import org.mule.util.ClassUtils;
 import org.mule.util.TemplateParser;
 import org.mule.util.TemplateParser.PatternInfo;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -106,6 +114,64 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
         <#list method.getParameters() as parameter>
         ${parameter.getType().getFullyQualifiedName(true)} <@uncapitalize>${parameter.getName()}</@uncapitalize><#if !parameter.getType().isPrimitive()> = null</#if>;
         </#list>
+
+        <#if class.hasOAuth()>
+        if (object.${class.getOAuthAuthorizationCodeProperty().getAccessorName()}() == null)
+            throw new IllegalStateException("This connector has not been authorized yet");
+
+        if (object.${class.getOAuthAccessTokenProperty().getAccessorName()}() == null) {
+            logger.info("Requesting access token...");
+            URL url;
+            try {
+                StringBuffer query = new StringBuffer();
+                query.append("${class.getOAuthAccessTokenUrl()}");
+                query.append("?client_id=" + object.${class.getOAuthClientIdProperty().getAccessorName()}());
+                query.append("&redirect_uri=" + URLEncoder.encode(object.${class.getOAuthRedirectUriProperty().getAccessorName()}()));
+                query.append("&client_secret=" + object.${class.getOAuthClientSecretProperty().getAccessorName()}());
+                query.append("&code=" + object.${class.getOAuthAuthorizationCodeProperty().getAccessorName()}());
+                logger.debug("Requesting token to: " + query.toString());
+
+                url = new URL(query.toString());
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                if (conn.getResponseCode() != 200) {
+                    throw new RuntimeException("The server did not respond with 200 while retrieving the access token. Response: " + conn.getResponseMessage());
+                }
+
+                // Buffer the result into a string
+                BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    response.append(line);
+                }
+                rd.close();
+
+                logger.debug("Server Response: " + response.toString());
+
+                conn.disconnect();
+
+                String regex = "access_token=(\\S*?)(&(\\S*))?";
+
+                Matcher matcher = Pattern.compile(regex).matcher(response.toString());
+                if (matcher.matches()) {
+                    try {
+                        String accessToken = URLDecoder.decode(matcher.group(1), "UTF_8");
+                        object.setAccessToken(accessToken);
+                    } catch (UnsupportedEncodingException e) {
+                        throw new RuntimeException(e.getMessage(), e);
+                    }
+                } else {
+                    throw new RuntimeException("Response body is incorrect. Can't extract a token from this: '" + response + "'", null);
+                }
+
+            } catch (MalformedURLException e) {
+                throw new RuntimeException("Invalid URL: ${class.getOAuthAccessTokenUrl()}", e);
+            } catch (IOException e) {
+                throw new RuntimeException("An I/O error ocurred trying to retrieve the access token", e);
+            }
+        }
+        </#if>
 
         <#if method.hasParameters()>
         try

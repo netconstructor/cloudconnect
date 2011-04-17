@@ -27,7 +27,7 @@
         http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.1/mule.xsd
         http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oauth/1.0/mule-oauth.xsd">
 
-	<oauth:config appId="1234" redirectUri="5678"/>
+	<oauth:config appId="1234" appSecret="abcd" redirectUri="5678"/>
 
     <flow name="requestAuthorization">
         <oauth:request-authorization/>

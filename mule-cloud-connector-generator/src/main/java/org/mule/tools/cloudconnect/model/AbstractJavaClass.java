@@ -163,6 +163,21 @@ public abstract class AbstractJavaClass extends AbstractJavaAnnotatedElement imp
         return null;
     }
 
+    public String getOAuthAccessTokenUrl()
+    {
+        for (JavaAnnotation annotation : getAnnotations())
+        {
+            if (annotation.getType().equals(OAUTH_ANNOTATION) &&
+                annotation.getNamedParameter("accessTokenUrl") != null)
+            {
+                return ((String) annotation.getNamedParameter("accessTokenUrl")).replace("\"", "");
+            }
+        }
+
+        return null;
+    }
+
+
     public JavaProperty getOAuthClientIdProperty()
     {
         return findOAuthProperty("OAuthClientId");
@@ -188,6 +203,11 @@ public abstract class AbstractJavaClass extends AbstractJavaAnnotatedElement imp
         return findOAuthProperty("OAuthAuthorizationCode");
     }
 
+    public JavaProperty getOAuthAccessTokenProperty()
+    {
+        return findOAuthProperty("OAuthAccessToken");
+    }
+
     private JavaProperty findOAuthProperty(String name)
     {
                 for( JavaField field : getFields() )
@@ -195,7 +215,7 @@ public abstract class AbstractJavaClass extends AbstractJavaAnnotatedElement imp
             List<JavaAnnotation> annotations = field.getAnnotations();
             for( JavaAnnotation annotation : annotations )
             {
-                if( annotation.getType().equals("org.mule.tools.cloudconnect.annotations." + name))
+                if( annotation.getType().contains(name))
                 {
                     for( JavaProperty property : getProperties() )
                     {

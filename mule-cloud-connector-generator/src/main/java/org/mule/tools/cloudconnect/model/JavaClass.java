@@ -79,6 +79,8 @@ public interface JavaClass extends JavaAnnotatedElement
 
     String getOAuthAuthorizationUrl();
 
+    String getOAuthAccessTokenUrl();
+
     JavaProperty getOAuthClientIdProperty();
 
     JavaProperty getOAuthClientSecretProperty();
@@ -86,4 +88,6 @@ public interface JavaClass extends JavaAnnotatedElement
     JavaProperty getOAuthScopeProperty();
 
     JavaProperty getOAuthRedirectUriProperty();
+
+    JavaProperty getOAuthAccessTokenProperty();
 }

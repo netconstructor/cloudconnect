@@ -28,6 +28,8 @@ import org.mule.tools.cloudconnect.annotations.OAuthRedirectUri;
 import org.mule.tools.cloudconnect.annotations.OAuthScope;
 import org.mule.tools.cloudconnect.annotations.OAuthVersion;
 import org.mule.tools.cloudconnect.annotations.OAuthAuthorizationCode;
+import org.mule.tools.cloudconnect.annotations.OAuthAccessToken;
+import org.mule.tools.cloudconnect.annotations.OAuthClientSecret;
 
 import java.util.Map;
 
@@ -41,6 +43,10 @@ public class OAuthCloudConnector
 	@OAuthClientId
 	private String appId;
 
+    @Property
+    @OAuthClientSecret
+    private String appSecret;
+
 	@Property
 	@OAuthRedirectUri
 	private String redirectUri;
@@ -51,6 +57,9 @@ public class OAuthCloudConnector
 
     @OAuthAuthorizationCode
     private String authorizationCode;
+
+    @OAuthAccessToken
+    private String accessToken;
 
     @Operation
     public String empty()
@@ -88,5 +97,21 @@ public class OAuthCloudConnector
 
     public void setAuthorizationCode(String authorizationCode) {
         this.authorizationCode = authorizationCode;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getAppSecret() {
+        return appSecret;
+    }
+
+    public void setAppSecret(String appSecret) {
+        this.appSecret = appSecret;
     }
 }
