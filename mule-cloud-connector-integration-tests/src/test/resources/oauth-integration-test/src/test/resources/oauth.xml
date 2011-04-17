@@ -35,5 +35,11 @@
 
     <flow name="setAuthorizationCode">
         <oauth:set-authorization-code code="#[payload]"/>
+        <oauth:has-been-authorized/>
     </flow>
+
+    <flow name="notAuthorized">
+        <oauth:has-been-authorized/>
+    </flow>
+
 </mule>

@@ -41,6 +41,15 @@ public class OAuthCloudConnectorTest extends AbstractCloudConnectorTest
     public void testSetAuthorizationCode() throws Exception
     {
         MuleEvent responseEvent = runFlow("requestAuthorization", "1234");
+
+        //assertEquals(true, responseEvent.getMessage().getInvocationProperty("authorized"));
+    }
+
+    public void testNotAuthorized() throws Exception
+    {
+        MuleEvent responseEvent = runFlow("notAuthorized");
+
+        assertEquals(false, responseEvent.getMessage().getInvocationProperty("authorized"));
     }
 
 }

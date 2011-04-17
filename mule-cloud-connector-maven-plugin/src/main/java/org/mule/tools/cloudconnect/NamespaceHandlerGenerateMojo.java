@@ -19,6 +19,8 @@ package org.mule.tools.cloudconnect;
 
 import org.mule.tools.cloudconnect.generator.BeanDefinitionParserGenerator;
 import org.mule.tools.cloudconnect.generator.EnumTransformerGenerator;
+import org.mule.tools.cloudconnect.generator.HasBeenAuthorizedBeanDefinitionParserGenerator;
+import org.mule.tools.cloudconnect.generator.HasBeenAuthorizedMessageProcessorGenerator;
 import org.mule.tools.cloudconnect.generator.MessageProcessorGenerator;
 import org.mule.tools.cloudconnect.generator.NamespaceHandlerGenerator;
 import org.mule.tools.cloudconnect.generator.RegistryBootstrapGenerator;
@@ -146,6 +148,40 @@ public class NamespaceHandlerGenerateMojo extends AbstractConnectorMojo
                     {
                         output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), "SetAuthorizationCodeMessageProcessor");
                         setAuthorizationCodeMessageProcessorGenerator.generate(output);
+                    }
+                    catch (IOException iox)
+                    {
+                        throw new MojoExecutionException("Error while generating OAuth message processors", iox);
+                    }
+                    finally
+                    {
+                        IOUtil.close(output);
+                    }
+
+                    HasBeenAuthorizedBeanDefinitionParserGenerator hasBeenAuthorizedBeanDefinitionParserGenerator = new HasBeenAuthorizedBeanDefinitionParserGenerator();
+                    hasBeenAuthorizedBeanDefinitionParserGenerator.setJavaClass(javaClass);
+
+                    try
+                    {
+                        output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), "HasBeenAuthorizedOperationDefinitionParser");
+                        hasBeenAuthorizedBeanDefinitionParserGenerator.generate(output);
+                    }
+                    catch (IOException iox)
+                    {
+                        throw new MojoExecutionException("Error while generating OAuth message processors", iox);
+                    }
+                    finally
+                    {
+                        IOUtil.close(output);
+                    }
+
+                    HasBeenAuthorizedMessageProcessorGenerator hasBeenAuthorizedMessageProcessorGenerator = new HasBeenAuthorizedMessageProcessorGenerator();
+                    hasBeenAuthorizedMessageProcessorGenerator.setJavaClass(javaClass);
+
+                    try
+                    {
+                        output = openNamespaceHandlerFileStream(javaClass.getNamespaceHandlerPackage(), "HasBeenAuthorizedMessageProcessor");
+                        hasBeenAuthorizedMessageProcessorGenerator.generate(output);
                     }
                     catch (IOException iox)
                     {
