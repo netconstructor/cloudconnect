@@ -83,7 +83,7 @@ ${method.getDescription()}
 |:-----------|:-----------|:---------|:--------------|:----------------|
 |config-ref|Specify which configuration to use for this invocation|yes||
 <#list method.getParameters() as parameter>
-|<@uncapitalize>${parameter.getElementName()}</@uncapitalize>|<#if parameter.getDescription()?has_content>${parameter.getDescription()}</#if>|<#if parameter.isOptional()>yes<#else>no</#if>|${parameter.getDefaultValue()}|<#if parameter.getType().isEnum()><#list parameter.getType().getValues() as value>*${value}*<#if value_has_next>, </#if></#list></#if>
+|<@uncapitalize>${parameter.getElementName()}</@uncapitalize>|<#if parameter.getDescription()?has_content>${parameter.getDescription()}</#if>|<#if parameter.isOptional()>yes<#else>no</#if>|${parameter.getDefaultValue()}|<#if parameter.getType().getJavaClass().isEnum()><#list parameter.getType().getValues() as value>*${value}*<#if value_has_next>, </#if></#list></#if>
 </#list>
 <#if method.getReturn()?has_content>
 
