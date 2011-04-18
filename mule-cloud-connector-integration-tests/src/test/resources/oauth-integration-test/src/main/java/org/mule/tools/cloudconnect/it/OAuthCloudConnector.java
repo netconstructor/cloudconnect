@@ -29,6 +29,7 @@ import org.mule.tools.cloudconnect.annotations.OAuthScope;
 import org.mule.tools.cloudconnect.annotations.OAuthVersion;
 import org.mule.tools.cloudconnect.annotations.OAuthAuthorizationCode;
 import org.mule.tools.cloudconnect.annotations.OAuthAccessToken;
+import org.mule.tools.cloudconnect.annotations.OAuthAccessTokenExpiration;
 import org.mule.tools.cloudconnect.annotations.OAuthClientSecret;
 
 import java.util.Map;
@@ -60,6 +61,9 @@ public class OAuthCloudConnector
 
     @OAuthAccessToken
     private String accessToken;
+
+    @OAuthAccessTokenExpiration
+    private long accessTokenExpiration;
 
     @Operation
     public String empty()
@@ -113,5 +117,13 @@ public class OAuthCloudConnector
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
+    }
+
+    public long getAccessTokenExpiration() {
+        return accessTokenExpiration;
+    }
+
+    public void setAccessTokenExpiration(long accessTokenExpiration) {
+        this.accessTokenExpiration = accessTokenExpiration;
     }
 }

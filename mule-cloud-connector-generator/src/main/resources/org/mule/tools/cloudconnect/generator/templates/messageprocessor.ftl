@@ -45,6 +45,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Calendar;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -119,6 +120,12 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
         if (object.${class.getOAuthAuthorizationCodeProperty().getAccessorName()}() == null)
             throw new IllegalStateException("This connector has not been authorized yet");
 
+        if( object.${class.getOAuthAccessTokenExpirationProperty().getAccessorName()}() < Calendar.getInstance().getTimeInMillis() )
+        {
+            logger.info("Access token has a expired!");
+            object.${class.getOAuthAccessTokenProperty().getMutatorName()}(null);
+        }
+
         if (object.${class.getOAuthAccessTokenProperty().getAccessorName()}() == null) {
             logger.info("Requesting access token...");
             URL url;
@@ -134,10 +141,6 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
                 url = new URL(query.toString());
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-                if (conn.getResponseCode() != 200) {
-                    throw new RuntimeException("The server did not respond with 200 while retrieving the access token. Response: " + conn.getResponseMessage());
-                }
-
                 // Buffer the result into a string
                 BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 StringBuilder response = new StringBuilder();
@@ -147,17 +150,25 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
                 }
                 rd.close();
 
-                logger.debug("Server Response: " + response.toString());
+                logger.info("Response Body: " + response.toString());
+                if (conn.getResponseCode() != 200) {
+                    throw new RuntimeException("The server did not respond with 200 while retrieving the access token. Response: " + conn.getResponseMessage());
+                }
 
                 conn.disconnect();
 
-                String regex = "access_token=(\\S*?)(&(\\S*))?";
+                String regex = "access_token=(\\S*?)(&expires=(\\S*))?";
 
                 Matcher matcher = Pattern.compile(regex).matcher(response.toString());
                 if (matcher.matches()) {
                     try {
+                        logger.debug("Access Token obtained, it expires in " + matcher.group(3) + " seconds");
                         String accessToken = URLDecoder.decode(matcher.group(1), "UTF_8");
-                        object.setAccessToken(accessToken);
+                        Calendar expiration = Calendar.getInstance();
+                        expiration.add(Calendar.SECOND, Integer.parseInt(matcher.group(3)) - 5);
+
+                        object.${class.getOAuthAccessTokenProperty().getMutatorName()}(accessToken);
+                        object.${class.getOAuthAccessTokenExpirationProperty().getMutatorName()}(expiration.getTimeInMillis());
                     } catch (UnsupportedEncodingException e) {
                         throw new RuntimeException(e.getMessage(), e);
                     }

@@ -208,6 +208,11 @@ public abstract class AbstractJavaClass extends AbstractJavaAnnotatedElement imp
         return findOAuthProperty("OAuthAccessToken");
     }
 
+    public JavaProperty getOAuthAccessTokenExpirationProperty()
+    {
+        return findOAuthProperty("OAuthAccessTokenExpiration");
+    }
+
     private JavaProperty findOAuthProperty(String name)
     {
                 for( JavaField field : getFields() )

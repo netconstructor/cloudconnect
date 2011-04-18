@@ -90,4 +90,6 @@ public interface JavaClass extends JavaAnnotatedElement
     JavaProperty getOAuthRedirectUriProperty();
 
     JavaProperty getOAuthAccessTokenProperty();
+
+    JavaProperty getOAuthAccessTokenExpirationProperty();
 }
