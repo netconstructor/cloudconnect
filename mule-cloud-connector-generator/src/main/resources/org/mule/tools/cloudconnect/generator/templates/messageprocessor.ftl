@@ -136,7 +136,7 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
                 query.append("&redirect_uri=" + URLEncoder.encode(object.${class.getOAuthRedirectUriProperty().getAccessorName()}()));
                 query.append("&client_secret=" + object.${class.getOAuthClientSecretProperty().getAccessorName()}());
                 query.append("&code=" + object.${class.getOAuthAuthorizationCodeProperty().getAccessorName()}());
-                logger.debug("Requesting token to: " + query.toString());
+                logger.info("Requesting token to: " + query.toString());
 
                 url = new URL(query.toString());
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();

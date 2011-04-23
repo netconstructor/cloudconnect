@@ -17,6 +17,8 @@ import org.mule.config.i18n.CoreMessages;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.Calendar;
+
 import ${class.getPackage()}.${class.getName()};
 
 public class HasBeenAuthorizedMessageProcessor implements MessageProcessor, Initialisable, MuleContextAware
@@ -73,6 +75,13 @@ public class HasBeenAuthorizedMessageProcessor implements MessageProcessor, Init
     {
         try
         {
+            if( object.${class.getOAuthAccessTokenExpirationProperty().getAccessorName()}() < Calendar.getInstance().getTimeInMillis() )
+            {
+                logger.info("Access token has a expired!");
+                object.${class.getOAuthAccessTokenProperty().getMutatorName()}(null);
+                object.${class.getOAuthAccessTokenExpirationProperty().getMutatorName()}(0);
+            }
+
             boolean authorized = (object.${class.getOAuthAuthorizationCodeProperty().getAccessorName()}() != null);
             event.getMessage().setInvocationProperty("authorized", authorized);
         }
