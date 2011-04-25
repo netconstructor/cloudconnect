@@ -87,7 +87,9 @@ public abstract class AbstractConnectorMojo extends AbstractMojo
         List<File> sourceRoots = new ArrayList<File>();
         for (String sourceRoot : (List<String>) project.getCompileSourceRoots())
         {
-            sourceRoots.add(new File(sourceRoot));
+            if(!sourceRoot.startsWith(targetDirectory.getAbsolutePath())) {
+                sourceRoots.add(new File(sourceRoot));
+            }
         }
 
         InputStream input = null;
