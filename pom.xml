@@ -126,12 +126,12 @@
         <repository>
             <id>muleforge-releases</id>
             <name>MuleForge Snapshot Repository</name>
-            <url>dav:https://repository.muleforge.org/release/</url>
+            <url>dav:https://repository.muleforge.org/releases/</url>
         </repository>
         <snapshotRepository>
             <id>muleforge-snapshots</id>
             <name>MuleForge Repository</name>
-            <url>dav:https://repository.muleforge.org/snapshot/</url>
+            <url>dav:https://repository.muleforge.org/snapshots/</url>
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
