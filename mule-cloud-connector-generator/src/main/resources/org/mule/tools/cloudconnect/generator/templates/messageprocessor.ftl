@@ -92,6 +92,7 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
                     "Multiple instances of '%s' were found in the registry so you need to configure a specific instance",
                     object.getClass())), this);
         }
+        <#if !class.getFactory()?has_content>
         if (object == null)
         {
             try
@@ -106,6 +107,10 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
                     CoreMessages.initialisationFailure("Cannot create a new instance of '${class.getFullyQualifiedName()}'"), this);
             }
         }
+        <#else>
+        throw new InitialisationException(
+            CoreMessages.initialisationFailure("Cannot create a new instance of '${class.getFullyQualifiedName()}'"), this);
+        </#if>
     }
 
     public MuleEvent process(MuleEvent event) throws MuleException

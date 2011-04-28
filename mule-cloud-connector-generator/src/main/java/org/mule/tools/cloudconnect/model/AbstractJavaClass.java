@@ -114,7 +114,7 @@ public abstract class AbstractJavaClass extends AbstractJavaAnnotatedElement imp
                 String fqClassName = ((String) annotation.getNamedParameter(FACTORY_ARGUMENT)).replace("\"", "").replace(".class", "");
                 for (JavaClass clazz : getParentModel().getClasses())
                 {
-                    if (clazz.getFullyQualifiedName().equals(fqClassName))
+                    if (clazz.getFullyQualifiedName().contains(fqClassName))
                     {
                         return clazz;
                     }
