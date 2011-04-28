@@ -65,9 +65,12 @@ public class QDoxPropertyAdapter extends AbstractJavaProperty
             {
                 return this.javaProperty.getMutator().getComment();
             }
-            else if (this.javaField.getComment() != null)
+            else if( this.javaField != null )
             {
-                return this.javaField.getComment();
+                if (this.javaField.getComment() != null)
+                {
+                    return this.javaField.getComment();
+                }
             }
         }
 
