@@ -279,7 +279,8 @@
 
     <!-- XML Types -->
     <#list class.getXmlTypes() as xmlType>
-    ${xmlType.getJavaClass().getXmlComplexType()}
-
+    <#if xmlType.javaClass.xmlComplexType??>
+    	${xmlType.javaClass.xmlComplexType}
+    </#if>
     </#list>
 </xsd:schema>
