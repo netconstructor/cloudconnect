@@ -5,7 +5,7 @@
     <artifactId>mule-cloud-connector</artifactId>
     <version>2.0.15</version>
     <packaging>pom</packaging>
-    <name>Mule Cloud Connector</name>
+    <name>Mule Cloud Connector DevKit</name>
     <url>http://www.mulesoft.org/documentation/display/MULE3USER/Mule+Cloud+Connect</url>
 
     <properties>
