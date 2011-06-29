@@ -313,11 +313,11 @@ public class ${method.getMessageProcessorName()} implements MessageProcessor, In
             if (expression.startsWith(patternInfo.getPrefix())
                 && expression.endsWith(patternInfo.getSuffix()))
             {
-                arg = (T)expressionManager.evaluate(expression, message);
+                arg = (T)expressionManager.evaluate(expression, message, false);
             }
             else
             {
-                arg = (T)expressionManager.parse(expression, message);
+                arg = (T)expressionManager.parse(expression, message, false);
             }
 
             // If expression evaluates to a MuleMessage then use it's payload
